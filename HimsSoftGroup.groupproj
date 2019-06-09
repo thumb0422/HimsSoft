@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{2BF8A215-B158-4FCD-8CFD-2409BED23B80}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="HimsSoft.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="HimsSoft">
+        <MSBuild Projects="HimsSoft.dproj"/>
+    </Target>
+    <Target Name="HimsSoft:Clean">
+        <MSBuild Projects="HimsSoft.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HimsSoft:Make">
+        <MSBuild Projects="HimsSoft.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="HimsSoft"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="HimsSoft:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="HimsSoft:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
