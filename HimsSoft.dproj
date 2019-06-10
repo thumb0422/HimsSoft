@@ -89,6 +89,9 @@
         <DCC_BplOutput>bin</DCC_BplOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_DcuOutput>dcu</DCC_DcuOutput>
+        <DCC_UnitSearchPath>dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <Debugger_HostApplication>D:\Work\HimsSoft\Bin\HimsSoft.exe</Debugger_HostApplication>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>

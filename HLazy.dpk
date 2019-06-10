@@ -28,7 +28,9 @@ package HLazy;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  vcl,
+  CnPack_D102T;
 
 contains
   HCom32 in 'HCom32.pas',
