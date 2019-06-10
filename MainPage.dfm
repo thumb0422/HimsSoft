@@ -23,4 +23,13 @@ object Form1: TForm1
     TabOrder = 0
     OnClick = Button1Click
   end
+  object sendBtn: TButton
+    Left = 304
+    Top = 160
+    Width = 75
+    Height = 25
+    Caption = 'sendBtn'
+    TabOrder = 1
+    OnClick = sendBtnClick
+  end
 end

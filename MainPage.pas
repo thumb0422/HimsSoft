@@ -11,8 +11,10 @@ uses
 type
   TForm1 = class(TForm)
     Button1: TButton;
+    sendBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure sendBtnClick(Sender: TObject);
   private
     { Private declarations }
     rs232: TCnRS232;
@@ -59,11 +61,18 @@ begin
   OutputDebugString(pchar(ss));
 end;
 
+procedure TForm1.sendBtnClick(Sender: TObject);
+var ss:string;
+begin
+  ss := 'A1 B1';
+  rs232.WriteCommData(PAnsiChar(AnsiString(ss)),Length(ss));
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 var
   tag: Int8;
 begin
-  tag := 2;
+  tag := 3;
   rs232 := TCnRS232.Create(nil);
   rs232.CommName := 'COM' + IntToStr(tag);
   rs232.tag := tag;
