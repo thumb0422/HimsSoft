@@ -33,6 +33,7 @@ var
   i: Integer;
   indexStr: string;
 begin
+  rs232ObjDic.Clear;
   if (tag = '') or (tag = '0') then
   begin
     for i := 0 to rs232NameList.Count - 1 do
@@ -46,14 +47,15 @@ begin
       try
         rs232Obj.StopComm;
         rs232Obj.StartComm;
+        rs232ObjDic.AddOrSetValue(indexStr, rs232Obj);
       except
         on E: Exception do
         begin
+          rs232ObjDic.Remove(indexStr);
+          OutputDebugString(pchar('COM' + indexStr + ' initError'));
           rs232Obj.StopComm;
-          OutputDebugString(pchar('COM' + tag + ' initError'));
         end;
       end;
-      rs232ObjDic.AddOrSetValue(indexStr, rs232Obj);
     end;
   end
   else
@@ -130,7 +132,6 @@ begin
     rs232NameList := TStringList.Create;
   end;
   rs232ObjDic := TDictionary<string, TCnRS232>.Create(0);
-  sendData := '0A 0D 4B'; // for test
 end;
 
 Destructor THComm.Destroy;
@@ -141,8 +142,22 @@ end;
 
 procedure THComm.onReceive(Sender: TObject; Buffer: Pointer;
   BufferLength: Word);
+var
+  i: Integer;
+  ss, ffnn: string;
+  rbuf: array of byte;
+  tag: Int8;
 begin
-
+  setlength(rbuf, BufferLength);
+  move(Buffer^, pchar(rbuf)^, BufferLength);
+  ss := '接收：';
+  tag := TCnRS232(Sender).tag;
+  for i := 0 to BufferLength - 1 do
+  begin
+    ss := ss + inttohex(rbuf[i], 2) + ''; // 接受数据
+  end;
+  ss := ss + ' tag = ' + IntToStr(tag);
+  OutputDebugString(pchar(ss));
 end;
 
 end.

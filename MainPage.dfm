@@ -14,14 +14,14 @@ object Form1: TForm1
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object Button1: TButton
+  object initBtn: TButton
     Left = 304
     Top = 72
     Width = 75
     Height = 25
-    Caption = 'Button1'
+    Caption = 'initBtn'
     TabOrder = 0
-    OnClick = Button1Click
+    OnClick = initBtnClick
   end
   object sendBtn: TButton
     Left = 304

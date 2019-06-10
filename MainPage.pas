@@ -5,20 +5,19 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, CnClasses, CnRS232,
-  Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
+  Vcl.StdCtrls,HCom32;
 
 type
   TForm1 = class(TForm)
-    Button1: TButton;
+    initBtn: TButton;
     sendBtn: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure sendBtnClick(Sender: TObject);
+    procedure initBtnClick(Sender: TObject);
   private
     { Private declarations }
-    rs232: TCnRS232;
-    procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
+    hcom32:THComm;
   public
     { Public declarations }
   end;
@@ -30,54 +29,28 @@ implementation
 
 {$R *.dfm}
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TForm1.initBtnClick(Sender: TObject);
+var ss:string;
 begin
-  try
-    rs232.StopComm;
-    rs232.StartComm;
-  except
-    on E: Exception do
-      ShowMessage('open rs232 Error');
-  end;
-end;
-
-procedure TForm1.onReceive(Sender: TObject; Buffer: Pointer;
-  BufferLength: Word);
-var
-  i: integer;
-  ss, ffnn: string;
-  rbuf: array of byte;
-  tag: Int8;
-begin
-  setlength(rbuf, BufferLength);
-  move(Buffer^, pchar(rbuf)^, BufferLength);
-  ss := '接收：';
-  tag := TCnRS232(Sender).tag;
-  for i := 0 to BufferLength - 1 do
-  begin
-    ss := ss + inttohex(rbuf[i], 2) + ''; // 接受数据
-  end;
-  ss := ss + ' tag = ' + IntToStr(tag);
-  OutputDebugString(pchar(ss));
+  hcom32.init('');
 end;
 
 procedure TForm1.sendBtnClick(Sender: TObject);
 var ss:string;
 begin
-  ss := 'A1 B1';
-  rs232.WriteCommData(PAnsiChar(AnsiString(ss)),Length(ss));
+  hcom32.send('');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  tag: Int8;
+  comList:TStringList;
 begin
-  tag := 3;
-  rs232 := TCnRS232.Create(nil);
-  rs232.CommName := 'COM' + IntToStr(tag);
-  rs232.tag := tag;
-  rs232.CommConfig.BaudRate := 9600;
-  rs232.OnReceiveData := onReceive;
+    comList := TStringList.Create;
+    comList.Add('2');
+    comList.Add('3');
+    comList.Add('4');
+    hcom32 :=THComm.Create(comList);
+    hcom32.sendData := '0A 0D 4B';
 end;
 
 procedure saveToJson(data: string);
