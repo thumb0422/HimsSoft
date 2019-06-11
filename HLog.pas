@@ -2,7 +2,7 @@ unit HLog;
 
 interface
 
-uses System.SysUtils;
+uses System.SysUtils,System.Threading;
 
 type
   TLog = class
@@ -16,6 +16,7 @@ type
   protected
     constructor Create;
     Destructor Destroy; override;
+    procedure writeToFile(str: string);
   end;
 
 implementation
@@ -39,12 +40,32 @@ end;
 
 procedure TLog.DDLogInfo(str: string);
 begin
-
+  writeToFile('Info:' + str);
 end;
 
 procedure TLog.DDLogError(str: string);
 begin
+  writeToFile('Error: ' + str);
+end;
 
+procedure TLog.writeToFile(str: string);
+var
+  wLogFile: TextFile;
+  DateTime: TDateTime;
+  strTxtName, strContent: string;
+begin
+  DateTime := now;
+  strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd',DateTime) + '.log';
+  AssignFile(wLogFile, strTxtName);
+  if FileExists(strTxtName) then
+    Append(wLogFile)
+  else
+  begin
+    ReWrite(wLogFile);
+  end;
+  strContent := FormatdateTime('tt', DateTime) + ' ' + str;
+  Writeln(wLogFile, strContent);
+  CloseFile(wLogFile)
 end;
 
 end.
