@@ -9,6 +9,9 @@
         <Projects Include="HLazy.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="HUtility.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="HLazy:Make">
         <MSBuild Projects="HLazy.dproj" Targets="Make"/>
     </Target>
+    <Target Name="HUtility">
+        <MSBuild Projects="HUtility.dproj"/>
+    </Target>
+    <Target Name="HUtility:Clean">
+        <MSBuild Projects="HUtility.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HUtility:Make">
+        <MSBuild Projects="HUtility.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HimsSoft;HLazy"/>
+        <CallTarget Targets="HimsSoft;HLazy;HUtility"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean"/>
+        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HUtility:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HimsSoft:Make;HLazy:Make"/>
+        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HUtility:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
