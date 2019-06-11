@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.StdCtrls,HCom32;
+  Vcl.StdCtrls, HCom32, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
@@ -17,7 +17,7 @@ type
     procedure initBtnClick(Sender: TObject);
   private
     { Private declarations }
-    hcom32:THComm;
+    FCom32: THComm;
   public
     { Public declarations }
   end;
@@ -30,27 +30,30 @@ implementation
 {$R *.dfm}
 
 procedure TForm1.initBtnClick(Sender: TObject);
-var ss:string;
+var
+  ss: string;
 begin
-  hcom32.init('');
+  FCom32.init('');
 end;
 
 procedure TForm1.sendBtnClick(Sender: TObject);
-var ss:string;
+var
+  ss: string;
 begin
-  hcom32.send('');
+  FCom32.send('');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  comList:TStringList;
+  comList: TStringList;
 begin
-    comList := TStringList.Create;
-    comList.Add('2');
-    comList.Add('3');
-    comList.Add('4');
-    hcom32 :=THComm.Create(comList);
-    hcom32.sendData := '0A 0D 4B';
+  comList := TStringList.Create;
+  comList.Add('2');
+  comList.Add('3');
+  comList.Add('4');
+  FCom32 := THComm.Create(comList);
+  FCom32.interval = 1000;
+  FCom32.sendData := '0A 0D 4B';
 end;
 
 procedure saveToJson(data: string);
