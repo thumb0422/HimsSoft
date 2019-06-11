@@ -3,9 +3,8 @@ unit HCom32;
 interface
 
 uses
-  System.SysUtils, Winapi.Windows,
-  System.Classes, System.Generics.Collections, Vcl.ExtCtrls,
-  CnRS232, HLog;
+  System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
+  Vcl.ExtCtrls, CnRS232, HLog;
 
 type
   THComm = class
@@ -30,7 +29,7 @@ type
   protected
     rs232Obj: TCnRS232; // 临时对象
     Ftag: string; // 执行某个具体的comm
-    Destructor Destroy; override;
+    destructor Destroy; override;
   end;
 
 implementation
@@ -125,8 +124,8 @@ procedure THComm.close;
 var
   keyTag: string;
 begin
-    if Assigned(reqTimer) then
-      reqTimer.Enabled := False;
+  if Assigned(reqTimer) then
+    reqTimer.Enabled := False;
   for keyTag in rs232ObjDic.Keys do
   begin
     rs232Obj := rs232ObjDic[keyTag];
@@ -152,14 +151,13 @@ begin
   reqTimer.Enabled := False;
 end;
 
-Destructor THComm.Destroy;
+destructor THComm.Destroy;
 begin
   rs232ObjDic.Free;
   rs232NameList.Free;
 end;
 
-procedure THComm.onReceive(Sender: TObject; Buffer: Pointer;
-  BufferLength: Word);
+procedure THComm.onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
 var
   i: Integer;
   ss: string;
@@ -183,8 +181,7 @@ var
   ss: string;
 begin
   tag := TCnRS232(Sender).tag;
-  ss := 'COM' + IntToStr(tag) + ' onReceiveError,EventMask = ' +
-    IntToStr(EventMask);
+  ss := 'COM' + IntToStr(tag) + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
 end;
 
@@ -207,11 +204,11 @@ begin
     rs232Obj := rs232ObjDic[keyTag];
     if Assigned(rs232Obj) then
     begin
-      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' +
-        sendData);
+      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' + sendData);
       rs232Obj.WriteCommData(PAnsiChar(AnsiString(sendData)), Length(sendData));
     end;
   end;
 end;
 
 end.
+

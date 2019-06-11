@@ -2,12 +2,14 @@ unit HLog;
 
 interface
 
-uses System.SysUtils,System.Threading;
+uses
+  System.SysUtils, System.Threading;
 
 type
   TLog = class
   private
-    class var FInstance: TLog;
+    class var
+      FInstance: TLog;
     class function GetInstance: TLog; static;
   public
     procedure DDLogInfo(str: string);
@@ -15,7 +17,7 @@ type
     class property Instance: TLog read GetInstance;
   protected
     constructor Create;
-    Destructor Destroy; override;
+    destructor Destroy; override;
     procedure writeToFile(str: string);
   end;
 
@@ -33,7 +35,7 @@ begin
 
 end;
 
-Destructor TLog.Destroy;
+destructor TLog.Destroy;
 begin
   FreeAndNil(FInstance);
 end;
@@ -55,7 +57,7 @@ var
   strTxtName, strContent: string;
 begin
   DateTime := now;
-  strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd',DateTime) + '.log';
+  strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd', DateTime) + '.log';
   AssignFile(wLogFile, strTxtName);
   if FileExists(strTxtName) then
     Append(wLogFile)
@@ -69,3 +71,4 @@ begin
 end;
 
 end.
+
