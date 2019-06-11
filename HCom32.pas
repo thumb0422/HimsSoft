@@ -12,18 +12,21 @@ type
   public
     commPort: Integer; // com232 Port
     sendData: string;
+    interval: Integer; // timer interval
     procedure init(tag: string); // startComm,if tag=0,startAllComm
     procedure send(tag: string); // writeComm,if tag=0,sendAllComm
     procedure close(tag: string); // stopComm,if tag=0,stopAllComm
 
     constructor Create(commNameList: TStringList); // 1、2、3、4、5、6、7等
-    Destructor Destroy; override;
   private
     rs232NameList: TStringList; // com232 list
     rs232ObjDic: TDictionary<string, TCnRS232>; // cnRS232 对象集合
     procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
+    procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
+    procedure onRequestHangup(Sender: TObject);
   protected
     rs232Obj: TCnRS232; // 临时对象
+    Destructor Destroy; override;
   end;
 
 implementation
@@ -44,6 +47,8 @@ begin
       rs232Obj.tag := StrToInt(indexStr);
       rs232Obj.CommConfig.BaudRate := 9600;
       rs232Obj.OnReceiveData := onReceive;
+      rs232Obj.OnReceiveError := onReceiveError;
+      rs232Obj.OnRequestHangup := onRequestHangup;
       try
         rs232Obj.StopComm;
         TLog.Instance.DDLogInfo('COM' + indexStr + ' open');
@@ -94,8 +99,8 @@ begin
       rs232Obj := rs232ObjDic[keyTag];
       if Assigned(rs232Obj) then
       begin
-        TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' +
-          sendData);
+        TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: '
+          + sendData);
         rs232Obj.WriteCommData(PAnsiChar(AnsiString(sendData)),
           Length(sendData));
       end;
@@ -134,7 +139,7 @@ begin
     rs232Obj := rs232ObjDic[tag];
     if Assigned(rs232Obj) then
     begin
-     TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' stopComm');
+      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' stopComm');
       rs232Obj.StopComm;
     end;
   end;
@@ -160,9 +165,9 @@ procedure THComm.onReceive(Sender: TObject; Buffer: Pointer;
   BufferLength: Word);
 var
   i: Integer;
-  ss, ffnn: string;
+  ss: string;
   rbuf: array of byte;
-  tag: Int8;
+  tag: Integer;
 begin
   setlength(rbuf, BufferLength);
   move(Buffer^, pchar(rbuf)^, BufferLength);
@@ -171,8 +176,28 @@ begin
   begin
     ss := ss + IntToHex(rbuf[i], 2) + ' '; // 接受数据
   end;
-  ss := 'COM'+ IntToStr(tag)+' onReceive: '+ss;
+  ss := 'COM' + IntToStr(tag) + ' onReceive: ' + ss;
   TLog.Instance.DDLogInfo(ss);
+end;
+
+procedure THComm.onReceiveError(Sender: TObject; EventMask: Cardinal);
+var
+  tag: Integer;
+  ss: string;
+begin
+  tag := TCnRS232(Sender).tag;
+  ss := 'COM' + IntToStr(tag) + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
+  TLog.Instance.DDLogError(ss);
+end;
+
+procedure THComm.onRequestHangup(Sender: TObject);
+var
+  tag: Integer;
+  ss: string;
+begin
+  tag := TCnRS232(Sender).tag;
+  ss := 'COM' + IntToStr(tag) + ' onRequestHangup';
+  TLog.Instance.DDLogError(ss);
 end;
 
 end.
