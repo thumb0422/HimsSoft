@@ -34,7 +34,8 @@ requires
 
 contains
   HCom32 in 'HCom32.pas',
-  HNet in 'HNet.pas';
+  HNet in 'HNet.pas',
+  HDeviceInfo in 'HDeviceInfo.pas';
 
 end.
 

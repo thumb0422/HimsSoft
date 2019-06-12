@@ -31,6 +31,7 @@ requires
   rtl;
 
 contains
-  HLog in 'HLog.pas';
+  HLog in 'HLog.pas',
+  HTool in 'HTool.pas';
 
 end.

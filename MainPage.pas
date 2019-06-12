@@ -7,17 +7,26 @@ uses
   System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls, Vcl.ExtCtrls,
-  HCom32, HDeviceInfo;
+  HCom32, HDeviceInfo, System.Win.ScktComp;
 
 type
   TForm1 = class(TForm)
     test: TButton;
     start: TButton;
     stop: TButton;
+    ClientSocket1: TClientSocket;
     procedure FormCreate(Sender: TObject);
     procedure startClick(Sender: TObject);
     procedure testClick(Sender: TObject);
     procedure stopClick(Sender: TObject);
+    procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocket1Disconnect(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure ClientSocket1Error(Sender: TObject; Socket: TCustomWinSocket;
+      ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+    procedure ClientSocket1Lookup(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocket1Write(Sender: TObject; Socket: TCustomWinSocket);
   private
     { Private declarations }
     FComGroupList: TList;
@@ -65,6 +74,39 @@ begin
     FCom32 := FComGroupList.Items[i];
     FCom32.close;
   end;
+end;
+
+procedure TForm1.ClientSocket1Connect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+//
+end;
+
+procedure TForm1.ClientSocket1Disconnect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+//
+end;
+
+procedure TForm1.ClientSocket1Error(Sender: TObject; Socket: TCustomWinSocket;
+  ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+begin
+//
+end;
+
+procedure TForm1.ClientSocket1Lookup(Sender: TObject; Socket: TCustomWinSocket);
+begin
+//
+end;
+
+procedure TForm1.ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
+begin
+//
+end;
+
+procedure TForm1.ClientSocket1Write(Sender: TObject; Socket: TCustomWinSocket);
+begin
+//
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

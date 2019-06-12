@@ -120,6 +120,13 @@
         <DCCReference Include="CnPack_D102T.dcp"/>
         <DCCReference Include="HCom32.pas"/>
         <DCCReference Include="HNet.pas"/>
+        <DCCReference Include="HDeviceInfo.pas"/>
+        <None Include="ModelSupport_HLazy\default.txaPackage"/>
+        <None Include="ModelSupport_HLazy\default.txvpck"/>
+        <None Include="ModelSupport_HLazy\HCom32\default.txvpck"/>
+        <None Include="ModelSupport_HLazy\HDeviceInfo\default.txvpck"/>
+        <None Include="ModelSupport_HLazy\HDeviceInfo\default.txaPackage"/>
+        <None Include="ModelSupport_HLazy\HNet\default.txvpck"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -540,6 +547,7 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
+            <ModelSupport>True</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
