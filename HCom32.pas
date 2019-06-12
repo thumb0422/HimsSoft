@@ -1,4 +1,4 @@
-unit HCom32;
+Ôªøunit HCom32;
 
 interface
 
@@ -17,18 +17,18 @@ type
     procedure send; // writeCommX or writeAllComm
     procedure close; // stopCommX or stopAllComm
 
-    constructor Create(commNameList: TStringList); // 1°¢2°¢3°¢4°¢5°¢6°¢7µ»
+    constructor Create(commNameList: TStringList); // 1„ÄÅ2„ÄÅ3„ÄÅ4„ÄÅ5„ÄÅ6„ÄÅ7Á≠â
   private
     reqTimer: TTimer;
     rs232NameList: TStringList; // com232 list
-    rs232ObjDic: TDictionary<string, TCnRS232>; // cnRS232 ∂‘œÛºØ∫œ
+    rs232ObjDic: TDictionary<string, TCnRS232>; // cnRS232 ÂØπË±°ÈõÜÂêà
     procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
     procedure onRs232WriteComm(Sender: TObject);
   protected
-    rs232Obj: TCnRS232; // ¡Ÿ ±∂‘œÛ
-    Ftag: string; // ÷¥––ƒ≥∏ˆæﬂÃÂµƒcomm
+    rs232Obj: TCnRS232; // ‰∏¥Êó∂ÂØπË±°
+    Ftag: string; // ÊâßË°åÊüê‰∏™ÂÖ∑‰ΩìÁöÑcomm
     destructor Destroy; override;
   end;
 
@@ -93,31 +93,16 @@ begin
         TLog.Instance.DDLogError('COM' + indexStr + ' openError');
       end;
     end;
-
   end;
-
 end;
 
 procedure THComm.send;
-//var
-//  keyTag: string;
 begin
-  // for keyTag in rs232ObjDic.Keys do
-  // begin
-  // rs232Obj := rs232ObjDic[keyTag];
-  // if Assigned(rs232Obj) then
-  // begin
-  // TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' +
-  // sendData);
-  // rs232Obj.WriteCommData(PAnsiChar(AnsiString(sendData)), Length(sendData));
-  // end;
-  // e(nd;
   if Assigned(reqTimer) then
   begin
     reqTimer.Enabled := False;
     reqTimer.Enabled := True;
   end;
-
 end;
 
 procedure THComm.close;
@@ -155,9 +140,12 @@ destructor THComm.Destroy;
 begin
   rs232ObjDic.Free;
   rs232NameList.Free;
+  if Assigned(reqTimer) then
+    reqTimer.Free;
 end;
 
-procedure THComm.onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
+procedure THComm.onReceive(Sender: TObject; Buffer: Pointer;
+  BufferLength: Word);
 var
   i: Integer;
   ss: string;
@@ -169,7 +157,7 @@ begin
   tag := TCnRS232(Sender).tag;
   for i := 0 to BufferLength - 1 do
   begin
-    ss := ss + IntToHex(rbuf[i], 2) + ' '; // Ω” ‹ ˝æ›
+    ss := ss + IntToHex(rbuf[i], 2) + ' ';
   end;
   ss := 'COM' + IntToStr(tag) + ' onReceive: ' + ss;
   TLog.Instance.DDLogInfo(ss);
@@ -181,7 +169,8 @@ var
   ss: string;
 begin
   tag := TCnRS232(Sender).tag;
-  ss := 'COM' + IntToStr(tag) + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
+  ss := 'COM' + IntToStr(tag) + ' onReceiveError,EventMask = ' +
+    IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
 end;
 
@@ -204,11 +193,11 @@ begin
     rs232Obj := rs232ObjDic[keyTag];
     if Assigned(rs232Obj) then
     begin
-      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' + sendData);
+      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' +
+        sendData);
       rs232Obj.WriteCommData(PAnsiChar(AnsiString(sendData)), Length(sendData));
     end;
   end;
 end;
 
 end.
-

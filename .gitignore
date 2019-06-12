@@ -8,3 +8,6 @@ dcu
 dcp
 *.stat
 __recovery
+LibrarySupport
+ModelSupport_HLazy
+ModelSupport_HimsSoft
