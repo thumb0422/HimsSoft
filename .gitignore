@@ -11,3 +11,5 @@ __recovery
 LibrarySupport
 ModelSupport_HLazy
 ModelSupport_HimsSoft
+*.stat
+*.stat

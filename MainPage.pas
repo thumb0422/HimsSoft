@@ -3,30 +3,19 @@ unit MainPage;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.ExtCtrls,
-  HCom32, HDeviceInfo, System.Win.ScktComp;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
+  Vcl.ExtCtrls, HCom32, HDeviceInfo;
 
 type
   TForm1 = class(TForm)
     test: TButton;
     start: TButton;
     stop: TButton;
-    ClientSocket1: TClientSocket;
     procedure FormCreate(Sender: TObject);
     procedure startClick(Sender: TObject);
     procedure testClick(Sender: TObject);
     procedure stopClick(Sender: TObject);
-    procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocket1Disconnect(Sender: TObject;
-      Socket: TCustomWinSocket);
-    procedure ClientSocket1Error(Sender: TObject; Socket: TCustomWinSocket;
-      ErrorEvent: TErrorEvent; var ErrorCode: Integer);
-    procedure ClientSocket1Lookup(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocket1Write(Sender: TObject; Socket: TCustomWinSocket);
   private
     { Private declarations }
     FComGroupList: TList;
@@ -46,7 +35,7 @@ var
   FCom32: THComm;
   i: Integer;
 begin
-  for i := 0 to FComGroupList.Count-1 do
+  for i := 0 to FComGroupList.Count - 1 do
   begin
     FCom32 := FComGroupList.Items[i];
     FCom32.init;
@@ -58,55 +47,23 @@ var
   FCom32: THComm;
   i: Integer;
 begin
-  for i := 0 to FComGroupList.Count-1 do
+  for i := 0 to FComGroupList.Count - 1 do
   begin
     FCom32 := FComGroupList.Items[i];
     FCom32.send;
   end;
 end;
+
 procedure TForm1.stopClick(Sender: TObject);
 var
   FCom32: THComm;
   i: Integer;
 begin
-  for i := 0 to FComGroupList.Count-1 do
+  for i := 0 to FComGroupList.Count - 1 do
   begin
     FCom32 := FComGroupList.Items[i];
     FCom32.close;
   end;
-end;
-
-procedure TForm1.ClientSocket1Connect(Sender: TObject;
-  Socket: TCustomWinSocket);
-begin
-//
-end;
-
-procedure TForm1.ClientSocket1Disconnect(Sender: TObject;
-  Socket: TCustomWinSocket);
-begin
-//
-end;
-
-procedure TForm1.ClientSocket1Error(Sender: TObject; Socket: TCustomWinSocket;
-  ErrorEvent: TErrorEvent; var ErrorCode: Integer);
-begin
-//
-end;
-
-procedure TForm1.ClientSocket1Lookup(Sender: TObject; Socket: TCustomWinSocket);
-begin
-//
-end;
-
-procedure TForm1.ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
-begin
-//
-end;
-
-procedure TForm1.ClientSocket1Write(Sender: TObject; Socket: TCustomWinSocket);
-begin
-//
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -114,7 +71,7 @@ var
   comLista, comListb: TStringList;
   FCom32a, FCom32b: THComm;
   i: Integer;
-  FDeviceInfo :TDeviceInfo;
+  FDeviceInfo: TDeviceInfo;
 begin
 //  for i := 5 to 10 do
 //  begin
@@ -151,3 +108,4 @@ begin
 end;
 
 end.
+

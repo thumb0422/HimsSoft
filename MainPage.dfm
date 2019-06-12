@@ -41,17 +41,4 @@ object Form1: TForm1
     TabOrder = 2
     OnClick = stopClick
   end
-  object ClientSocket1: TClientSocket
-    Active = False
-    ClientType = ctNonBlocking
-    Port = 0
-    OnLookup = ClientSocket1Lookup
-    OnConnect = ClientSocket1Connect
-    OnDisconnect = ClientSocket1Disconnect
-    OnRead = ClientSocket1Read
-    OnWrite = ClientSocket1Write
-    OnError = ClientSocket1Error
-    Left = 496
-    Top = 128
-  end
 end

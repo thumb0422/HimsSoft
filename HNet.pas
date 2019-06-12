@@ -3,12 +3,10 @@ unit HNet;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, System.Generics.Collections,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.StdCtrls, Vcl.ExtCtrls,
-  System.Win.ScktComp,
-  HLog, HDeviceInfo;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  System.Generics.Collections, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls, System.Win.ScktComp, HLog,
+  HDeviceInfo;
 
 type
   TNet = class
@@ -26,18 +24,12 @@ type
     reqTimer: TTimer;
     netIPList: TStringList; // netIp list
     netIPObjDic: TDictionary<string, TClientSocket>; // TClientSocket 对象集合
-    // procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
-    // procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
-    // procedure onRequestHangup(Sender: TObject);
-    procedure ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocket1Disconnect(Sender: TObject;
-      Socket: TCustomWinSocket);
-    procedure ClientSocket1Error(Sender: TObject; Socket: TCustomWinSocket;
-      ErrorEvent: TErrorEvent; var ErrorCode: Integer);
-    procedure ClientSocket1Lookup(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocket1Write(Sender: TObject; Socket: TCustomWinSocket);
-    procedure onNetWriteComm(Sender: TObject);
+    procedure ClientSocketConnect(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocketDisconnect(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+    procedure ClientSocketRead(Sender: TObject; Socket: TCustomWinSocket);
+    procedure ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
+    procedure onNetWriteData(Sender: TObject);
   protected
     netIPObj: TClientSocket; // 临时对象
     Ftag: string; // 执行某个具体的net
@@ -57,7 +49,12 @@ begin
     indexStr := netIPList[i];
     netIPObj := TClientSocket.Create(nil);
     netIPObj.Address := indexStr;
-    netIPObj.Port := 6666;
+    netIPObj.Port := netPort;
+    netIPObj.OnConnect := ClientSocketConnect;
+    netIPObj.OnDisconnect := ClientSocketDisconnect;
+    netIPObj.OnError := ClientSocketError;
+    netIPObj.OnRead := ClientSocketRead;
+    netIPObj.OnWrite := ClientSocketWrite;
     try
       netIPObjDic.AddOrSetValue(indexStr, netIPObj);
       TLog.Instance.DDLogInfo('NET' + indexStr + ' open');
@@ -85,23 +82,23 @@ begin
     indexStr := Ftag;
     netIPObj := TClientSocket.Create(nil);
     netIPObj.Address := indexStr;
-    netIPObj.Port := 6666;
-    netIPObj.OnConnect := OnConnect;
-    netIPObj.OnDisconnect := OnDisconnect;
-    netIPObj.OnError := OnError;
-    netIPObj.OnRead := onReadData;
-    netIPObj.OnWrite := onWriteData;
+    netIPObj.Port := netPort;
+    netIPObj.OnConnect := ClientSocketConnect;
+    netIPObj.OnDisconnect := ClientSocketDisconnect;
+    netIPObj.OnError := ClientSocketError;
+    netIPObj.OnRead := ClientSocketRead;
+    netIPObj.OnWrite := ClientSocketWrite;
     try
       netIPObjDic.AddOrSetValue(indexStr, netIPObj);
-      TLog.Instance.DDLogInfo('COM' + indexStr + ' open');
-      netIPObj.Active :=False;
-      netIPObj.Active :=True;
+      TLog.Instance.DDLogInfo('NET' + indexStr + ' open');
+      netIPObj.Active := False;
+      netIPObj.Active := True;
     except
       on E: Exception do
       begin
-        rs232Obj.StopComm;
+        netIPObj.Active := False;
         netIPObjDic.Remove(indexStr);
-        TLog.Instance.DDLogError('COM' + indexStr + ' openError');
+        TLog.Instance.DDLogError('NET' + indexStr + ' openError');
       end;
     end;
   end;
@@ -124,11 +121,11 @@ begin
     reqTimer.Enabled := False;
   for keyTag in netIPObjDic.Keys do
   begin
-    rs232Obj := netIPObjDic[keyTag];
-    if Assigned(rs232Obj) then
+    netIPObj := netIPObjDic[keyTag];
+    if Assigned(netIPObj) then
     begin
-      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' stopComm');
-      rs232Obj.StopComm;
+      TLog.Instance.DDLogInfo('NET' + IntToStr(netIPObj.tag) + ' stopNet');
+      netIPObj.Active := False;
     end;
   end;
 end;
@@ -142,8 +139,8 @@ begin
   end;
   netIPObjDic := TDictionary<string, TClientSocket>.Create(0);
   reqTimer := TTimer.Create(nil);
-  reqTimer.interval := 1000;
-  reqTimer.OnTimer := onNetWriteComm;
+  reqTimer.interval := interval;
+  reqTimer.OnTimer := onNetWriteData;
   reqTimer.Enabled := False;
 end;
 
@@ -155,7 +152,7 @@ begin
     reqTimer.Free;
 end;
 
-procedure TNet.onNetWriteComm(Sender: TObject);
+procedure TNet.onNetWriteData(Sender: TObject);
 var
   keyTag: string;
 begin
@@ -164,43 +161,36 @@ begin
     netIPObj := netIPObjDic[keyTag];
     if Assigned(netIPObj) then
     begin
-      TLog.Instance.DDLogInfo('COM' + IntToStr(rs232Obj.tag) + ' writeData: ' +
-        sendData);
-      netIPObj.WriteCommData(PAnsiChar(AnsiString(sendData)), Length(sendData));
+      TLog.Instance.DDLogInfo('Net' + IntToStr(netIPObj.tag) + ' writeData: ' + sendData);
+      netIPObj.Socket.SendText(sendData);
     end;
   end;
 end;
 
-procedure TNet.ClientSocket1Connect(Sender: TObject; Socket: TCustomWinSocket);
+procedure TNet.ClientSocketConnect(Sender: TObject; Socket: TCustomWinSocket);
 begin
 
 end;
 
-procedure TNet.ClientSocket1Disconnect(Sender: TObject;
-  Socket: TCustomWinSocket);
+procedure TNet.ClientSocketDisconnect(Sender: TObject; Socket: TCustomWinSocket);
 begin
 
 end;
 
-procedure TNet.ClientSocket1Error(Sender: TObject; Socket: TCustomWinSocket;
-  ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+procedure TNet.ClientSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
 begin
 
 end;
 
-procedure TNet.ClientSocket1Lookup(Sender: TObject; Socket: TCustomWinSocket);
+procedure TNet.ClientSocketRead(Sender: TObject; Socket: TCustomWinSocket);
 begin
 
 end;
 
-procedure TNet.ClientSocket1Read(Sender: TObject; Socket: TCustomWinSocket);
-begin
-
-end;
-
-procedure TNet.ClientSocket1Write(Sender: TObject; Socket: TCustomWinSocket);
+procedure TNet.ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
 begin
 
 end;
 
 end.
+
