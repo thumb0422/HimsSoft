@@ -14,31 +14,58 @@ object Form1: TForm1
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object test: TButton
+  object comtest: TButton
     Left = 64
     Top = 72
     Width = 75
     Height = 25
-    Caption = 'test'
+    Caption = 'comtest'
     TabOrder = 0
-    OnClick = testClick
+    OnClick = comtestClick
   end
-  object start: TButton
+  object comstart: TButton
     Left = 176
     Top = 72
     Width = 75
     Height = 25
-    Caption = 'start'
+    Caption = 'comstart'
     TabOrder = 1
-    OnClick = startClick
+    OnClick = comstartClick
   end
-  object stop: TButton
+  object comstop: TButton
     Left = 304
     Top = 72
     Width = 75
     Height = 25
-    Caption = 'stop'
+    Caption = 'comstop'
     TabOrder = 2
-    OnClick = stopClick
+    OnClick = comstopClick
+  end
+  object netTest: TButton
+    Left = 64
+    Top = 160
+    Width = 75
+    Height = 25
+    Caption = 'netTest'
+    TabOrder = 3
+    OnClick = netTestClick
+  end
+  object netStart: TButton
+    Left = 177
+    Top = 160
+    Width = 75
+    Height = 25
+    Caption = 'netStart'
+    TabOrder = 4
+    OnClick = netStartClick
+  end
+  object netStop: TButton
+    Left = 304
+    Top = 160
+    Width = 75
+    Height = 25
+    Caption = 'netStop'
+    TabOrder = 5
+    OnClick = netStopClick
   end
 end
