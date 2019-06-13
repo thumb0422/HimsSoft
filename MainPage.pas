@@ -7,7 +7,7 @@ uses
   System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls, HCom32, HDeviceInfo;
+  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo;
 
 type
   TForm1 = class(TForm)
@@ -28,6 +28,7 @@ type
     { Private declarations }
     FComGroupList: TList;
     FCom32: THComm;
+    FNet: TNet;
   public
     { Public declarations }
   end;
@@ -59,15 +60,15 @@ begin
     FComGroupList.Add(deviceInfo);
   end;
 
-  for i := 11 to 20 do
+  for i := 0 to 1 do
   begin
     deviceInfo := TDeviceInfo.Create;
     deviceInfo.dType := 'F' + IntToStr(i);
     deviceInfo.dDesc := '·ÑÉ­' + IntToStr(i);
     deviceInfo.dCommond := '0A 0B 0C ' + IntToStr(i);
     deviceInfo.dLink := dtlNet;
-    deviceInfo.dName := '172.168.32.35';
-    deviceInfo.dPort := 6666;
+    deviceInfo.dName := '172.16.26.129';
+    deviceInfo.dPort := 6666 + i;
     deviceInfo.dTag := 2 * 100 + i;
     FComGroupList.Add(deviceInfo);
   end;
@@ -91,19 +92,21 @@ begin
   FCom32.close;
 end;
 
+procedure TForm1.netTestClick(Sender: TObject);
+begin
+  FNet := TNet.Create(FComGroupList);
+  FNet.cInterval := 1000;
+  FNet.init;
+end;
+
 procedure TForm1.netStartClick(Sender: TObject);
 begin
-  //
+  FNet.send;
 end;
 
 procedure TForm1.netStopClick(Sender: TObject);
 begin
-  //
-end;
-
-procedure TForm1.netTestClick(Sender: TObject);
-begin
-  //
+  FNet.close;
 end;
 
 procedure saveToJson(data: string);

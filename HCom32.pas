@@ -108,7 +108,6 @@ end;
 
 procedure THComm.send;
 begin
-  TLog.Instance.DDLogInfo('count = ' + IntToStr(rs232ObjDic.Count));
   if Assigned(reqTimer) then
   begin
     reqTimer.Enabled := False;
