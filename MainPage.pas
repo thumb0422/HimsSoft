@@ -7,7 +7,7 @@ uses
   System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo;
+  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo,HTool;
 
 type
   TForm1 = class(TForm)
@@ -19,6 +19,9 @@ type
     netStop: TButton;
     ComboBox1: TComboBox;
     getComms: TButton;
+    Memo1: TMemo;
+    Edit1: TEdit;
+    transBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure comtestClick(Sender: TObject);
     procedure comstopClick(Sender: TObject);
@@ -27,6 +30,7 @@ type
     procedure netStartClick(Sender: TObject);
     procedure comstartClick(Sender: TObject);
     procedure getCommsClick(Sender: TObject);
+    procedure transBtnClick(Sender: TObject);
   private
     { Private declarations }
     FComGroupList: TList;
@@ -107,6 +111,11 @@ begin
   FNet := TNet.Create(FComGroupList);
   FNet.cInterval := 1000;
   FNet.init;
+end;
+
+procedure TForm1.transBtnClick(Sender: TObject);
+begin
+  Memo1.Lines.Add(TTool.StringToHex(Edit1.Text));
 end;
 
 procedure TForm1.netStartClick(Sender: TObject);

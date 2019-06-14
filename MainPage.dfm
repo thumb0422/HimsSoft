@@ -85,4 +85,27 @@ object Form1: TForm1
     TabOrder = 7
     OnClick = getCommsClick
   end
+  object Memo1: TMemo
+    Left = 456
+    Top = 288
+    Width = 241
+    Height = 73
+    TabOrder = 8
+  end
+  object Edit1: TEdit
+    Left = 456
+    Top = 246
+    Width = 241
+    Height = 21
+    TabOrder = 9
+  end
+  object transBtn: TButton
+    Left = 375
+    Top = 304
+    Width = 75
+    Height = 25
+    Caption = 'transBtn'
+    TabOrder = 10
+    OnClick = transBtnClick
+  end
 end
