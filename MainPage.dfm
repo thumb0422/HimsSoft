@@ -68,4 +68,21 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = netStopClick
   end
+  object ComboBox1: TComboBox
+    Left = 200
+    Top = 248
+    Width = 145
+    Height = 21
+    TabOrder = 6
+    Text = 'ComboBox1'
+  end
+  object getComms: TButton
+    Left = 64
+    Top = 246
+    Width = 75
+    Height = 25
+    Caption = 'getComms'
+    TabOrder = 7
+    OnClick = getCommsClick
+  end
 end

@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls, CnRS232, HLog, HDeviceInfo;
+  Vcl.ExtCtrls,System.Win.Registry, CnRS232, HLog, HDeviceInfo;
 
 type
   THComm = class
@@ -18,6 +18,7 @@ type
     procedure close; // stopCommX or stopAllComm
     constructor Create(deviceList: TList); // 设备列表
     property cInterval: Integer read FcInterval write SetcInterval; //
+    class function getAllCommPorts:TStringList;//获取所有的串口
   private
     reqTimer: TTimer;
     rs232DeviceList: TList; // deviceInfo list
@@ -248,4 +249,26 @@ begin
 
 end;
 
+class function THComm.getAllCommPorts:TStringList;
+var
+  reg: TRegistry;
+  ts: TStrings;
+  i: Integer;
+  commports :TStringList;
+begin
+  commports := TStringList.Create;
+  reg := TRegistry.Create;
+  reg.RootKey := HKEY_LOCAL_MACHINE;
+  reg.OpenKey('hardware\devicemap\serialcomm', False);
+  ts := TStringList.Create;
+  reg.GetValueNames(ts);
+  for i := 0 to ts.Count - 1 do
+  begin
+    commports.Add(reg.ReadString(ts.Strings[i]));
+  end;
+  ts.Free;
+  reg.CloseKey;
+  reg.Free;
+  Result := commports;
+end;
 end.

@@ -17,6 +17,8 @@ type
     netTest: TButton;
     netStart: TButton;
     netStop: TButton;
+    ComboBox1: TComboBox;
+    getComms: TButton;
     procedure FormCreate(Sender: TObject);
     procedure comtestClick(Sender: TObject);
     procedure comstopClick(Sender: TObject);
@@ -24,6 +26,7 @@ type
     procedure netStopClick(Sender: TObject);
     procedure netStartClick(Sender: TObject);
     procedure comstartClick(Sender: TObject);
+    procedure getCommsClick(Sender: TObject);
   private
     { Private declarations }
     FComGroupList: TList;
@@ -73,6 +76,13 @@ begin
     FComGroupList.Add(deviceInfo);
   end;
   n := FComGroupList.Count;
+
+  ComboBox1.Clear;
+end;
+
+procedure TForm1.getCommsClick(Sender: TObject);
+begin
+  ComboBox1.Items.AddStrings(THComm.getAllCommPorts);
 end;
 
 procedure TForm1.comtestClick(Sender: TObject);
