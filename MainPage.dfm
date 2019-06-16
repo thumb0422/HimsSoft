@@ -87,9 +87,9 @@ object Form1: TForm1
   end
   object Memo1: TMemo
     Left = 456
-    Top = 288
+    Top = 286
     Width = 241
-    Height = 73
+    Height = 56
     TabOrder = 8
   end
   object Edit1: TEdit
@@ -99,13 +99,22 @@ object Form1: TForm1
     Height = 21
     TabOrder = 9
   end
-  object transBtn: TButton
-    Left = 375
-    Top = 304
-    Width = 75
+  object hexTstrTransBtn: TButton
+    Left = 336
+    Top = 286
+    Width = 114
     Height = 25
-    Caption = 'transBtn'
+    Caption = 'hexTstrTransBtn'
     TabOrder = 10
-    OnClick = transBtnClick
+    OnClick = hexTstrTransBtnClick
+  end
+  object strToHexTransBtn: TButton
+    Left = 336
+    Top = 317
+    Width = 114
+    Height = 25
+    Caption = 'strToHexTransBtn'
+    TabOrder = 11
+    OnClick = strToHexTransBtnClick
   end
 end

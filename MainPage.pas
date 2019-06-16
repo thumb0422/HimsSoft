@@ -21,7 +21,8 @@ type
     getComms: TButton;
     Memo1: TMemo;
     Edit1: TEdit;
-    transBtn: TButton;
+    hexTstrTransBtn: TButton;
+    strToHexTransBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure comtestClick(Sender: TObject);
     procedure comstopClick(Sender: TObject);
@@ -30,7 +31,8 @@ type
     procedure netStartClick(Sender: TObject);
     procedure comstartClick(Sender: TObject);
     procedure getCommsClick(Sender: TObject);
-    procedure transBtnClick(Sender: TObject);
+    procedure hexTstrTransBtnClick(Sender: TObject);
+    procedure strToHexTransBtnClick(Sender: TObject);
   private
     { Private declarations }
     FComGroupList: TList;
@@ -113,7 +115,12 @@ begin
   FNet.init;
 end;
 
-procedure TForm1.transBtnClick(Sender: TObject);
+procedure TForm1.strToHexTransBtnClick(Sender: TObject);
+begin
+  Memo1.Lines.Add(TTool.HexToString(Edit1.Text));
+end;
+
+procedure TForm1.hexTstrTransBtnClick(Sender: TObject);
 begin
   Memo1.Lines.Add(TTool.StringToHex(Edit1.Text));
 end;

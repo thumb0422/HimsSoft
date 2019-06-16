@@ -42,6 +42,10 @@ implementation
 procedure TDeviceInfo.SetdType(val: string);
 begin
   FdType := val;
+  if val ='F' then
+  begin
+    FdCommond := '';
+  end;
 end;
 
 procedure TDeviceInfo.SetdName(val: string);
