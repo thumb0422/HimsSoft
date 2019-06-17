@@ -1,4 +1,12 @@
-﻿unit HTool;
+﻿{*******************************************************}
+{                                                       }
+{       HimsSoft                                        }
+{                                                       }
+{       版权所有 (C) 2019 thumb0422@163.com             }
+{                                                       }
+{*******************************************************}
+
+unit HTool;
 
 interface
 uses Winapi.Windows,System.Math,System.SysUtils;

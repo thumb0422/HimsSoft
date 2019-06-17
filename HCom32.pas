@@ -1,10 +1,18 @@
-﻿unit HCom32;
+﻿{ ******************************************************* }
+{ }
+{ HimsSoft }
+{ }
+{ 版权所有 (C) 2019 thumb0422@163.com }
+{ }
+{ ******************************************************* }
+
+unit HCom32;
 
 interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls,System.Win.Registry, CnRS232, HLog, HDeviceInfo;
+  Vcl.ExtCtrls, System.Win.Registry, CnRS232, HLog, HDeviceInfo;
 
 type
   THComm = class
@@ -18,7 +26,7 @@ type
     procedure close; // stopCommX or stopAllComm
     constructor Create(deviceList: TList); // 设备列表
     property cInterval: Integer read FcInterval write SetcInterval; //
-    class function getAllCommPorts:TStringList;//获取所有的串口
+    class function getAllCommPorts: TStringList; // 获取所有的串口
   private
     reqTimer: TTimer;
     rs232DeviceList: TList; // deviceInfo list
@@ -33,6 +41,8 @@ type
   end;
 
 implementation
+
+uses Data.DBXClassRegistry, HDeviceBase,HBellco, HToray;
 
 procedure THComm.init;
 var
@@ -143,7 +153,7 @@ begin
   end;
   rs232ObjDic := TDictionary<string, TCnRS232>.Create(0);
   reqTimer := TTimer.Create(nil);
-  reqTimer.interval := 1000; //default
+  reqTimer.interval := 1000; // default
   reqTimer.OnTimer := onRs232WriteComm;
   reqTimer.Enabled := False;
 end;
@@ -163,16 +173,36 @@ var
   ss: string;
   rbuf: array of byte;
   rspCNRs232Obj: TCnRS232;
+  deviceInfo: TDeviceInfo;
+  classRegistry: TClassRegistry;
+  fdeviceBaseObj: TDeviceBase;
+  fDic: TDictionary<string, string>;
+  fDeviceBrand: string;
 begin
   setlength(rbuf, BufferLength);
   move(Buffer^, pchar(rbuf)^, BufferLength);
   rspCNRs232Obj := TCnRS232(Sender);
+  deviceInfo := getDeviceInfoFromRs232Obj(rspCNRs232Obj);
+  fDeviceBrand := deviceInfo.dBrand;
+  fDeviceBrand := 'T' + fDeviceBrand;
   for i := 0 to BufferLength - 1 do
   begin
     ss := ss + IntToHex(rbuf[i], 2) + ' ';
   end;
   ss := rspCNRs232Obj.CommName + ' onReceive: ' + ss;
   TLog.Instance.DDLogInfo(ss);
+  classRegistry := TClassRegistry.GetClassRegistry;
+  if classRegistry.HasClass(fDeviceBrand) then
+  begin
+    fdeviceBaseObj := classRegistry.CreateInstance(fDeviceBrand) as TDeviceBase;
+    fDic := TDictionary<string, string>.Create(0);
+    fdeviceBaseObj.praseData(rbuf, fDic);
+    fdeviceBaseObj.Free;
+  end
+  else
+  begin
+    TLog.Instance.DDLogError('I can not found ' + fDeviceBrand + ' class');
+  end;
 end;
 
 procedure THComm.onReceiveError(Sender: TObject; EventMask: Cardinal);
@@ -243,18 +273,18 @@ begin
   FcInterval := val;
   if Assigned(reqTimer) then
   begin
-    reqTimer.Enabled :=False;
-    reqTimer.Interval :=FcInterval;
+    reqTimer.Enabled := False;
+    reqTimer.interval := FcInterval;
   end;
 
 end;
 
-class function THComm.getAllCommPorts:TStringList;
+class function THComm.getAllCommPorts: TStringList;
 var
   reg: TRegistry;
   ts: TStrings;
   i: Integer;
-  commports :TStringList;
+  commports: TStringList;
 begin
   commports := TStringList.Create;
   reg := TRegistry.Create;
@@ -271,4 +301,9 @@ begin
   reg.Free;
   Result := commports;
 end;
+
+initialization
+TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
+TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
+
 end.

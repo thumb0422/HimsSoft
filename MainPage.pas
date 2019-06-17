@@ -1,3 +1,11 @@
+{ ******************************************************* }
+{ }
+{ HimsSoft }
+{ }
+{ 版权所有 (C) 2019 thumb0422@163.com }
+{ }
+{ ******************************************************* }
+
 unit MainPage;
 
 interface
@@ -7,7 +15,7 @@ uses
   System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls,
-  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo,HTool;
+  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo, HTool;
 
 type
   TForm1 = class(TForm)
@@ -56,12 +64,13 @@ var
 begin
   FComGroupList := TList.Create;
 
-  for i := 1 to 10 do
+  for i := 2 to 5 do
   begin
     deviceInfo := TDeviceInfo.Create;
-    deviceInfo.dType := 'B' + IntToStr(i);
+    deviceInfo.dType := 'B';
+    deviceInfo.dBrand := 'Bellco';
     deviceInfo.dDesc := '贝尔克' + IntToStr(i);
-    deviceInfo.dCommond := '4B 7C 6A 9C ' + IntToStr(i);
+    deviceInfo.dCommond := '4B 0D 0A';
     deviceInfo.dLink := dtlComm;
     deviceInfo.dName := 'COM' + IntToStr(i);
     deviceInfo.dPort := 9600;
@@ -72,7 +81,8 @@ begin
   for i := 0 to 1 do
   begin
     deviceInfo := TDeviceInfo.Create;
-    deviceInfo.dType := 'F' + IntToStr(i);
+    deviceInfo.dType := 'F';
+    deviceInfo.dBrand := 'Fresenius';
     deviceInfo.dDesc := '费森' + IntToStr(i);
     deviceInfo.dCommond := '0A 0B 0C ' + IntToStr(i);
     deviceInfo.dLink := dtlNet;
