@@ -35,7 +35,7 @@ requires
 
 contains
   HCom32 in 'Communicate\HCom32.pas',
-  HCommunicat in 'Communicate\HCommunicat.pas',
+  HCate in 'Communicate\HCate.pas',
   HDeviceDo in 'Communicate\HDeviceDo.pas',
   HNet in 'Communicate\HNet.pas',
   HBellco in 'DeviceInfo\HBellco.pas',

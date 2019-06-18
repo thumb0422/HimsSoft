@@ -12,30 +12,23 @@ interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls, System.Win.Registry, CnRS232, HLog, HDeviceInfo;
+  Vcl.ExtCtrls, System.Win.Registry, CnRS232, HLog, HDeviceInfo, HCate;
 
 type
-  THComm = class
-  private
-    FisConnected: Boolean;
-    FcInterval: Integer;
-    procedure SetcInterval(val: Integer);
+  THComm = class(TCate)
   public
-    procedure init; // startCommX
-    procedure send; // writeCommX
-    procedure close; // stopCommX
-    property cInterval: Integer read FcInterval write SetcInterval;
-    property isConnected: Boolean read FisConnected;
-    constructor Create(deviceInfo: TDeviceInfo); // 设备
+    procedure init; override; // startCommX
+    procedure send; override; // writeCommX
+    procedure close; override; // stopCommX
+    constructor Create(deviceInfo: TDeviceInfo); override; // 设备
   public
     class function getAllCommPorts: TStringList; // 获取所有的串口
   private
     FDeviceInfo: TDeviceInfo;
-    reqTimer: TTimer;
     procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
-    procedure onRs232WriteComm(Sender: TObject);
+    procedure onWriteData(Sender: TObject);
   protected
     rs232Obj: TCnRS232;
     destructor Destroy; override;
@@ -43,7 +36,8 @@ type
 
 implementation
 
-uses Data.DBXClassRegistry, HDeviceBase, HBellco, HToray;
+uses
+  Data.DBXClassRegistry, HDeviceBase, HBellco, HToray;
 
 procedure THComm.init;
 begin
@@ -86,8 +80,7 @@ begin
   end
   else
   begin
-    TLog.Instance.DDLogError(FDeviceInfo.dName +
-      ' sendError,isConneted = False');
+    TLog.Instance.DDLogError(FDeviceInfo.dName + ' sendError,isConneted = False');
   end;
 end;
 
@@ -109,7 +102,7 @@ begin
   FisConnected := False;
   reqTimer := TTimer.Create(nil);
   reqTimer.interval := 1000; // default
-  reqTimer.OnTimer := onRs232WriteComm;
+  reqTimer.OnTimer := onWriteData;
   reqTimer.Enabled := False;
 end;
 
@@ -123,24 +116,20 @@ begin
     reqTimer.Free;
 end;
 
-procedure THComm.onRs232WriteComm(Sender: TObject);
+procedure THComm.onWriteData(Sender: TObject);
 begin
   if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
   begin
-    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' +
-      FDeviceInfo.dCommond);
-    rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.dCommond)),
-      Length(FDeviceInfo.dCommond));
+    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' + FDeviceInfo.dCommond);
+    rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.dCommond)), Length(FDeviceInfo.dCommond));
   end;
 end;
 
-procedure THComm.onReceive(Sender: TObject; Buffer: Pointer;
-  BufferLength: Word);
+procedure THComm.onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
 var
   i: Integer;
   ss: string;
   rbuf: array of byte;
-
   classRegistry: TClassRegistry;
   fdeviceBaseObj: TDeviceBase;
   fDic: TDictionary<string, string>;
@@ -176,8 +165,7 @@ var
   rspCNRs232Obj: TCnRS232;
 begin
   rspCNRs232Obj := TCnRS232(Sender);
-  ss := rspCNRs232Obj.CommName + ' onReceiveError,EventMask = ' +
-    IntToStr(EventMask);
+  ss := rspCNRs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
 end;
 
@@ -189,17 +177,6 @@ begin
   rspCNRs232Obj := TCnRS232(Sender);
   ss := rspCNRs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
-end;
-
-procedure THComm.SetcInterval(val: Integer);
-begin
-  FcInterval := val;
-  if Assigned(reqTimer) then
-  begin
-    reqTimer.Enabled := False;
-    reqTimer.interval := FcInterval;
-  end;
-
 end;
 
 class function THComm.getAllCommPorts: TStringList;
@@ -226,8 +203,8 @@ begin
 end;
 
 initialization
-
-TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
-TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
+  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
+  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
 
 end.
+

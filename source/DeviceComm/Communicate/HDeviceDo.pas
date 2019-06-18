@@ -11,8 +11,7 @@ unit HDeviceDo;
 interface
 
 uses
-  SysUtils, Classes,
-  HCom32, HNet, HDeviceInfo;
+  SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo;
 
 type
   TDeviceAct = class(TObject)
@@ -23,7 +22,6 @@ type
     FComGroupList: TList;
     constructor Create;
   public
-
     procedure initTestData;
     procedure startTestData;
     procedure stopTestData;
@@ -110,17 +108,26 @@ end;
 procedure TDeviceAct.startTestData;
 var
   i: Integer;
-  tt: string;
+  cat:TCate;
 begin
   for i := 0 to FComGroupList.count - 1 do
   begin
-    tt := 'aaa';
+    cat := FComGroupList.Items[i];
+    cat.send;
   end;
 end;
 
 procedure TDeviceAct.stopTestData;
+var
+  i: Integer;
+  cat:TCate;
 begin
-
+  for i := 0 to FComGroupList.count - 1 do
+  begin
+    cat := FComGroupList.Items[i];
+    cat.close;
+  end;
 end;
 
 end.
+

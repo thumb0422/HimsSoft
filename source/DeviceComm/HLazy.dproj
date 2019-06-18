@@ -104,6 +104,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_UnitSearchPath>..\..\dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <Debugger_HostApplication>D:\Work\HimsSoft\bin\HimsSoft.exe</Debugger_HostApplication>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -120,7 +121,7 @@
         <DCCReference Include="DbxCommonDriver.dcp"/>
         <DCCReference Include="CnPack_D102T.dcp"/>
         <DCCReference Include="Communicate\HCom32.pas"/>
-        <DCCReference Include="Communicate\HCommunicat.pas"/>
+        <DCCReference Include="Communicate\HCate.pas"/>
         <DCCReference Include="Communicate\HDeviceDo.pas"/>
         <DCCReference Include="Communicate\HNet.pas"/>
         <DCCReference Include="DeviceInfo\HBellco.pas"/>
