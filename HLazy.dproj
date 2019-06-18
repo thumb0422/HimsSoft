@@ -130,6 +130,8 @@
         <DCCReference Include="HNikkiso.pas"/>
         <DCCReference Include="HToray.pas"/>
         <DCCReference Include="HDeviceBase.pas"/>
+        <DCCReference Include="HDeviceDo.pas"/>
+        <DCCReference Include="HCommunicat.pas"/>
         <None Include="ModelSupport_HLazy\default.txaPackage"/>
         <None Include="ModelSupport_HLazy\default.txvpck"/>
         <None Include="ModelSupport_HLazy\HCom32\default.txvpck"/>

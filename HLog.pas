@@ -1,10 +1,10 @@
-{*******************************************************}
-{                                                       }
-{       HimsSoft                                        }
-{                                                       }
-{       版权所有 (C) 2019 thumb0422@163.com             }
-{                                                       }
-{*******************************************************}
+{ ******************************************************* }
+{ }
+{ HimsSoft }
+{ }
+{ 版权所有 (C) 2019 thumb0422@163.com }
+{ }
+{ ******************************************************* }
 
 unit HLog;
 
@@ -16,13 +16,13 @@ uses
 type
   TLog = class
   private
-    class var
-      FInstance: TLog;
+    class var FInstance: TLog;
     class function GetInstance: TLog; static;
   public
     procedure DDLogInfo(str: string);
     procedure DDLogError(str: string);
     class property Instance: TLog read GetInstance;
+    class procedure ReleaseInstance;
   protected
     constructor Create;
     destructor Destroy; override;
@@ -36,6 +36,11 @@ begin
   if FInstance = nil then
     FInstance := TLog.Create;
   Result := FInstance;
+end;
+
+class procedure TLog.ReleaseInstance;
+begin
+  FreeAndNil(FInstance);
 end;
 
 constructor TLog.Create;
@@ -65,7 +70,8 @@ var
   strTxtName, strContent: string;
 begin
   DateTime := now;
-  strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd', DateTime) + '.log';
+  strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd',
+    DateTime) + '.log';
   AssignFile(wLogFile, strTxtName);
   if FileExists(strTxtName) then
     Append(wLogFile)
@@ -73,10 +79,9 @@ begin
   begin
     ReWrite(wLogFile);
   end;
-  strContent := FormatdateTime('tt', DateTime) + ' ' + str;
+  strContent := FormatdateTime('hh:nn:ss:zz', DateTime) + ' ' + str;
   Writeln(wLogFile, strContent);
   CloseFile(wLogFile)
 end;
 
 end.
-

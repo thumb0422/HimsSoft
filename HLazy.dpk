@@ -44,7 +44,9 @@ contains
   HBraun in 'HBraun.pas',
   HNikkiso in 'HNikkiso.pas',
   HToray in 'HToray.pas',
-  HDeviceBase in 'HDeviceBase.pas';
+  HDeviceBase in 'HDeviceBase.pas',
+  HDeviceDo in 'HDeviceDo.pas',
+  HCommunicat in 'HCommunicat.pas';
 
 end.
 

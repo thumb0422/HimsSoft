@@ -17,101 +17,58 @@ uses
 type
   THComm = class
   private
+    FisConnected: Boolean;
     FcInterval: Integer;
     procedure SetcInterval(val: Integer);
   public
-    procedure init; overload; // startAllComm
-    procedure init(deviceInfo: TDeviceInfo); overload; // startCommX
-    procedure send; // writeCommX or writeAllComm
-    procedure close; // stopCommX or stopAllComm
-    constructor Create(deviceList: TList); // 设备列表
-    property cInterval: Integer read FcInterval write SetcInterval; //
+    procedure init; // startCommX
+    procedure send; // writeCommX
+    procedure close; // stopCommX
+    property cInterval: Integer read FcInterval write SetcInterval;
+    property isConnected: Boolean read FisConnected;
+    constructor Create(deviceInfo: TDeviceInfo); // 设备
+  public
     class function getAllCommPorts: TStringList; // 获取所有的串口
   private
+    FDeviceInfo: TDeviceInfo;
     reqTimer: TTimer;
-    rs232DeviceList: TList; // deviceInfo list
-    rs232ObjDic: TDictionary<string, TCnRS232>; // cnRS232 可连接对象集合 tag作为key
     procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
     procedure onRs232WriteComm(Sender: TObject);
-    function getDeviceInfoFromRs232Obj(obj: TCnRS232): TDeviceInfo;
   protected
+    rs232Obj: TCnRS232;
     destructor Destroy; override;
   end;
 
 implementation
 
-uses Data.DBXClassRegistry, HDeviceBase,HBellco, HToray;
+uses Data.DBXClassRegistry, HDeviceBase, HBellco, HToray;
 
 procedure THComm.init;
-var
-  i: Integer;
-  fdeviceInfo: TDeviceInfo;
-  fdeviceTag: string;
-  rs232Obj: TCnRS232;
 begin
-  rs232ObjDic.Clear;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
-  for i := 0 to rs232DeviceList.Count - 1 do
+  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
   begin
-    fdeviceInfo := rs232DeviceList[i];
-    if fdeviceInfo.dLink = dtlComm then
-    begin
-      fdeviceTag := IntToStr(fdeviceInfo.dTag);
-      rs232Obj := TCnRS232.Create(nil);
-      rs232Obj.CommName := fdeviceInfo.dName;
-      rs232Obj.tag := fdeviceInfo.dTag;
-      rs232Obj.CommConfig.BaudRate := fdeviceInfo.dPort;
-      rs232Obj.OnReceiveData := onReceive;
-      rs232Obj.onReceiveError := onReceiveError;
-      rs232Obj.onRequestHangup := onRequestHangup;
-      try
-        rs232ObjDic.AddOrSetValue(fdeviceTag, rs232Obj);
-        TLog.Instance.DDLogInfo(fdeviceInfo.dName + ' open');
-        rs232Obj.StopComm;
-        rs232Obj.StartComm;
-      except
-        on E: Exception do
-        begin
-          rs232ObjDic.Remove(fdeviceTag);
-          TLog.Instance.DDLogError(fdeviceInfo.dName + ' openError');
-          rs232Obj.StopComm;
-        end;
-      end;
-    end;
-  end;
-end;
-
-procedure THComm.init(deviceInfo: TDeviceInfo);
-var
-  fdeviceTag: string;
-  rs232Obj: TCnRS232;
-begin
-  rs232ObjDic.Clear;
-  if Assigned(reqTimer) then
-    reqTimer.Enabled := False;
-  if deviceInfo.dLink = dtlComm then
-  begin
-    fdeviceTag := IntToStr(deviceInfo.dTag);
     rs232Obj := TCnRS232.Create(nil);
-    rs232Obj.CommName := deviceInfo.dName;
-    rs232Obj.tag := deviceInfo.dTag;
-    rs232Obj.CommConfig.BaudRate := deviceInfo.dPort;
-
+    rs232Obj.CommName := FDeviceInfo.dName;
+    rs232Obj.tag := FDeviceInfo.dTag;
+    rs232Obj.CommConfig.BaudRate := FDeviceInfo.dPort;
     rs232Obj.OnReceiveData := onReceive;
+    rs232Obj.onReceiveError := onReceiveError;
+    rs232Obj.onRequestHangup := onRequestHangup;
     try
-      rs232ObjDic.AddOrSetValue(fdeviceTag, rs232Obj);
-      TLog.Instance.DDLogInfo(deviceInfo.dName + ' open');
+      TLog.Instance.DDLogInfo(FDeviceInfo.dName + ' connect');
+      FisConnected := True;
       rs232Obj.StopComm;
       rs232Obj.StartComm;
     except
       on E: Exception do
       begin
+        FisConnected := False;
+        TLog.Instance.DDLogError(FDeviceInfo.dName + ' connectError');
         rs232Obj.StopComm;
-        rs232ObjDic.Remove(fdeviceTag);
-        TLog.Instance.DDLogError(deviceInfo.dName + ' openError');
       end;
     end;
   end;
@@ -119,39 +76,37 @@ end;
 
 procedure THComm.send;
 begin
-  if Assigned(reqTimer) then
+  if FisConnected then
   begin
-    reqTimer.Enabled := False;
-    reqTimer.Enabled := True;
+    if Assigned(reqTimer) then
+    begin
+      reqTimer.Enabled := False;
+      reqTimer.Enabled := True;
+    end
+  end
+  else
+  begin
+    TLog.Instance.DDLogError(FDeviceInfo.dName +
+      ' sendError,isConneted = False');
   end;
 end;
 
 procedure THComm.close;
-var
-  keyTag: string;
-  rs232Obj: TCnRS232;
 begin
+  FisConnected := False;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
-  for keyTag in rs232ObjDic.Keys do
+  if Assigned(rs232Obj) then
   begin
-    rs232Obj := rs232ObjDic[keyTag];
-    if Assigned(rs232Obj) then
-    begin
-      TLog.Instance.DDLogInfo(rs232Obj.CommName + ' stopComm');
-      rs232Obj.StopComm;
-    end;
+    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' stopComm');
+    rs232Obj.StopComm;
   end;
 end;
 
-constructor THComm.Create(deviceList: TList);
+constructor THComm.Create(deviceInfo: TDeviceInfo);
 begin
-  rs232DeviceList := deviceList;
-  if rs232DeviceList = nil then
-  begin
-    rs232DeviceList := TList.Create;
-  end;
-  rs232ObjDic := TDictionary<string, TCnRS232>.Create(0);
+  FDeviceInfo := deviceInfo;
+  FisConnected := False;
   reqTimer := TTimer.Create(nil);
   reqTimer.interval := 1000; // default
   reqTimer.OnTimer := onRs232WriteComm;
@@ -160,10 +115,23 @@ end;
 
 destructor THComm.Destroy;
 begin
-  rs232ObjDic.Free;
-  rs232DeviceList.Free;
+  if Assigned(rs232Obj) then
+    rs232Obj.Free;
+  if Assigned(FDeviceInfo) then
+    FDeviceInfo.Free;
   if Assigned(reqTimer) then
     reqTimer.Free;
+end;
+
+procedure THComm.onRs232WriteComm(Sender: TObject);
+begin
+  if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
+  begin
+    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' +
+      FDeviceInfo.dCommond);
+    rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.dCommond)),
+      Length(FDeviceInfo.dCommond));
+  end;
 end;
 
 procedure THComm.onReceive(Sender: TObject; Buffer: Pointer;
@@ -172,8 +140,7 @@ var
   i: Integer;
   ss: string;
   rbuf: array of byte;
-  rspCNRs232Obj: TCnRS232;
-  deviceInfo: TDeviceInfo;
+
   classRegistry: TClassRegistry;
   fdeviceBaseObj: TDeviceBase;
   fDic: TDictionary<string, string>;
@@ -181,15 +148,13 @@ var
 begin
   setlength(rbuf, BufferLength);
   move(Buffer^, pchar(rbuf)^, BufferLength);
-  rspCNRs232Obj := TCnRS232(Sender);
-  deviceInfo := getDeviceInfoFromRs232Obj(rspCNRs232Obj);
-  fDeviceBrand := deviceInfo.dBrand;
+  fDeviceBrand := FDeviceInfo.dBrand;
   fDeviceBrand := 'T' + fDeviceBrand;
   for i := 0 to BufferLength - 1 do
   begin
     ss := ss + IntToHex(rbuf[i], 2) + ' ';
   end;
-  ss := rspCNRs232Obj.CommName + ' onReceive: ' + ss;
+  ss := rs232Obj.CommName + ' onReceive: ' + ss;
   TLog.Instance.DDLogInfo(ss);
   classRegistry := TClassRegistry.GetClassRegistry;
   if classRegistry.HasClass(fDeviceBrand) then
@@ -201,7 +166,7 @@ begin
   end
   else
   begin
-    TLog.Instance.DDLogError('I can not found ' + fDeviceBrand + ' class');
+    TLog.Instance.DDLogError('Can not found ' + fDeviceBrand + ' class');
   end;
 end;
 
@@ -224,48 +189,6 @@ begin
   rspCNRs232Obj := TCnRS232(Sender);
   ss := rspCNRs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
-end;
-
-procedure THComm.onRs232WriteComm(Sender: TObject);
-var
-  keyTag: string;
-  commonData: string;
-  deviceInfo: TDeviceInfo;
-  rs232Obj: TCnRS232;
-begin
-  for keyTag in rs232ObjDic.Keys do
-  begin
-    rs232Obj := rs232ObjDic[keyTag];
-    if Assigned(rs232Obj) then
-    begin
-      deviceInfo := getDeviceInfoFromRs232Obj(rs232Obj);
-      if Assigned(deviceInfo) then
-      begin
-        commonData := deviceInfo.dCommond;
-        TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' +
-          commonData);
-        rs232Obj.WriteCommData(PAnsiChar(AnsiString(commonData)),
-          Length(commonData));
-      end;
-
-    end;
-  end;
-end;
-
-function THComm.getDeviceInfoFromRs232Obj(obj: TCnRS232): TDeviceInfo;
-var
-  device: TDeviceInfo;
-  i: Integer;
-begin
-  for i := 0 to rs232DeviceList.Count - 1 do
-  begin
-    device := rs232DeviceList.Items[i];
-    if (device.dName = obj.CommName) and (device.dTag = obj.tag) then
-    begin
-      Result := device;
-      Break;
-    end;
-  end;
 end;
 
 procedure THComm.SetcInterval(val: Integer);
@@ -303,6 +226,7 @@ begin
 end;
 
 initialization
+
 TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
 TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
 

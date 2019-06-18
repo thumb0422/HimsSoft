@@ -1,150 +1,111 @@
-{*******************************************************}
-{                                                       }
-{       HimsSoft                                        }
-{                                                       }
-{       版权所有 (C) 2019 thumb0422@163.com             }
-{                                                       }
-{*******************************************************}
+{ ******************************************************* }
+{ }
+{ HimsSoft }
+{ }
+{ 版权所有 (C) 2019 thumb0422@163.com }
+{ }
+{ ******************************************************* }
 
 unit HNet;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  System.Generics.Collections, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls, System.Win.ScktComp,System.Typinfo, HLog,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes,
+  System.Generics.Collections, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls, System.Win.ScktComp, System.Typinfo,
+  HLog,
   HDeviceInfo;
 
 type
   TNet = class
   private
+    FisConnected: Boolean;
     FcInterval: Integer;
     procedure SetcInterval(val: Integer);
   public
-    procedure init; overload; // startAllNet
-    procedure init(deviceInfo: TDeviceInfo); overload; // startNetX
-    procedure send; // writeNetX or writeAllNet
-    procedure close; // stopNetX or stopAllNet
-    property cInterval: Integer read FcInterval write SetcInterval; //
-    constructor Create(deviceList: TList); // 设备列表
+    procedure init; // openNetX
+    procedure send; // writeNetX
+    procedure close; // stopNetX
+    property cInterval: Integer read FcInterval write SetcInterval;
+    property isConnected: Boolean read FisConnected;
+    constructor Create(deviceInfo: TDeviceInfo);
   private
+    FDeviceInfo: TDeviceInfo;
     reqTimer: TTimer;
-    netIPList: TList; // deviceInfo list
-    netIPObjDic: TDictionary<string, TClientSocket>; // TClientSocket 对象集合
-
     procedure ClientSocketConnect(Sender: TObject; Socket: TCustomWinSocket);
     procedure ClientSocketDisconnect(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+    procedure ClientSocketError(Sender: TObject; Socket: TCustomWinSocket;
+      ErrorEvent: TErrorEvent; var ErrorCode: Integer);
     procedure ClientSocketRead(Sender: TObject; Socket: TCustomWinSocket);
-    procedure ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
+//    procedure ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
     procedure onNetWriteData(Sender: TObject);
-    function getDeviceInfoFromNetObj(obj: TClientSocket): TDeviceInfo;
   protected
+    netIPObj: TClientSocket;
     destructor Destroy; override;
   end;
 
 implementation
 
 procedure TNet.init;
-var
-  i: Integer;
-  fdeviceInfo: TDeviceInfo;
-  fdeviceTag: string;
-  netIPObj: TClientSocket;
 begin
-  netIPObjDic.Clear;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
-  for i := 0 to netIPList.Count - 1 do
+  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
   begin
-    fdeviceInfo := netIPList[i];
-    if fdeviceInfo.dLink = dtlNet then
-    begin
-      fdeviceTag := IntToStr(fdeviceInfo.dTag);
-      netIPObj := TClientSocket.Create(nil);
-      netIPObj.Address := fdeviceInfo.dName;
-      netIPObj.Port := fdeviceInfo.dPort;
-      netIPObj.tag := fdeviceInfo.dTag;
-      netIPObj.OnConnect := ClientSocketConnect;
-      netIPObj.OnDisconnect := ClientSocketDisconnect;
-      netIPObj.OnError := ClientSocketError;
-      netIPObj.OnRead := ClientSocketRead;
-      netIPObj.OnWrite := ClientSocketWrite;
-//      netIPObjDic.AddOrSetValue(fdeviceTag, netIPObj);
-      TLog.Instance.DDLogInfo('NET ' + fdeviceInfo.dName + ':' + IntToStr(fdeviceInfo.dPort) + ' connecting');
-      netIPObj.Active := False;
-      netIPObj.Active := True;
-    end;
-
-  end;
-end;
-
-procedure TNet.init(deviceInfo: TDeviceInfo);
-var
-  fdeviceTag: string;
-  netIPObj: TClientSocket;
-begin
-  netIPObjDic.Clear;
-  if Assigned(reqTimer) then
-    reqTimer.Enabled := False;
-  begin
-    if deviceInfo.dLink = dtlNet then
-    begin
-      fdeviceTag := IntToStr(deviceInfo.dTag);
-      netIPObj := TClientSocket.Create(nil);
-      netIPObj.Address := deviceInfo.dName;
-      netIPObj.Port := deviceInfo.dPort;
-      netIPObj.tag := deviceInfo.dTag;
-      netIPObj.OnConnect := ClientSocketConnect;
-      netIPObj.OnDisconnect := ClientSocketDisconnect;
-      netIPObj.OnError := ClientSocketError;
-      netIPObj.OnRead := ClientSocketRead;
-      netIPObj.OnWrite := ClientSocketWrite;
-//      netIPObjDic.AddOrSetValue(fdeviceTag, netIPObj);
-      TLog.Instance.DDLogInfo('NET ' + deviceInfo.dName + ':' + IntToStr(deviceInfo.dPort) + ' connecting');
-      netIPObj.Active := False;
-      netIPObj.Active := True;
-    end;
+    netIPObj := TClientSocket.Create(nil);
+    netIPObj.Address := FDeviceInfo.dName;
+    netIPObj.Port := FDeviceInfo.dPort;
+    netIPObj.tag := FDeviceInfo.dTag;
+    netIPObj.OnConnect := ClientSocketConnect;
+    netIPObj.OnDisconnect := ClientSocketDisconnect;
+    netIPObj.OnError := ClientSocketError;
+    netIPObj.OnRead := ClientSocketRead;
+//    netIPObj.OnWrite := ClientSocketWrite;
+    TLog.Instance.DDLogInfo('NET ' + FDeviceInfo.dName + ':' +
+      IntToStr(FDeviceInfo.dPort) + ' connecting');
+    FisConnected := True;
+    netIPObj.Active := False;
+    netIPObj.Active := True;
   end;
 end;
 
 procedure TNet.send;
 begin
-  if Assigned(reqTimer) then
+  if FisConnected then
   begin
-    reqTimer.Enabled := False;
-    reqTimer.Enabled := True;
+    if Assigned(reqTimer) then
+    begin
+      reqTimer.Enabled := False;
+      reqTimer.Enabled := True;
+    end
+  end
+  else
+  begin
+    TLog.Instance.DDLogError(FDeviceInfo.dName +
+      ' sendError,isConneted = False');
   end;
 end;
 
 procedure TNet.close;
-var
-  keyTag: string;
-  netIPObj: TClientSocket;
 begin
+  FisConnected := False;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
-  for keyTag in netIPObjDic.Keys do
+  if Assigned(netIPObj) then
   begin
-    netIPObj := netIPObjDic[keyTag];
-    if Assigned(netIPObj) then
-    begin
-      netIPObjDic.Remove(IntToStr(netIPObj.tag));
-      TLog.Instance.DDLogInfo('NET ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' stopNet');
-      netIPObj.Active := False;
-    end;
+    TLog.Instance.DDLogInfo('NET ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ' stopNet');
+    netIPObj.Active := False;
   end;
 end;
 
-constructor TNet.Create(deviceList: TList);
+constructor TNet.Create(deviceInfo: TDeviceInfo);
 begin
-  netIPList := deviceList;
-  if netIPList = nil then
-  begin
-    netIPList := TList.Create;
-  end;
-  netIPObjDic := TDictionary<string, TClientSocket>.Create(0);
+  FDeviceInfo := deviceInfo;
+  FisConnected := False;
   reqTimer := TTimer.Create(nil);
   reqTimer.interval := 1000; // default
   reqTimer.OnTimer := onNetWriteData;
@@ -153,120 +114,73 @@ end;
 
 destructor TNet.Destroy;
 begin
-  netIPObjDic.Free;
-  netIPList.Free;
+  if Assigned(netIPObj) then
+    netIPObj.Free;
+  if Assigned(FDeviceInfo) then
+    FDeviceInfo.Free;
   if Assigned(reqTimer) then
     reqTimer.Free;
 end;
 
 procedure TNet.onNetWriteData(Sender: TObject);
-var
-  keyTag: string;
-  commonData: string;
-  deviceInfo: TDeviceInfo;
-  netIPObj: TClientSocket;
 begin
-  for keyTag in netIPObjDic.Keys do
+  if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
   begin
-    netIPObj := netIPObjDic[keyTag];
-    if Assigned(netIPObj) then
-    begin
-      deviceInfo := getDeviceInfoFromNetObj(netIPObj);
-      if Assigned(deviceInfo) then
-      begin
-        commonData := deviceInfo.dCommond;
-        TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' writeData: ' + commonData);
-        netIPObj.Socket.SendText(commonData);
-      end;
-    end;
+    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ' writeData: ' + FDeviceInfo.dCommond);
+    netIPObj.Socket.SendText(FDeviceInfo.dCommond);
   end;
 end;
 
 procedure TNet.ClientSocketConnect(Sender: TObject; Socket: TCustomWinSocket);
-var
-  deviceInfo: TDeviceInfo;
-  netIPObj: TClientSocket;
 begin
-  netIPObj := TClientSocket(Sender);
-  deviceInfo := getDeviceInfoFromNetObj(netIPObj);
-  if Assigned(deviceInfo) then
+  FisConnected := True;
+  if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
-    netIPObjDic.AddOrSetValue(IntToStr(deviceInfo.dTag),netIPObj);
-    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' connected');
-  end;
-
-end;
-
-procedure TNet.ClientSocketDisconnect(Sender: TObject; Socket: TCustomWinSocket);
-var
-  deviceInfo: TDeviceInfo;
-  netIPObj: TClientSocket;
-begin
-  netIPObj := TClientSocket(Sender);
-  deviceInfo := getDeviceInfoFromNetObj(netIPObj);
-  if Assigned(deviceInfo) then
-  begin
-    netIPObjDic.Remove(IntToStr(deviceInfo.dTag));
-    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' Disconnect');
+    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ' connected');
   end;
 end;
 
-procedure TNet.ClientSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
-var
-  deviceInfo: TDeviceInfo;
-  netIPObj: TClientSocket;
-  originErrorCode :Integer;
+procedure TNet.ClientSocketDisconnect(Sender: TObject;
+  Socket: TCustomWinSocket);
 begin
-  originErrorCode :=ErrorCode;
+  FisConnected := False;
+  if Assigned(FDeviceInfo) and Assigned(netIPObj) then
+  begin
+    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ' Disconnect');
+  end;
+end;
+
+procedure TNet.ClientSocketError(Sender: TObject; Socket: TCustomWinSocket;
+  ErrorEvent: TErrorEvent; var ErrorCode: Integer);
+var
+  originErrorCode: Integer;
+begin
+  FisConnected := False;
+  originErrorCode := ErrorCode;
   ErrorCode := 0;
-  netIPObj := TClientSocket(Sender);
-  deviceInfo := getDeviceInfoFromNetObj(netIPObj);
-  if Assigned(deviceInfo) then
+  if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
-    netIPObjDic.Remove(IntToStr(deviceInfo.dTag));
-    TLog.Instance.DDLogError('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) +
-    ',ErrorEvent =' + GetEnumName(TypeInfo(TErrorEvent), ord(ErrorEvent)) +',errorCode = ' + IntToStr(originErrorCode));
+    TLog.Instance.DDLogError('Net ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ',ErrorEvent =' +
+      GetEnumName(TypeInfo(TErrorEvent), ord(ErrorEvent)) + ',errorCode = ' +
+      IntToStr(originErrorCode));
   end;
 end;
 
 procedure TNet.ClientSocketRead(Sender: TObject; Socket: TCustomWinSocket);
-var
-  keyTag: string;
-  commonData: string;
-  deviceInfo: TDeviceInfo;
-  netIPObj: TClientSocket;
 begin
-  netIPObj := TClientSocket(Sender);
-//  netIPObj.Socket.
-  TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' read');
+  TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' +
+    IntToStr(netIPObj.Port) + ' read');
+  // TODO: receiveData
 end;
 
-procedure TNet.ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
-var
-  keyTag: string;
-  commonData: string;
-  deviceInfo: TDeviceInfo;
-  netIPObj: TClientSocket;
-begin
-  netIPObj := TClientSocket(Sender);
-  TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' write');
-end;
-
-function TNet.getDeviceInfoFromNetObj(obj: TClientSocket): TDeviceInfo;
-var
-  device: TDeviceInfo;
-  i: Integer;
-begin
-  for i := 0 to netIPList.Count - 1 do
-  begin
-    device := netIPList.Items[i];
-    if (device.dName = obj.Address) and (device.dPort = obj.Port) and (device.dTag = obj.tag) then
-    begin
-      Result := device;
-      Break;
-    end;
-  end;
-end;
+//procedure TNet.ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
+//begin
+//
+//end;
 
 procedure TNet.SetcInterval(val: Integer);
 begin
@@ -280,4 +194,3 @@ begin
 end;
 
 end.
-

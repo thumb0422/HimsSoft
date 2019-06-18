@@ -43,9 +43,7 @@ type
     procedure strToHexTransBtnClick(Sender: TObject);
   private
     { Private declarations }
-    FComGroupList: TList;
-    FCom32: THComm;
-    FNet: TNet;
+
   public
     { Public declarations }
   end;
@@ -54,45 +52,11 @@ var
   Form1: TForm1;
 
 implementation
-
+uses HDeviceDo;
 {$R *.dfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
-var
-  i, n: Integer;
-  deviceInfo: TDeviceInfo;
 begin
-  FComGroupList := TList.Create;
-
-  for i := 2 to 5 do
-  begin
-    deviceInfo := TDeviceInfo.Create;
-    deviceInfo.dType := 'B';
-    deviceInfo.dBrand := 'Bellco';
-    deviceInfo.dDesc := '±´¶û¿Ë' + IntToStr(i);
-    deviceInfo.dCommond := '4B 0D 0A';
-    deviceInfo.dLink := dtlComm;
-    deviceInfo.dName := 'COM' + IntToStr(i);
-    deviceInfo.dPort := 9600;
-    deviceInfo.dTag := 1 * 100 + i;
-    FComGroupList.Add(deviceInfo);
-  end;
-
-  for i := 0 to 1 do
-  begin
-    deviceInfo := TDeviceInfo.Create;
-    deviceInfo.dType := 'F';
-    deviceInfo.dBrand := 'Fresenius';
-    deviceInfo.dDesc := '·ÑÉ­' + IntToStr(i);
-    deviceInfo.dCommond := '0A 0B 0C ' + IntToStr(i);
-    deviceInfo.dLink := dtlNet;
-    deviceInfo.dName := '172.16.26.129';
-    deviceInfo.dPort := 6666 + i;
-    deviceInfo.dTag := 2 * 100 + i;
-    FComGroupList.Add(deviceInfo);
-  end;
-  n := FComGroupList.Count;
-
   ComboBox1.Clear;
 end;
 
@@ -102,27 +66,31 @@ begin
 end;
 
 procedure TForm1.comtestClick(Sender: TObject);
+var deviceDo:TDeviceAct;
 begin
-  FCom32 := THComm.Create(FComGroupList);
-  FCom32.cInterval := 4000;
-  FCom32.init;
+//
+  deviceDo := TDeviceAct.GetInstance;
+  deviceDo.initTestData;
+
 end;
 
 procedure TForm1.comstartClick(Sender: TObject);
+var deviceDo:TDeviceAct;
 begin
-  FCom32.send;
+//
+  deviceDo.startTestData;
 end;
 
 procedure TForm1.comstopClick(Sender: TObject);
+var deviceDo:TDeviceAct;
 begin
-  FCom32.close;
+//
+  deviceDo.stopTestData;
 end;
 
 procedure TForm1.netTestClick(Sender: TObject);
 begin
-  FNet := TNet.Create(FComGroupList);
-  FNet.cInterval := 1000;
-  FNet.init;
+//
 end;
 
 procedure TForm1.strToHexTransBtnClick(Sender: TObject);
@@ -137,12 +105,12 @@ end;
 
 procedure TForm1.netStartClick(Sender: TObject);
 begin
-  FNet.send;
+//
 end;
 
 procedure TForm1.netStopClick(Sender: TObject);
 begin
-  FNet.close;
+//
 end;
 
 procedure saveToJson(data: string);
