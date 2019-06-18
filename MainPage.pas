@@ -54,7 +54,7 @@ var
 implementation
 uses HDeviceDo;
 {$R *.dfm}
-var deviceDo:TDeviceAct;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   ComboBox1.Clear;
@@ -66,23 +66,25 @@ begin
 end;
 
 procedure TForm1.comtestClick(Sender: TObject);
+//var deviceDo:TDeviceAct;
 begin
 //
-  deviceDo := TDeviceAct.GetInstance;
-  deviceDo.initTestData;
+TDeviceAct.GetInstance.initTestData;
 
 end;
 
 procedure TForm1.comstartClick(Sender: TObject);
+//var deviceDo:TDeviceAct;
 begin
 //
-  deviceDo.startTestData;
+  TDeviceAct.GetInstance.startTestData;
 end;
 
 procedure TForm1.comstopClick(Sender: TObject);
+//var deviceDo:TDeviceAct;
 begin
 //
-  deviceDo.stopTestData;
+  TDeviceAct.GetInstance.stopTestData;
 end;
 
 procedure TForm1.netTestClick(Sender: TObject);
