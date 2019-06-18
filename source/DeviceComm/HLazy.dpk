@@ -30,23 +30,21 @@ package HLazy;
 requires
   rtl,
   vcl,
-  CnPack_D102T,
-  DbxCommonDriver;
+  DbxCommonDriver,
+  CnPack_D102T;
 
 contains
-  HCom32 in 'HCom32.pas',
-  HNet in 'HNet.pas',
-  HDeviceInfo in 'HDeviceInfo.pas',
-  HInterface in 'HInterface.pas',
-  HGambro in 'HGambro.pas',
-  HBellco in 'HBellco.pas',
-  HFresenius in 'HFresenius.pas',
-  HBraun in 'HBraun.pas',
-  HNikkiso in 'HNikkiso.pas',
-  HToray in 'HToray.pas',
-  HDeviceBase in 'HDeviceBase.pas',
-  HDeviceDo in 'HDeviceDo.pas',
-  HCommunicat in 'HCommunicat.pas';
+  HCom32 in 'Communicate\HCom32.pas',
+  HCommunicat in 'Communicate\HCommunicat.pas',
+  HDeviceDo in 'Communicate\HDeviceDo.pas',
+  HNet in 'Communicate\HNet.pas',
+  HBellco in 'DeviceInfo\HBellco.pas',
+  HBraun in 'DeviceInfo\HBraun.pas',
+  HDeviceBase in 'DeviceInfo\HDeviceBase.pas',
+  HDeviceInfo in 'DeviceInfo\HDeviceInfo.pas',
+  HFresenius in 'DeviceInfo\HFresenius.pas',
+  HGambro in 'DeviceInfo\HGambro.pas',
+  HNikkiso in 'DeviceInfo\HNikkiso.pas',
+  HToray in 'DeviceInfo\HToray.pas';
 
 end.
-

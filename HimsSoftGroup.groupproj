@@ -1,15 +1,15 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{2BF8A215-B158-4FCD-8CFD-2409BED23B80}</ProjectGuid>
+        <ProjectGuid>{7BDCD534-0284-4608-95EC-C2612231FB9D}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="HimsSoft.dproj">
-            <Dependencies/>
+            <Dependencies>source\DeviceComm\HLazy.dproj;source\Utility\HUtility.dproj</Dependencies>
         </Projects>
-        <Projects Include="HLazy.dproj">
-            <Dependencies/>
+        <Projects Include="source\DeviceComm\HLazy.dproj">
+            <Dependencies>source\Utility\HUtility.dproj</Dependencies>
         </Projects>
-        <Projects Include="HUtility.dproj">
+        <Projects Include="source\Utility\HUtility.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -20,32 +20,32 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="HimsSoft">
+    <Target Name="HimsSoft" DependsOnTargets="HLazy;HUtility">
         <MSBuild Projects="HimsSoft.dproj"/>
     </Target>
-    <Target Name="HimsSoft:Clean">
+    <Target Name="HimsSoft:Clean" DependsOnTargets="HLazy:Clean;HUtility:Clean">
         <MSBuild Projects="HimsSoft.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HimsSoft:Make">
+    <Target Name="HimsSoft:Make" DependsOnTargets="HLazy:Make;HUtility:Make">
         <MSBuild Projects="HimsSoft.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HLazy">
-        <MSBuild Projects="HLazy.dproj"/>
+    <Target Name="HLazy" DependsOnTargets="HUtility">
+        <MSBuild Projects="source\DeviceComm\HLazy.dproj"/>
     </Target>
-    <Target Name="HLazy:Clean">
-        <MSBuild Projects="HLazy.dproj" Targets="Clean"/>
+    <Target Name="HLazy:Clean" DependsOnTargets="HUtility:Clean">
+        <MSBuild Projects="source\DeviceComm\HLazy.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HLazy:Make">
-        <MSBuild Projects="HLazy.dproj" Targets="Make"/>
+    <Target Name="HLazy:Make" DependsOnTargets="HUtility:Make">
+        <MSBuild Projects="source\DeviceComm\HLazy.dproj" Targets="Make"/>
     </Target>
     <Target Name="HUtility">
-        <MSBuild Projects="HUtility.dproj"/>
+        <MSBuild Projects="source\Utility\HUtility.dproj"/>
     </Target>
     <Target Name="HUtility:Clean">
-        <MSBuild Projects="HUtility.dproj" Targets="Clean"/>
+        <MSBuild Projects="source\Utility\HUtility.dproj" Targets="Clean"/>
     </Target>
     <Target Name="HUtility:Make">
-        <MSBuild Projects="HUtility.dproj" Targets="Make"/>
+        <MSBuild Projects="source\Utility\HUtility.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="HimsSoft;HLazy;HUtility"/>

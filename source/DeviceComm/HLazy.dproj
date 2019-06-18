@@ -1,9 +1,9 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{D98058F6-38C2-4A1B-9665-53821DB5DE74}</ProjectGuid>
+        <ProjectGuid>{C547B33D-A7FC-4483-AAD2-1A3FC37E0CCE}</ProjectGuid>
         <MainSource>HLazy.dpk</MainSource>
         <ProjectVersion>18.2</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -64,7 +64,7 @@
         <DCC_K>false</DCC_K>
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
         <SanitizedProjectName>HLazy</SanitizedProjectName>
     </PropertyGroup>
@@ -98,12 +98,12 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
-        <DCC_DcpOutput>dcp</DCC_DcpOutput>
-        <DCC_BplOutput>bin</DCC_BplOutput>
+        <DCC_DcpOutput>..\..\dcp</DCC_DcpOutput>
+        <DCC_BplOutput>..\..\bin</DCC_BplOutput>
+        <DCC_DcuOutput>..\..\dcu</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_DcuOutput>dcu</DCC_DcuOutput>
-        <Debugger_HostApplication>D:\Work\HimsSoft\Bin\HimsSoft.exe</Debugger_HostApplication>
+        <DCC_UnitSearchPath>..\..\dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -117,27 +117,20 @@
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
-        <DCCReference Include="CnPack_D102T.dcp"/>
         <DCCReference Include="DbxCommonDriver.dcp"/>
-        <DCCReference Include="HCom32.pas"/>
-        <DCCReference Include="HNet.pas"/>
-        <DCCReference Include="HDeviceInfo.pas"/>
-        <DCCReference Include="HInterface.pas"/>
-        <DCCReference Include="HGambro.pas"/>
-        <DCCReference Include="HBellco.pas"/>
-        <DCCReference Include="HFresenius.pas"/>
-        <DCCReference Include="HBraun.pas"/>
-        <DCCReference Include="HNikkiso.pas"/>
-        <DCCReference Include="HToray.pas"/>
-        <DCCReference Include="HDeviceBase.pas"/>
-        <DCCReference Include="HDeviceDo.pas"/>
-        <DCCReference Include="HCommunicat.pas"/>
-        <None Include="ModelSupport_HLazy\default.txaPackage"/>
-        <None Include="ModelSupport_HLazy\default.txvpck"/>
-        <None Include="ModelSupport_HLazy\HCom32\default.txvpck"/>
-        <None Include="ModelSupport_HLazy\HDeviceInfo\default.txvpck"/>
-        <None Include="ModelSupport_HLazy\HDeviceInfo\default.txaPackage"/>
-        <None Include="ModelSupport_HLazy\HNet\default.txvpck"/>
+        <DCCReference Include="CnPack_D102T.dcp"/>
+        <DCCReference Include="Communicate\HCom32.pas"/>
+        <DCCReference Include="Communicate\HCommunicat.pas"/>
+        <DCCReference Include="Communicate\HDeviceDo.pas"/>
+        <DCCReference Include="Communicate\HNet.pas"/>
+        <DCCReference Include="DeviceInfo\HBellco.pas"/>
+        <DCCReference Include="DeviceInfo\HBraun.pas"/>
+        <DCCReference Include="DeviceInfo\HDeviceBase.pas"/>
+        <DCCReference Include="DeviceInfo\HDeviceInfo.pas"/>
+        <DCCReference Include="DeviceInfo\HFresenius.pas"/>
+        <DCCReference Include="DeviceInfo\HGambro.pas"/>
+        <DCCReference Include="DeviceInfo\HNikkiso.pas"/>
+        <DCCReference Include="DeviceInfo\HToray.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -184,7 +177,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="bin\HLazy.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\..\bin\HLazy.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>HLazy.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
@@ -558,7 +551,6 @@
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
             </Platforms>
-            <ModelSupport>True</ModelSupport>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

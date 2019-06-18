@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{2438B4E4-97FD-4A67-922C-FC71E587E831}</ProjectGuid>
+        <ProjectGuid>{B9694CBF-F4EE-4CDD-9A4E-D5AC2080D3C4}</ProjectGuid>
         <MainSource>HUtility.dpk</MainSource>
         <ProjectVersion>18.2</ProjectVersion>
         <FrameworkType>None</FrameworkType>
@@ -98,9 +98,9 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
-        <DCC_DcpOutput>dcp</DCC_DcpOutput>
-        <DCC_BplOutput>bin</DCC_BplOutput>
-        <DCC_DcuOutput>dcu</DCC_DcuOutput>
+        <DCC_DcpOutput>..\..\dcp</DCC_DcpOutput>
+        <DCC_BplOutput>..\..\bin</DCC_BplOutput>
+        <DCC_DcuOutput>..\..\dcu</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
@@ -115,6 +115,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="HConst.pas"/>
         <DCCReference Include="HLog.pas"/>
         <DCCReference Include="HTool.pas"/>
         <BuildConfiguration Include="Release">
@@ -134,13 +135,13 @@
         <Borland.ProjectType>Package</Borland.ProjectType>
         <BorlandProject>
             <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">HUtility.dpk</Source>
+                </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k250.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp250.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>
-                <Source>
-                    <Source Name="MainSource">HUtility.dpk</Source>
-                </Source>
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
@@ -163,7 +164,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="bin\HUtility.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\19.0\Bpl\HUtility.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>HUtility.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
