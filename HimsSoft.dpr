@@ -2,7 +2,9 @@ program HimsSoft;
 
 uses
   Vcl.Forms,
-  MainPage in 'MainPage.pas' {Form1};
+  MainPage in 'MainPage.pas' {Form1},
+  HCustomer in 'HCustomer.pas',
+  HCustomerSetting in 'HCustomerSetting.pas' {hsCustomerSetting};
 
 {$R *.res}
 

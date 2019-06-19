@@ -41,39 +41,12 @@ object Form1: TForm1
     TabOrder = 2
     OnClick = comstopClick
   end
-  object netTest: TButton
-    Left = 64
-    Top = 160
-    Width = 75
-    Height = 25
-    Caption = 'netTest'
-    TabOrder = 3
-    OnClick = netTestClick
-  end
-  object netStart: TButton
-    Left = 177
-    Top = 160
-    Width = 75
-    Height = 25
-    Caption = 'netStart'
-    TabOrder = 4
-    OnClick = netStartClick
-  end
-  object netStop: TButton
-    Left = 304
-    Top = 160
-    Width = 75
-    Height = 25
-    Caption = 'netStop'
-    TabOrder = 5
-    OnClick = netStopClick
-  end
   object ComboBox1: TComboBox
     Left = 200
     Top = 248
     Width = 145
     Height = 21
-    TabOrder = 6
+    TabOrder = 3
     Text = 'ComboBox1'
   end
   object getComms: TButton
@@ -82,7 +55,7 @@ object Form1: TForm1
     Width = 75
     Height = 25
     Caption = 'getComms'
-    TabOrder = 7
+    TabOrder = 4
     OnClick = getCommsClick
   end
   object Memo1: TMemo
@@ -90,14 +63,14 @@ object Form1: TForm1
     Top = 286
     Width = 241
     Height = 56
-    TabOrder = 8
+    TabOrder = 5
   end
   object Edit1: TEdit
     Left = 456
     Top = 246
     Width = 241
     Height = 21
-    TabOrder = 9
+    TabOrder = 6
   end
   object hexTstrTransBtn: TButton
     Left = 336
@@ -105,7 +78,7 @@ object Form1: TForm1
     Width = 114
     Height = 25
     Caption = 'hexTstrTransBtn'
-    TabOrder = 10
+    TabOrder = 7
     OnClick = hexTstrTransBtnClick
   end
   object strToHexTransBtn: TButton
@@ -114,7 +87,16 @@ object Form1: TForm1
     Width = 114
     Height = 25
     Caption = 'strToHexTransBtn'
-    TabOrder = 11
+    TabOrder = 8
     OnClick = strToHexTransBtnClick
+  end
+  object setBtn: TButton
+    Left = 544
+    Top = 104
+    Width = 75
+    Height = 25
+    Caption = #35774#32622
+    TabOrder = 9
+    OnClick = setBtnClick
   end
 end

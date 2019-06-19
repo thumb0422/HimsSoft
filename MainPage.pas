@@ -22,25 +22,21 @@ type
     comtest: TButton;
     comstart: TButton;
     comstop: TButton;
-    netTest: TButton;
-    netStart: TButton;
-    netStop: TButton;
     ComboBox1: TComboBox;
     getComms: TButton;
     Memo1: TMemo;
     Edit1: TEdit;
     hexTstrTransBtn: TButton;
     strToHexTransBtn: TButton;
+    setBtn: TButton;
     procedure FormCreate(Sender: TObject);
     procedure comtestClick(Sender: TObject);
     procedure comstopClick(Sender: TObject);
-    procedure netTestClick(Sender: TObject);
-    procedure netStopClick(Sender: TObject);
-    procedure netStartClick(Sender: TObject);
     procedure comstartClick(Sender: TObject);
     procedure getCommsClick(Sender: TObject);
     procedure hexTstrTransBtnClick(Sender: TObject);
     procedure strToHexTransBtnClick(Sender: TObject);
+    procedure setBtnClick(Sender: TObject);
   private
     { Private declarations }
 
@@ -52,7 +48,7 @@ var
   Form1: TForm1;
 
 implementation
-uses HDeviceDo;
+uses HDeviceDo,HCustomerSetting;
 {$R *.dfm}
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -66,30 +62,38 @@ begin
 end;
 
 procedure TForm1.comtestClick(Sender: TObject);
-//var deviceDo:TDeviceAct;
 begin
-//
-TDeviceAct.GetInstance.initTestData;
+  TDeviceAct.GetInstance.initTestData;
+end;
 
+procedure TForm1.setBtnClick(Sender: TObject);
+var f:ThsCustomerSetting;
+begin
+   //弹窗到设置用户页面
+  f:=ThsCustomerSetting.Create(nil);
+  try
+    if f.ShowModal = mrOk then
+    begin
+      Caption:='OK';
+    end
+    else
+    begin
+      Caption :='Cancle';
+    end;
+  finally
+    f.Release;
+  end;
 end;
 
 procedure TForm1.comstartClick(Sender: TObject);
-//var deviceDo:TDeviceAct;
 begin
-//
   TDeviceAct.GetInstance.startTestData;
 end;
 
 procedure TForm1.comstopClick(Sender: TObject);
-//var deviceDo:TDeviceAct;
 begin
-//
-  TDeviceAct.GetInstance.stopTestData;
-end;
 
-procedure TForm1.netTestClick(Sender: TObject);
-begin
-//
+  TDeviceAct.GetInstance.stopTestData;
 end;
 
 procedure TForm1.strToHexTransBtnClick(Sender: TObject);
@@ -100,16 +104,6 @@ end;
 procedure TForm1.hexTstrTransBtnClick(Sender: TObject);
 begin
   Memo1.Lines.Add(TTool.StringToHex(Edit1.Text));
-end;
-
-procedure TForm1.netStartClick(Sender: TObject);
-begin
-//
-end;
-
-procedure TForm1.netStopClick(Sender: TObject);
-begin
-//
 end;
 
 procedure saveToJson(data: string);
