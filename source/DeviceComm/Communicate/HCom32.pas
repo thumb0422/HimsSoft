@@ -41,6 +41,7 @@ uses
 
 procedure THComm.init;
 begin
+  FisConnected := False;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
   if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
@@ -108,6 +109,7 @@ end;
 
 destructor THComm.Destroy;
 begin
+  FisConnected := False;
   if Assigned(rs232Obj) then
     rs232Obj.Free;
   if Assigned(FDeviceInfo) then

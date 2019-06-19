@@ -39,6 +39,7 @@ implementation
 
 procedure TNet.init;
 begin
+  FisConnected := False;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
   if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
@@ -53,7 +54,6 @@ begin
     netIPObj.OnRead := ClientSocketRead;
 //    netIPObj.OnWrite := ClientSocketWrite;
     TLog.Instance.DDLogInfo('NET ' + FDeviceInfo.dName + ':' + IntToStr(FDeviceInfo.dPort) + ' connecting');
-    FisConnected := True;
     netIPObj.Active := False;
     netIPObj.Active := True;
   end;
@@ -76,11 +76,12 @@ begin
 end;
 
 procedure TNet.close;
+var a:Boolean;
 begin
   FisConnected := False;
   if Assigned(reqTimer) then
     reqTimer.Enabled := False;
-  if Assigned(netIPObj) then
+  if Assigned(netIPObj) and netIPObj.Socket.Connected then
   begin
     TLog.Instance.DDLogInfo('NET ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' stopNet');
     netIPObj.Active := False;
@@ -99,6 +100,7 @@ end;
 
 destructor TNet.Destroy;
 begin
+  FisConnected := False;
   if Assigned(netIPObj) then
     netIPObj.Free;
   if Assigned(FDeviceInfo) then

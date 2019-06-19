@@ -85,7 +85,7 @@ begin
     FComGroupList.Add(com32);
   end;
 
-  for i := 20 to 28 do
+  for i := 0 to 5 do
   begin
     deviceInfo := TDeviceInfo.Create;
     deviceInfo.dType := 'F';

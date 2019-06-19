@@ -11,7 +11,7 @@ unit HLog;
 interface
 
 uses
-  System.SysUtils, System.Threading;
+  System.SysUtils, System.SyncObjs;
 
 type
   TLog = class
@@ -30,6 +30,9 @@ type
   end;
 
 implementation
+
+var
+  CriticalSection: TCriticalSection;
 
 class function TLog.GetInstance: TLog;
 begin
@@ -69,19 +72,29 @@ var
   DateTime: TDateTime;
   strTxtName, strContent: string;
 begin
-  DateTime := now;
-  strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd',
-    DateTime) + '.log';
-  AssignFile(wLogFile, strTxtName);
-  if FileExists(strTxtName) then
-    Append(wLogFile)
-  else
-  begin
-    ReWrite(wLogFile);
+  CriticalSection.Acquire;
+  try
+    DateTime := now;
+    strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd',
+      DateTime) + '.log';
+    AssignFile(wLogFile, strTxtName);
+    if FileExists(strTxtName) then
+      Append(wLogFile)
+    else
+    begin
+      ReWrite(wLogFile);
+    end;
+    strContent := FormatdateTime('hh:nn:ss:zz', DateTime) + ' ' + str;
+    Writeln(wLogFile, strContent);
+    CloseFile(wLogFile);
+  finally
+    CriticalSection.Release;
   end;
-  strContent := FormatdateTime('hh:nn:ss:zz', DateTime) + ' ' + str;
-  Writeln(wLogFile, strContent);
-  CloseFile(wLogFile)
+
 end;
 
+initialization
+CriticalSection := TCriticalSection.Create;
+finalization
+CriticalSection.Free;
 end.
