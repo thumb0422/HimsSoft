@@ -4,10 +4,10 @@
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="HimsSoft.dproj">
-            <Dependencies/>
+            <Dependencies>source\DeviceComm\HLazy.dproj;source\Utility\HUtility.dproj</Dependencies>
         </Projects>
         <Projects Include="source\DeviceComm\HLazy.dproj">
-            <Dependencies/>
+            <Dependencies>source\Utility\HUtility.dproj</Dependencies>
         </Projects>
         <Projects Include="source\Utility\HUtility.dproj">
             <Dependencies/>
@@ -20,22 +20,22 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="HimsSoft">
+    <Target Name="HimsSoft" DependsOnTargets="HLazy;HUtility">
         <MSBuild Projects="HimsSoft.dproj"/>
     </Target>
-    <Target Name="HimsSoft:Clean">
+    <Target Name="HimsSoft:Clean" DependsOnTargets="HLazy:Clean;HUtility:Clean">
         <MSBuild Projects="HimsSoft.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HimsSoft:Make">
+    <Target Name="HimsSoft:Make" DependsOnTargets="HLazy:Make;HUtility:Make">
         <MSBuild Projects="HimsSoft.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HLazy">
+    <Target Name="HLazy" DependsOnTargets="HUtility">
         <MSBuild Projects="source\DeviceComm\HLazy.dproj"/>
     </Target>
-    <Target Name="HLazy:Clean">
+    <Target Name="HLazy:Clean" DependsOnTargets="HUtility:Clean">
         <MSBuild Projects="source\DeviceComm\HLazy.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HLazy:Make">
+    <Target Name="HLazy:Make" DependsOnTargets="HUtility:Make">
         <MSBuild Projects="source\DeviceComm\HLazy.dproj" Targets="Make"/>
     </Target>
     <Target Name="HUtility">
