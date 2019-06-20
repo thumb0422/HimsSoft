@@ -34,8 +34,8 @@ requires
   CnPack_D102T;
 
 contains
-  HCom32 in 'Communicate\HCom32.pas',
   HCate in 'Communicate\HCate.pas',
+  HCom32 in 'Communicate\HCom32.pas',
   HDeviceDo in 'Communicate\HDeviceDo.pas',
   HNet in 'Communicate\HNet.pas',
   HBellco in 'DeviceInfo\HBellco.pas',
