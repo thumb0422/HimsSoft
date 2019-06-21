@@ -112,7 +112,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="MainPage.pas">
-            <Form>Form1</Form>
+            <Form>FMainPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
@@ -142,7 +142,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="Win32\Debug\HimsSoft.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="bin\HimsSoft.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>HimsSoft.exe</RemoteName>
                         <Overwrite>true</Overwrite>

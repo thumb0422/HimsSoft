@@ -15,28 +15,32 @@ uses
   System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
   Vcl.StdCtrls,
+  cxGraphics, cxControls,
+  cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns, cxClasses,
+  dxNavBarBase, dxNavBar, dxNavBarGroupItems,
   Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo, HTool;
 
 type
-  TForm1 = class(TForm)
-    comtest: TButton;
-    comstart: TButton;
-    comstop: TButton;
-    ComboBox1: TComboBox;
-    getComms: TButton;
-    Memo1: TMemo;
-    Edit1: TEdit;
-    hexTstrTransBtn: TButton;
-    strToHexTransBtn: TButton;
+  TFMainPage = class(TForm)
     setBtn: TButton;
-    procedure FormCreate(Sender: TObject);
-    procedure comtestClick(Sender: TObject);
-    procedure comstopClick(Sender: TObject);
-    procedure comstartClick(Sender: TObject);
-    procedure getCommsClick(Sender: TObject);
-    procedure hexTstrTransBtnClick(Sender: TObject);
-    procedure strToHexTransBtnClick(Sender: TObject);
+    dxNavBar1: TdxNavBar;
+    dxNavBar1Group1: TdxNavBarGroup;
+    dxNavBar1Group2: TdxNavBarGroup;
+    dxNavBar1Group3: TdxNavBarGroup;
+    dxNavBar1Group4: TdxNavBarGroup;
+    dxNavBar1Separator1: TdxNavBarSeparator;
+    dxNavBar1Item1: TdxNavBarItem;
+    dxNavBar1Item2: TdxNavBarItem;
+    dxNavBar1Separator2: TdxNavBarSeparator;
+    dxNavBar1Item3: TdxNavBarItem;
+    dxNavBar1Item4: TdxNavBarItem;
+    dxNavBar1Item5: TdxNavBarItem;
+    dxNavBar1Item6: TdxNavBarItem;
+    dxNavBar1Item7: TdxNavBarItem;
+    dxNavBar1Separator3: TdxNavBarSeparator;
+    dxNavBar1Item8: TdxNavBarItem;
     procedure setBtnClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
 
@@ -45,28 +49,18 @@ type
   end;
 
 var
-  Form1: TForm1;
+  FMainPage: TFMainPage;
 
 implementation
 uses HDeviceDo,HCustomerSetting;
 {$R *.dfm}
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TFMainPage.FormCreate(Sender: TObject);
 begin
-  ComboBox1.Clear;
+//
 end;
 
-procedure TForm1.getCommsClick(Sender: TObject);
-begin
-  ComboBox1.Items.AddStrings(THComm.getAllCommPorts);
-end;
-
-procedure TForm1.comtestClick(Sender: TObject);
-begin
-  TDeviceAct.GetInstance.initTestData;
-end;
-
-procedure TForm1.setBtnClick(Sender: TObject);
+procedure TFMainPage.setBtnClick(Sender: TObject);
 var f:ThsCustomerSetting;
 begin
    //弹窗到设置用户页面
@@ -83,27 +77,6 @@ begin
   finally
     f.Release;
   end;
-end;
-
-procedure TForm1.comstartClick(Sender: TObject);
-begin
-  TDeviceAct.GetInstance.startTestData;
-end;
-
-procedure TForm1.comstopClick(Sender: TObject);
-begin
-
-  TDeviceAct.GetInstance.stopTestData;
-end;
-
-procedure TForm1.strToHexTransBtnClick(Sender: TObject);
-begin
-  Memo1.Lines.Add(TTool.HexToString(Edit1.Text));
-end;
-
-procedure TForm1.hexTstrTransBtnClick(Sender: TObject);
-begin
-  Memo1.Lines.Add(TTool.StringToHex(Edit1.Text));
 end;
 
 procedure saveToJson(data: string);

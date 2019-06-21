@@ -4,13 +4,13 @@ uses
   Vcl.Forms,
   HCustomer in 'HCustomer.pas',
   HCustomerSetting in 'HCustomerSetting.pas' {hsCustomerSetting},
-  MainPage in 'MainPage.pas' {Form1};
+  MainPage in 'MainPage.pas' {FMainPage};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFMainPage, FMainPage);
   Application.Run;
 end.
