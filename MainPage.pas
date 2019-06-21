@@ -18,31 +18,20 @@ uses
   cxGraphics, cxControls,
   cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns, cxClasses,
   dxNavBarBase, dxNavBar, dxNavBarGroupItems,
-  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo, HTool;
+  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo, HTool, cxSplitter,
+  System.Generics.Collections;
 
 type
   TFMainPage = class(TForm)
-    setBtn: TButton;
+    leftPanel: TPanel;
+    rightPanel: TPanel;
+    cxSplitter1: TcxSplitter;
     dxNavBar1: TdxNavBar;
-    dxNavBar1Group1: TdxNavBarGroup;
-    dxNavBar1Group2: TdxNavBarGroup;
-    dxNavBar1Group3: TdxNavBarGroup;
-    dxNavBar1Group4: TdxNavBarGroup;
-    dxNavBar1Separator1: TdxNavBarSeparator;
-    dxNavBar1Item1: TdxNavBarItem;
-    dxNavBar1Item2: TdxNavBarItem;
-    dxNavBar1Separator2: TdxNavBarSeparator;
-    dxNavBar1Item3: TdxNavBarItem;
-    dxNavBar1Item4: TdxNavBarItem;
-    dxNavBar1Item5: TdxNavBarItem;
-    dxNavBar1Item6: TdxNavBarItem;
-    dxNavBar1Item7: TdxNavBarItem;
-    dxNavBar1Separator3: TdxNavBarSeparator;
-    dxNavBar1Item8: TdxNavBarItem;
-    procedure setBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     { Private declarations }
+    procedure InitNavBar();
 
   public
     { Public declarations }
@@ -52,36 +41,75 @@ var
   FMainPage: TFMainPage;
 
 implementation
-uses HDeviceDo,HCustomerSetting;
+
+uses HDeviceDo, HCustomerSetting;
 {$R *.dfm}
 
 procedure TFMainPage.FormCreate(Sender: TObject);
 begin
-//
+  InitNavBar;
 end;
 
-procedure TFMainPage.setBtnClick(Sender: TObject);
-var f:ThsCustomerSetting;
+procedure TFMainPage.FormResize(Sender: TObject);
 begin
-   //弹窗到设置用户页面
-  f:=ThsCustomerSetting.Create(nil);
-  try
-    if f.ShowModal = mrOk then
-    begin
-      Caption:='OK';
-    end
-    else
-    begin
-      Caption :='Cancle';
-    end;
-  finally
-    f.Release;
-  end;
+  inherited;
+  leftPanel.Align := TAlign.alLeft;
+  leftPanel.Left := 0;
+  leftPanel.Top := 0;
+  leftPanel.Width := 350;
+  rightPanel.Align := TAlign.alRight;
+  rightPanel.Left := leftPanel.Left + leftPanel.Width;
 end;
 
-procedure saveToJson(data: string);
+procedure TFMainPage.InitNavBar();
+var
+  tempitem: TdxnavbarItem;
+  tempgroup: Tdxnavbargroup;
 begin
+  dxNavBar1.Items.Clear;
+  tempgroup := dxNavBar1.Groups.Add;
+  tempgroup.Caption := '中国地盘';
 
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '钓鱼岛';
+  // tempitem.OnClick := belongtochina;
+  // tempitem.OnClick:= button1.OnClick; //绑定事件
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '台湾';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempgroup := dxNavBar1.Groups.Add;
+  tempgroup.Caption := '一年四季';
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '春天';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '夏天';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '秋天';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '冬天';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempgroup := dxNavBar1.Groups.Add;
+  tempgroup.Caption := '病人树';
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '病人树';
+
+  tempgroup.CreateLink(tempitem);
 end;
 
 end.
