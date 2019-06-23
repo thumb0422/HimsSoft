@@ -1,10 +1,9 @@
 object FMainPage: TFMainPage
   Left = 0
   Top = 0
-  BorderWidth = 5
   Caption = 'HimsSoft'
-  ClientHeight = 457
-  ClientWidth = 729
+  ClientHeight = 467
+  ClientWidth = 739
   Color = clBtnFace
   DefaultMonitor = dmMainForm
   Font.Charset = DEFAULT_CHARSET
@@ -16,49 +15,43 @@ object FMainPage: TFMainPage
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object leftPanel: TPanel
+  object dxNavBar1: TdxNavBar
     Left = 0
     Top = 0
-    Width = 185
-    Height = 457
+    Width = 193
+    Height = 467
     Align = alLeft
-    Alignment = taLeftJustify
+    ActiveGroupIndex = -1
     TabOrder = 0
-    ExplicitLeft = 64
-    ExplicitTop = 104
-    ExplicitHeight = 41
-    object dxNavBar1: TdxNavBar
-      Left = 1
-      Top = 1
-      Width = 183
-      Height = 455
-      Align = alClient
-      ActiveGroupIndex = -1
-      TabOrder = 0
-      ViewReal = 17
-      ViewStyle.ColorSchemeName = 'Blue'
-      ExplicitLeft = 16
-      ExplicitTop = 32
-      ExplicitWidth = 150
-      ExplicitHeight = 300
-    end
+    LookAndFeel.Kind = lfFlat
+    View = 8
+    ExplicitHeight = 457
   end
-  object rightPanel: TPanel
-    Left = 199
+  object cxPageControl1: TcxPageControl
+    Left = 193
     Top = 0
-    Width = 530
-    Height = 457
-    Align = alRight
-    Alignment = taLeftJustify
+    Width = 546
+    Height = 467
+    Align = alClient
     TabOrder = 1
-  end
-  object cxSplitter1: TcxSplitter
-    Left = 185
-    Top = 0
-    Width = 8
-    Height = 457
-    ExplicitLeft = 240
-    ExplicitTop = 120
-    ExplicitHeight = 100
+    Properties.ActivePage = cxTabSheet1
+    Properties.CustomButtons.Buttons = <>
+    OnChange = cxPageControl1Change
+    ExplicitLeft = 448
+    ExplicitTop = 72
+    ExplicitWidth = 289
+    ExplicitHeight = 193
+    ClientRectBottom = 463
+    ClientRectLeft = 4
+    ClientRectRight = 542
+    ClientRectTop = 24
+    object cxTabSheet1: TcxTabSheet
+      Caption = 'cxTabSheet1'
+      ImageIndex = 0
+    end
+    object cxTabSheet2: TcxTabSheet
+      Caption = 'cxTabSheet2'
+      ImageIndex = 1
+    end
   end
 end

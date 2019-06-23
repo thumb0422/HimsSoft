@@ -11,54 +11,52 @@ unit MainPage;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,
-  Vcl.StdCtrls,
-  cxGraphics, cxControls,
-  cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns, cxClasses,
-  dxNavBarBase, dxNavBar, dxNavBarGroupItems,
-  Vcl.ExtCtrls, HCom32, HNet, HDeviceInfo, HTool, cxSplitter,
-  System.Generics.Collections;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls,
+  cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns,
+  cxClasses, dxNavBarBase, dxNavBar, dxNavBarGroupItems, Vcl.ExtCtrls, HCom32,
+  HNet, HDeviceInfo, HTool, cxSplitter, System.Generics.Collections,
+  dxBarBuiltInMenu, cxPC,
+  HBizBasePage;
 
 type
   TFMainPage = class(TForm)
-    leftPanel: TPanel;
-    rightPanel: TPanel;
-    cxSplitter1: TcxSplitter;
     dxNavBar1: TdxNavBar;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet2: TcxTabSheet;
     procedure FormCreate(Sender: TObject);
-    procedure FormResize(Sender: TObject);
+    procedure cxPageControl1Change(Sender: TObject);
   private
     { Private declarations }
     procedure InitNavBar();
-
   public
     { Public declarations }
   end;
 
 var
   FMainPage: TFMainPage;
+//  FLoadForm: TBizBasePage;
 
 implementation
 
-uses HDeviceDo, HCustomerSetting;
+uses
+  HDeviceDo, HCustomerSetting;
 {$R *.dfm}
+
+procedure TFMainPage.cxPageControl1Change(Sender: TObject);
+begin
+//  case cxPageControl1.ActivePageIndex of
+//    0:
+//      TForm1.loadSelf(FLoadForm, cxTabSheet1, alClient);
+//    1:
+//      TForm2.loadSelf(FLoadForm, cxTabSheet2, alClient);
+//  end;
+end;
 
 procedure TFMainPage.FormCreate(Sender: TObject);
 begin
   InitNavBar;
-end;
-
-procedure TFMainPage.FormResize(Sender: TObject);
-begin
-  inherited;
-  leftPanel.Align := TAlign.alLeft;
-  leftPanel.Left := 0;
-  leftPanel.Top := 0;
-  leftPanel.Width := 350;
-  rightPanel.Align := TAlign.alRight;
-  rightPanel.Left := leftPanel.Left + leftPanel.Width;
 end;
 
 procedure TFMainPage.InitNavBar();
@@ -68,48 +66,79 @@ var
 begin
   dxNavBar1.Items.Clear;
   tempgroup := dxNavBar1.Groups.Add;
-  tempgroup.Caption := '中国地盘';
+  tempgroup.Caption := '一线城市';
 
   tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '钓鱼岛';
-  // tempitem.OnClick := belongtochina;
-  // tempitem.OnClick:= button1.OnClick; //绑定事件
-  tempgroup.CreateLink(tempitem);
-
-  tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '台湾';
-  // tempitem.OnClick := belongtochina;
-  tempgroup.CreateLink(tempitem);
-
-  tempgroup := dxNavBar1.Groups.Add;
-  tempgroup.Caption := '一年四季';
-
-  tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '春天';
+  tempitem.Caption := '北京';
   // tempitem.OnClick := belongtochina;
   tempgroup.CreateLink(tempitem);
 
   tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '夏天';
+  tempitem.Caption := '上海';
   // tempitem.OnClick := belongtochina;
   tempgroup.CreateLink(tempitem);
 
   tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '秋天';
+  tempitem.Caption := '深圳';
   // tempitem.OnClick := belongtochina;
   tempgroup.CreateLink(tempitem);
 
   tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '冬天';
+  tempitem.Caption := '广州';
   // tempitem.OnClick := belongtochina;
   tempgroup.CreateLink(tempitem);
 
   tempgroup := dxNavBar1.Groups.Add;
-  tempgroup.Caption := '病人树';
-  tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '病人树';
+  tempgroup.Caption := '二线城市';
 
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '杭州';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '武汉';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '南京';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempgroup := dxNavBar1.Groups.Add;
+  tempgroup.Caption := '三线城市';
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '无锡';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '珠海';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '呼和浩特';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '湖州';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '三亚';
+  // tempitem.OnClick := belongtochina;
+  tempgroup.CreateLink(tempitem);
+
+  tempitem := dxNavBar1.Items.Add;
+  tempitem.Caption := '莆田';
+  // tempitem.OnClick := belongtochina;
   tempgroup.CreateLink(tempitem);
 end;
 
 end.
+
