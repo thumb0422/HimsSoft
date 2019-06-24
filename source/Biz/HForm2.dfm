@@ -1,9 +1,9 @@
-object TForm2: TTForm2
+object Form2: TForm2
   Left = 0
   Top = 0
-  Caption = 'TForm2'
-  ClientHeight = 211
-  ClientWidth = 418
+  Caption = 'Form2'
+  ClientHeight = 242
+  ClientWidth = 472
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,12 +13,12 @@ object TForm2: TTForm2
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object ListBox1: TListBox
-    Left = 160
-    Top = 48
-    Width = 121
-    Height = 97
-    ItemHeight = 13
+  object Button1: TButton
+    Left = 152
+    Top = 88
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
     TabOrder = 0
   end
 end

@@ -1,8 +1,8 @@
 object BizBasePage: TBizBasePage
   Left = 0
   Top = 0
-  ClientHeight = 479
-  ClientWidth = 795
+  ClientHeight = 242
+  ClientWidth = 472
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

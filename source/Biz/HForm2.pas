@@ -7,8 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,HBizBasePage;
 
 type
-  TTForm2 = class(TBizBasePage)
-    ListBox1: TListBox;
+  TForm2 = class(TBizBasePage)
+    Button1: TButton;
   private
     { Private declarations }
   public
@@ -16,8 +16,10 @@ type
   end;
 
 var
-  TForm2: TTForm2;
+  Form2: TForm2;
 
 implementation
+
+{$R *.dfm}
 
 end.

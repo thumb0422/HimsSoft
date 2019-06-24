@@ -3,12 +3,12 @@ unit HForm1;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,HBizBasePage;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,HBizBasePage;
 
 type
-  TTForm1 = class(TBizBasePage)
-    Button1: TButton;
+  TForm1 = class(TBizBasePage)
+    ComboBox1: TComboBox;
   private
     { Private declarations }
   public
@@ -16,9 +16,10 @@ type
   end;
 
 var
-  TForm1: TTForm1;
+  Form1: TForm1;
 
 implementation
 
-end.
+{$R *.dfm}
 
+end.

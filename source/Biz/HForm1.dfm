@@ -1,9 +1,9 @@
-object TForm1: TTForm1
+object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'TForm1'
-  ClientHeight = 211
-  ClientWidth = 418
+  Caption = 'Form1'
+  ClientHeight = 242
+  ClientWidth = 472
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,12 +13,12 @@ object TForm1: TTForm1
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Button1: TButton
-    Left = 128
-    Top = 80
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
+  object ComboBox1: TComboBox
+    Left = 120
+    Top = 64
+    Width = 145
+    Height = 21
     TabOrder = 0
+    Text = 'ComboBox1'
   end
 end
