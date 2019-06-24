@@ -25,7 +25,6 @@ object FMainPage: TFMainPage
     TabOrder = 0
     LookAndFeel.Kind = lfFlat
     View = 8
-    ExplicitHeight = 457
   end
   object cxPageControl1: TcxPageControl
     Left = 193
@@ -36,11 +35,6 @@ object FMainPage: TFMainPage
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
-    OnChange = cxPageControl1Change
-    ExplicitLeft = 448
-    ExplicitTop = 72
-    ExplicitWidth = 289
-    ExplicitHeight = 193
     ClientRectBottom = 463
     ClientRectLeft = 4
     ClientRectRight = 542
@@ -48,10 +42,6 @@ object FMainPage: TFMainPage
     object cxTabSheet1: TcxTabSheet
       Caption = 'cxTabSheet1'
       ImageIndex = 0
-    end
-    object cxTabSheet2: TcxTabSheet
-      Caption = 'cxTabSheet2'
-      ImageIndex = 1
     end
   end
 end

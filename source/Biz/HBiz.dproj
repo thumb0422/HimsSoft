@@ -104,7 +104,6 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <DCC_DcpOutput>../../dcp</DCC_DcpOutput>
         <DCC_BplOutput>../../bin</DCC_BplOutput>
-        <DCC_UnitSearchPath>../../dcu;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcuOutput>../../dcu</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -121,18 +120,6 @@
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
-        <DCCReference Include="HBizBasePage.pas">
-            <Form>BizBasePage</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="HForm1.pas">
-            <Form>Form1</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="HForm2.pas">
-            <Form>Form2</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

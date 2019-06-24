@@ -31,9 +31,4 @@ requires
   rtl,
   vcl;
 
-contains
-  HBizBasePage in 'HBizBasePage.pas' {BizBasePage},
-  HForm1 in 'HForm1.pas' {Form1},
-  HForm2 in 'HForm2.pas' {Form2};
-
 end.
