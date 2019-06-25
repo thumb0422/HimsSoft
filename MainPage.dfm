@@ -41,7 +41,16 @@ object FMainPage: TFMainPage
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = 'cxTabSheet1'
+      Highlighted = True
       ImageIndex = 0
+      object Panel1: TPanel
+        Left = 240
+        Top = 128
+        Width = 185
+        Height = 41
+        Caption = 'Panel1'
+        TabOrder = 0
+      end
     end
   end
 end
