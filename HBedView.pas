@@ -2,8 +2,8 @@ unit HBedView;
 
 interface
 
-uses Vcl.ExtCtrls, Vcl.StdCtrls,Vcl.Graphics,System.Classes,System.SysUtils,
-     HConst;
+uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
+  HConst;
 
 type
   TBedView = class(TPanel)
@@ -16,6 +16,9 @@ type
     FImage: TImage;
   public
     constructor Create(AOwner: TComponent); override;
+  protected
+    procedure onClick(Sender: TObject);
+    procedure onDblClick(Sender: TObject);
   end;
 
 implementation
@@ -28,11 +31,24 @@ begin
   FImage := TImage.Create(Self);
   FImage.Parent := Self;
   FImage.Stretch := True;
-  FImage.Left := 3;
-  FImage.Top := 3;
-  FImage.Width := 245;
-  FImage.Height := 153;
+  FImage.Left := 5;
+  FImage.Top := 20;
+  FImage.Width := 120;
+  FImage.Height := 75;
+  FImage.Stretch := True;
   ParentBackground := False;
+  FImage.onClick := onClick;
+  FImage.onDblClick := onDblClick;
+end;
+
+procedure TBedView.onClick(Sender: TObject);
+begin
+   
+end;
+
+procedure TBedView.onDblClick(Sender: TObject);
+begin
+
 end;
 
 procedure TBedView.SetbedStatus(const Value: EmBedStatus);
