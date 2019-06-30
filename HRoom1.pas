@@ -3,9 +3,9 @@ unit HRoom1;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, HBizBasePage, Vcl.ExtCtrls;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, HBizBasePage,
+  Vcl.ExtCtrls;
 
 type
   TRoomPage = class(TBizBasePage)
@@ -23,7 +23,8 @@ var
 
 implementation
 
-uses HConst, HBedView;
+uses
+  HConst, HBedView;
 {$R *.dfm}
 
 procedure TRoomPage.FormCreate(Sender: TObject);
@@ -43,32 +44,60 @@ var
   fWidth, fHeight, fSeperateWidth: Integer;
   fCol, fRow, fMax: Integer;
   J: Integer;
+  M: Integer;
+  TempCom: TComponent;
+  aaa:string;
+  fLeft,fTop:Integer;
 begin
+  for M := 0 to Self.ComponentCount - 1 do
+  begin
+    TempCom := Self.Components[M];
+    if Pos('bedView', TempCom.Name) > 0 then
+    begin
+      TempCom.Free;
+    end;
+
+  end;
   fMax := 20;
   fWidth := 130;
   fHeight := 100;
   fSeperateWidth := 20;
-  fCol := (Self.Height - fSeperateWidth) div (fHeight + fSeperateWidth);
-  fRow := (Self.Width - fSeperateWidth) div (fWidth + fSeperateWidth);
+  fCol := ceil((Self.Width - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
+  fRow := ceil((Self.Height - fSeperateWidth) / (fHeight + fSeperateWidth)); //行数
   if (fCol * fRow) > fMax then
   begin
     fRow := fMax div fCol;
   end;
 
+  //For test  循环数组好像有问题
+  fRow := 2;
+  fCol := 3;
+
   for I := 0 to fCol - 1 do
   begin
+    fLeft := fSeperateWidth + I * (fWidth + fSeperateWidth);
+    if (fLeft + fWidth + fSeperateWidth) > self.Width then
+    begin
+      Continue;
+    end;
     for J := 0 to fRow - 1 do
     begin
-      bedView := TBedView.Create(Self);
+      fTop := fSeperateWidth + J * (fHeight + fSeperateWidth);
+      if (fTop + fHeight + fSeperateWidth > self.Height) then
+      begin
+        Continue;
+      end;
+      bedView := TBedView.Create(nil);
+      bedView.Name := 'bedView' + IntToStr(I) + IntToStr(J);
       bedView.Parent := Self;
       bedView.bedStatus := EmBedUsed;
-      bedView.Left := fSeperateWidth + I * (fWidth + fSeperateWidth);
-      bedView.Top := fSeperateWidth + J * (fWidth + fSeperateWidth);
+      bedView.Left := fLeft;
+      bedView.Top := fTop;
       bedView.Width := fWidth;
       bedView.Height := fHeight;
     end;
   end;
-
 end;
 
 end.
+
