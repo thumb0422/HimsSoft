@@ -2,8 +2,8 @@ object FMainPage: TFMainPage
   Left = 0
   Top = 0
   Caption = 'HimsSoft'
-  ClientHeight = 402
-  ClientWidth = 1096
+  ClientHeight = 509
+  ClientWidth = 743
   Color = clBtnFace
   DefaultMonitor = dmMainForm
   Font.Charset = DEFAULT_CHARSET
@@ -12,6 +12,7 @@ object FMainPage: TFMainPage
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesktopCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -19,30 +20,35 @@ object FMainPage: TFMainPage
     Left = 0
     Top = 0
     Width = 193
-    Height = 402
+    Height = 509
     Align = alLeft
     ActiveGroupIndex = -1
     TabOrder = 0
     LookAndFeel.Kind = lfFlat
     View = 8
+    ExplicitHeight = 402
   end
   object cxPageControl1: TcxPageControl
     Left = 193
     Top = 0
-    Width = 903
-    Height = 402
+    Width = 550
+    Height = 509
     Align = alClient
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 398
+    ExplicitWidth = 903
+    ExplicitHeight = 402
+    ClientRectBottom = 505
     ClientRectLeft = 4
-    ClientRectRight = 899
+    ClientRectRight = 546
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = 'cxTabSheet1'
       Highlighted = True
       ImageIndex = 0
+      ExplicitWidth = 895
+      ExplicitHeight = 374
     end
   end
 end

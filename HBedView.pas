@@ -17,6 +17,7 @@ type
     FImage: TImage;
     FLabel: TLabel;
     FTimer: TTimer;
+//    FPopMenu :TPopupMenu;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -45,6 +46,10 @@ begin
   FLabel.Width := 120;
   FLabel.Height := 20;
   FLabel.Alignment := TAlignment.taCenter; // 为什么没居中
+  // FLabel.Align := Align.alTop;
+  FLabel.Layout := tlCenter;
+  FLabel.Font.Color := clRed;
+  FLabel.Transparent := True;
 
   FImage := TImage.Create(Self);
   FImage.Parent := Self;
@@ -55,7 +60,7 @@ begin
   FImage.Height := 75;
   FImage.Stretch := True;
   ParentBackground := False;
-  FImage.onClick := onClick;
+  // FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
   bedStatus := EmBedNormal;
 end;
@@ -72,6 +77,11 @@ begin
 end;
 
 procedure TBedView.onClick(Sender: TObject);
+begin
+
+end;
+
+procedure TBedView.onDblClick(Sender: TObject);
 begin
   if FbedStatus = EmBedUsed then
   begin
@@ -105,11 +115,6 @@ begin
         end;
     end;
   end;
-end;
-
-procedure TBedView.onDblClick(Sender: TObject);
-begin
-
 end;
 
 procedure TBedView.SetbedStatus(const Value: EmBedStatus);

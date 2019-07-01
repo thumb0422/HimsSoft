@@ -96,12 +96,12 @@ begin
     lMenu.MVisible := 1;
     FMenuList.Add(lMenu);
 
-    lMenu := TMenu.Create;
-    lMenu.MID := 1002;
-    lMenu.MDesc := '区域二';
-    lMenu.MParent := 1000;
-    lMenu.MVisible := 1;
-    FMenuList.Add(lMenu);
+//    lMenu := TMenu.Create;
+//    lMenu.MID := 1002;
+//    lMenu.MDesc := '区域二';
+//    lMenu.MParent := 1000;
+//    lMenu.MVisible := 1;
+//    FMenuList.Add(lMenu);
 
     lMenu := TMenu.Create;
     lMenu.MID := 2000;
