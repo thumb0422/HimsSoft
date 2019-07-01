@@ -11,10 +11,12 @@ unit MainPage;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, cxGraphics,
   cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns, cxClasses,
-  dxNavBar, dxNavBarGroupItems, Vcl.ExtCtrls, cxSplitter, dxBarBuiltInMenu, cxPC,
+  dxNavBar, dxNavBarGroupItems, Vcl.ExtCtrls, cxSplitter, dxBarBuiltInMenu,
+  cxPC,
   HBizBasePage, HRoom1, Data.DB, Datasnap.DBClient, dxSkinsCore, dxSkinBlack,
   dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkroom,
   dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
@@ -55,37 +57,64 @@ var
 
 implementation
 
-
 {$R *.dfm}
 
 procedure TFMainPage.FormCreate(Sender: TObject);
 begin
-  InitNavBar;
   InitData;
+  InitNavBar;
 end;
 
 procedure TFMainPage.InitData;
-var
-  i: Integer;
 begin
-  fData := TClientDataSet.Create(self);
+  fData := TClientdataset.Create(self);
   fData.FieldDefs.Clear;
-  fData.FieldDefs.Add('Name', ftString, 10);
-  fData.FieldDefs.Add('Age', ftInteger, 0);
+  fData.FieldDefs.Add('MID', ftInteger, 0);//ID
+  fData.FieldDefs.Add('MDesc', ftString, 30);//显示Caption
+  fData.FieldDefs.Add('MParent', ftInteger, 0);//父类
+  fData.FieldDefs.Add('MVisible', ftInteger, 0);//是否显示
   fData.CreateDataSet;
   with fData do
   begin
     DisableControls;
-    for i := 1 to 1000 do
-    begin
-      Append;
-      FieldByName('Name').AsString := 'User' + IntToStr(i);
-      FieldByName('Age').AsInteger := Random(100);
-      Post;
-    end;
+
+    Append;
+    FieldByName('MID').AsInteger := 1000;
+    FieldByName('MDesc').AsString := '展示区域';
+    FieldByName('MParent').AsInteger := 0;
+    FieldByName('MVisible').AsInteger := 1;
+    Post;
+
+    Append;
+    FieldByName('MID').AsInteger := 1001;
+    FieldByName('MDesc').AsString := '区域一';
+    FieldByName('MParent').AsInteger := 1000;
+    FieldByName('MVisible').AsInteger := 1;
+    Post;
+
+    Append;
+    FieldByName('MID').AsInteger := 1002;
+    FieldByName('MDesc').AsString := '区域二';
+    FieldByName('MParent').AsInteger := 1000;
+    FieldByName('MVisible').AsInteger := 1;
+    Post;
+
+    Append;
+    FieldByName('MID').AsInteger := 2000;
+    FieldByName('MDesc').AsString := '设置';
+    FieldByName('MParent').AsInteger := 0;
+    FieldByName('MVisible').AsInteger := 1;
+    Post;
+
+    Append;
+    FieldByName('MID').AsInteger := 2001;
+    FieldByName('MDesc').AsString := '用户设置';
+    FieldByName('MParent').AsInteger := 2000;
+    FieldByName('MVisible').AsInteger := 1;
+    Post;
+
     EnableControls;
   end;
-  fData.Open;
 end;
 
 procedure TFMainPage.InitNavBar();
@@ -95,27 +124,34 @@ var
 begin
   dxNavBar1.Items.Clear;
 
-  tempgroup := dxNavBar1.Groups.Add;
-  tempgroup.Caption := '展示区域';
+  if fData.Active = False then
+  begin
+    fData.Active :=True;
+  end;
 
-  tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '区域一';
-  tempitem.Tag := 1001;
-  tempitem.OnClick := itemClick;
-  tempgroup.CreateLink(tempitem);
-
-  tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '区域二';
-  tempitem.Tag := 1002;
-  tempitem.OnClick := itemClick;
-  tempgroup.CreateLink(tempitem);
-
-  tempitem := dxNavBar1.Items.Add;
-  tempitem.Caption := '区域三';
-  tempitem.Tag := 1003;
-  tempitem.OnClick := itemClick;
-  tempgroup.CreateLink(tempitem);
-
+  with fData do
+  begin
+    DisableControls;
+    First;
+    while not Eof do
+    begin
+      if FieldByName('MParent').AsInteger = 0 then
+      begin
+         tempgroup := dxNavBar1.Groups.Add;
+         tempgroup.Caption := FieldByName('MDesc').AsString;
+      end
+      else
+      begin
+        tempitem := dxNavBar1.Items.Add;
+        tempitem.Caption := FieldByName('MDesc').AsString;
+        tempitem.Tag := FieldByName('MID').AsInteger;
+        tempitem.OnClick := itemClick;
+        tempgroup.CreateLink(tempitem);
+      end;
+      Next;
+    end;
+    EnableControls;
+  end;
 end;
 
 procedure TFMainPage.itemClick(Sender: TObject);
@@ -123,7 +159,7 @@ var
   Tag: Integer;
   tempitem: TdxnavbarItem;
 begin
-  tempitem :=  TdxnavbarItem(Sender);
+  tempitem := TdxnavbarItem(Sender);
   Tag := tempitem.Tag;
   cxPageControl1.ActivePage := cxTabSheet1;
   cxTabSheet1.Caption := tempitem.Caption;
@@ -131,4 +167,3 @@ begin
 end;
 
 end.
-
