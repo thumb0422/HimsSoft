@@ -34,6 +34,8 @@ implementation
 constructor TBedView.Create(AOwner: TComponent);
 begin
   inherited;
+  Color := clWhite;
+
   FTimer := TTimer.Create(Self);
   FTimer.Interval := 1000;
   FTimer.OnTimer := timerOnTimer;

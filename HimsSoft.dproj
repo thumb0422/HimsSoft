@@ -131,6 +131,11 @@
         </DCCReference>
         <DCCReference Include="HBedView.pas"/>
         <DCCReference Include="HMenu.pas"/>
+        <DCCReference Include="HDataModel.pas"/>
+        <DCCReference Include="HDataDetailView.pas">
+            <Form>DataDetailView</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

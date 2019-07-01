@@ -32,18 +32,20 @@ uses
   dxSkinTheAsphaltWorld, dxSkinTheBezier, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, MidasLib;
+  dxSkinXmas2008Blue, MidasLib, cxScrollBox;
 
 type
   TFMainPage = class(TForm)
     dxNavBar1: TdxNavBar;
     cxPageControl1: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
+    cxScrollBox1: TcxScrollBox;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     procedure InitNavBar();
     procedure InitData;
+    procedure InitRight;
     procedure itemClick(Sender: TObject);
   public
     { Public declarations }
@@ -58,13 +60,22 @@ var
 
 implementation
 
-uses HMenu;
+uses HMenu,HDataDetailView;
 {$R *.dfm}
 
 procedure TFMainPage.FormCreate(Sender: TObject);
 begin
+  InitRight;
   InitData;
   InitNavBar;
+end;
+
+procedure TFMainPage.InitRight;
+var rightView :TDataDetailView;
+begin
+  rightView := TDataDetailView.Create(Self);
+  rightView.Align := alClient;
+  rightView.Parent := cxScrollBox1;
 end;
 
 procedure TFMainPage.InitData;
@@ -95,13 +106,6 @@ begin
     lMenu.MParent := 1000;
     lMenu.MVisible := 1;
     FMenuList.Add(lMenu);
-
-//    lMenu := TMenu.Create;
-//    lMenu.MID := 1002;
-//    lMenu.MDesc := 'ÇøÓò¶þ';
-//    lMenu.MParent := 1000;
-//    lMenu.MVisible := 1;
-//    FMenuList.Add(lMenu);
 
     lMenu := TMenu.Create;
     lMenu.MID := 2000;

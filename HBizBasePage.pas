@@ -34,6 +34,7 @@ begin
   begin
     BorderStyle := bsNone;
     Parent := parentForm;
+    Color := clWhite;
     if AlignParent = alNone then
     begin
       Left := (parentForm.ClientWidth - Width) div 2;

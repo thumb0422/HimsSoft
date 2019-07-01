@@ -2,9 +2,9 @@ object FMainPage: TFMainPage
   Left = 0
   Top = 0
   Caption = 'HimsSoft'
-  ClientHeight = 509
-  ClientWidth = 743
-  Color = clBtnFace
+  ClientHeight = 506
+  ClientWidth = 911
+  Color = clWhite
   DefaultMonitor = dmMainForm
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,35 +20,52 @@ object FMainPage: TFMainPage
     Left = 0
     Top = 0
     Width = 193
-    Height = 509
+    Height = 506
     Align = alLeft
+    Color = clWhite
     ActiveGroupIndex = -1
     TabOrder = 0
     LookAndFeel.Kind = lfFlat
     View = 8
-    ExplicitHeight = 402
+    ExplicitHeight = 509
   end
   object cxPageControl1: TcxPageControl
     Left = 193
     Top = 0
     Width = 550
     Height = 509
-    Align = alClient
+    Align = alCustom
+    Color = clWhite
+    ParentBackground = False
+    ParentColor = False
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
     Properties.CustomButtons.Buttons = <>
-    ExplicitWidth = 903
-    ExplicitHeight = 402
     ClientRectBottom = 505
     ClientRectLeft = 4
     ClientRectRight = 546
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = 'cxTabSheet1'
+      Color = clWhite
       Highlighted = True
       ImageIndex = 0
-      ExplicitWidth = 895
-      ExplicitHeight = 374
+      ParentColor = False
+      ExplicitLeft = 5
+      ExplicitTop = 25
+      ExplicitWidth = 548
+      ExplicitHeight = 478
     end
+  end
+  object cxScrollBox1: TcxScrollBox
+    Left = 726
+    Top = 0
+    Width = 185
+    Height = 506
+    Align = alRight
+    TabOrder = 2
+    ExplicitLeft = 745
+    ExplicitTop = 88
+    ExplicitHeight = 41
   end
 end
