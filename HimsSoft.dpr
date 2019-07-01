@@ -12,7 +12,7 @@ uses
   HBedView in 'HBedView.pas',
   HMenu in 'HMenu.pas',
   HDataModel in 'HDataModel.pas',
-  HDataDetailView in 'HDataDetailView.pas' {DataDetailView};
+  HDataDetailView in 'HDataDetailView.pas';
 
 {$R *.res}
 
@@ -20,6 +20,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFMainPage, FMainPage);
-  Application.CreateForm(TDataDetailView, DataDetailView);
   Application.Run;
 end.

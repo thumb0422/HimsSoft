@@ -22,12 +22,10 @@ object FMainPage: TFMainPage
     Width = 193
     Height = 506
     Align = alLeft
-    Color = clWhite
     ActiveGroupIndex = -1
     TabOrder = 0
     LookAndFeel.Kind = lfFlat
     View = 8
-    ExplicitHeight = 509
   end
   object cxPageControl1: TcxPageControl
     Left = 193
@@ -51,10 +49,6 @@ object FMainPage: TFMainPage
       Highlighted = True
       ImageIndex = 0
       ParentColor = False
-      ExplicitLeft = 5
-      ExplicitTop = 25
-      ExplicitWidth = 548
-      ExplicitHeight = 478
     end
   end
   object cxScrollBox1: TcxScrollBox
@@ -64,8 +58,5 @@ object FMainPage: TFMainPage
     Height = 506
     Align = alRight
     TabOrder = 2
-    ExplicitLeft = 745
-    ExplicitTop = 88
-    ExplicitHeight = 41
   end
 end

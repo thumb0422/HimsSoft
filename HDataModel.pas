@@ -1,7 +1,7 @@
 unit HDataModel;
 
 interface
-
+uses System.SysUtils;
 type
   TDataModel = class
   private
@@ -33,11 +33,26 @@ type
     property BloodPressure: string read FBloodPressure write SetBloodPressure;
     property TotalBlood: string read FTotalBlood write SetTotalBlood;
     property Temperature: string read FTemperature write SetTemperature;
+  public
+    procedure generateDataForTest;
   end;
 
 implementation
 
 { TDataModel }
+
+procedure TDataModel.generateDataForTest;
+begin
+  FTotalBlood := IntToStr(Random(100));
+  FBloodFlow := IntToStr(Random(100));
+  FBloodPressure := IntToStr(Random(100));
+  FSessionTime := IntToStr(Random(100));
+  FDialysisPressure := IntToStr(Random(100));
+  FVenousPressure := IntToStr(Random(100));
+  FTemperature := IntToStr(Random(100));
+  FUFFlow := IntToStr(Random(100));
+  FTMP := IntToStr(Random(100));
+end;
 
 procedure TDataModel.SetBloodFlow(const Value: string);
 begin
