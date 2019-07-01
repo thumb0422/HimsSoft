@@ -54,6 +54,7 @@ end;
 destructor TLog.Destroy;
 begin
   FreeAndNil(FInstance);
+  inherited;
 end;
 
 procedure TLog.DDLogInfo(str: string);

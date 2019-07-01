@@ -54,9 +54,11 @@ type
 var
   FMainPage: TFMainPage;
   FLoadForm: TBizBasePage;
+  FMenuList: TList;
 
 implementation
 
+uses HMenu;
 {$R *.dfm}
 
 procedure TFMainPage.FormCreate(Sender: TObject);
@@ -66,53 +68,69 @@ begin
 end;
 
 procedure TFMainPage.InitData;
+var
+  lMenu: TMenu;
+  m: Integer;
 begin
   fData := TClientdataset.Create(self);
   fData.FieldDefs.Clear;
-  fData.FieldDefs.Add('MID', ftInteger, 0);//ID
-  fData.FieldDefs.Add('MDesc', ftString, 30);//显示Caption
-  fData.FieldDefs.Add('MParent', ftInteger, 0);//父类
-  fData.FieldDefs.Add('MVisible', ftInteger, 0);//是否显示
+  fData.FieldDefs.Add('MID', ftInteger, 0); // ID
+  fData.FieldDefs.Add('MDesc', ftString, 30); // 显示Caption
+  fData.FieldDefs.Add('MParent', ftInteger, 0); // 父类
+  fData.FieldDefs.Add('MVisible', ftInteger, 0); // 是否显示
   fData.CreateDataSet;
+
+  FMenuList := TList.Create;
+  begin
+    lMenu := TMenu.Create;
+    lMenu.MID := 1000;
+    lMenu.MDesc := '展示区域';
+    lMenu.MParent := 0;
+    lMenu.MVisible := 1;
+    FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 1001;
+    lMenu.MDesc := '区域一';
+    lMenu.MParent := 1000;
+    lMenu.MVisible := 1;
+    FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 1002;
+    lMenu.MDesc := '区域二';
+    lMenu.MParent := 1000;
+    lMenu.MVisible := 1;
+    FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 2000;
+    lMenu.MDesc := '设置';
+    lMenu.MParent := 0;
+    lMenu.MVisible := 1;
+    FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 2001;
+    lMenu.MDesc := '用户设置';
+    lMenu.MParent := 2000;
+    lMenu.MVisible := 1;
+    FMenuList.Add(lMenu);
+  end;
+
   with fData do
   begin
     DisableControls;
-
-    Append;
-    FieldByName('MID').AsInteger := 1000;
-    FieldByName('MDesc').AsString := '展示区域';
-    FieldByName('MParent').AsInteger := 0;
-    FieldByName('MVisible').AsInteger := 1;
-    Post;
-
-    Append;
-    FieldByName('MID').AsInteger := 1001;
-    FieldByName('MDesc').AsString := '区域一';
-    FieldByName('MParent').AsInteger := 1000;
-    FieldByName('MVisible').AsInteger := 1;
-    Post;
-
-    Append;
-    FieldByName('MID').AsInteger := 1002;
-    FieldByName('MDesc').AsString := '区域二';
-    FieldByName('MParent').AsInteger := 1000;
-    FieldByName('MVisible').AsInteger := 1;
-    Post;
-
-    Append;
-    FieldByName('MID').AsInteger := 2000;
-    FieldByName('MDesc').AsString := '设置';
-    FieldByName('MParent').AsInteger := 0;
-    FieldByName('MVisible').AsInteger := 1;
-    Post;
-
-    Append;
-    FieldByName('MID').AsInteger := 2001;
-    FieldByName('MDesc').AsString := '用户设置';
-    FieldByName('MParent').AsInteger := 2000;
-    FieldByName('MVisible').AsInteger := 1;
-    Post;
-
+    for m := 0 to FMenuList.Count - 1 do
+    begin
+      lMenu := FMenuList[m];
+      Append;
+      FieldByName('MID').AsInteger := lMenu.MID;
+      FieldByName('MDesc').AsString := lMenu.MDesc;
+      FieldByName('MParent').AsInteger := lMenu.MParent;
+      FieldByName('MVisible').AsInteger := lMenu.MVisible;
+      Post;
+    end;
     EnableControls;
   end;
 end;
@@ -126,7 +144,7 @@ begin
 
   if fData.Active = False then
   begin
-    fData.Active :=True;
+    fData.Active := True;
   end;
 
   with fData do
@@ -137,8 +155,8 @@ begin
     begin
       if FieldByName('MParent').AsInteger = 0 then
       begin
-         tempgroup := dxNavBar1.Groups.Add;
-         tempgroup.Caption := FieldByName('MDesc').AsString;
+        tempgroup := dxNavBar1.Groups.Add;
+        tempgroup.Caption := FieldByName('MDesc').AsString;
       end
       else
       begin

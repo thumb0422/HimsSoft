@@ -9,7 +9,8 @@ uses
   HForm1 in 'HForm1.pas' {Form1},
   HForm2 in 'HForm2.pas' {Form2},
   HRoom1 in 'HRoom1.pas' {RoomPage},
-  HBedView in 'HBedView.pas';
+  HBedView in 'HBedView.pas',
+  HMenu in 'HMenu.pas';
 
 {$R *.res}
 

@@ -34,7 +34,7 @@ end;
 
 procedure TRoomPage.FormResize(Sender: TObject);
 begin
-  reloadView;
+//  reloadView; //FrameSizeChange 好像有问题
 end;
 
 procedure TRoomPage.reloadView;
@@ -90,7 +90,7 @@ begin
       bedView := TBedView.Create(nil);
       bedView.Name := 'bedView' + IntToStr(I) + IntToStr(J);
       bedView.Parent := Self;
-      bedView.bedStatus := EmBedUsed;
+//      bedView.bedStatus := EmBedStatus(Random(2));
       bedView.Left := fLeft;
       bedView.Top := fTop;
       bedView.Width := fWidth;

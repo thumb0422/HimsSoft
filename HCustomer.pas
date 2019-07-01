@@ -13,25 +13,25 @@ interface
 type
   TCustomer = class
   private
-    FbedId: string;
-    FroomId: string;
     FcId: string;
-    procedure SetbedId(const Value: string);
+    FcBedId: string;
+    FcRoomId: string;
+    procedure SetcBedId(const Value: string);
     procedure SetcId(const Value: string);
-    procedure SetroomId(const Value: string);
+    procedure SetcRoomId(const Value: string);
   published
     property cId: string read FcId write SetcId; // 用户唯一ID
-    property roomId: string read FroomId write SetroomId; // 房间号
-    property bedId: string read FbedId write SetbedId; // 床位号
+    property cRoomId: string read FcRoomId write SetcRoomId; // 房间号
+    property cBedId: string read FcBedId write SetcBedId; // 床位号
   end;
 
 implementation
 
 { TCustomer }
 
-procedure TCustomer.SetbedId(const Value: string);
+procedure TCustomer.SetcBedId(const Value: string);
 begin
-  FbedId := Value;
+  FcBedId := Value;
 end;
 
 procedure TCustomer.SetcId(const Value: string);
@@ -39,9 +39,9 @@ begin
   FcId := Value;
 end;
 
-procedure TCustomer.SetroomId(const Value: string);
+procedure TCustomer.SetcRoomId(const Value: string);
 begin
-  FroomId := Value;
+  FcRoomId := Value;
 end;
 
 end.
