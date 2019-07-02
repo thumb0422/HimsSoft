@@ -82,36 +82,52 @@ end;
 
 function TBedView.getDataDetailView: TDataDetailView;
 var
-  Obj: TObject;
-  view: TDataDetailView;
+  Obj, detailObj: TObject;
+  mainPage: TForm;
+  dataDetailView: TDataDetailView;
   i: integer;
+  J: integer;
 begin
   for i := 0 to Application.ComponentCount - 1 do
   begin
-    Obj :=  Application.Components[i];
-    if Obj is TDataDetailView then
+    Obj := Application.Components[i];
+    if Obj is TForm then
     begin
-      Obj := Application.Components[i].FindComponent('DataDetailView');
-      if Obj is TDataDetailView then
+      mainPage := (Obj as TForm);
+      if mainPage.Name = 'FMainPage' then
       begin
-        view := (Obj as TDataDetailView);
-        Result := view;
+        for J := 0 to mainPage.ComponentCount - 1 do
+        begin
+          detailObj := mainPage.Components[J];
+          if detailObj is TDataDetailView then
+          begin
+            dataDetailView := (detailObj as TDataDetailView);
+            Result := dataDetailView;
+            Break;
+          end;
+        end;
       end;
     end;
   end;
-
 end;
 
 procedure TBedView.onClick(Sender: TObject);
 var
   lData: TDataModel;
   lDataNotify: IDataNotify;
+  lDataDetailView: TDataDetailView;
 begin
   // send message to TDataDetailView
-//  lData := TDataModel.Create;
-//  lData.generateDataForTest;
-//  lDataNotify := getDataDetailView;
-//  lDataNotify.sendSingleData(lData);
+  lDataDetailView := getDataDetailView;
+  if Assigned(lDataDetailView) then
+  begin
+    lData := TDataModel.Create;
+    lData.generateDataForTest;
+
+    lDataNotify := getDataDetailView;
+    lDataNotify.sendSingleData(lData);
+  end;
+
 end;
 
 procedure TBedView.onDblClick(Sender: TObject);

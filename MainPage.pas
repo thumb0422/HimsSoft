@@ -75,6 +75,7 @@ var rightView :TDataDetailView;
 begin
   rightView := TDataDetailView.Create(Self);
   rightView.Name := 'DataDetailView';
+  rightView.Caption :='';
   rightView.Align := alClient;
   rightView.Parent := cxScrollBox1;
 end;
