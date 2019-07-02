@@ -133,6 +133,7 @@
         <DCCReference Include="HMenu.pas"/>
         <DCCReference Include="HDataModel.pas"/>
         <DCCReference Include="HDataDetailView.pas"/>
+        <DCCReference Include="HDataNotify.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

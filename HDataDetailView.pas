@@ -3,11 +3,11 @@ unit HDataDetailView;
 interface
 
 uses
-  System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls,
-  HDataModel;
+  System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls,Vcl.Forms,
+  HDataModel, HDataNotify;
 
 type
-  TDataDetailView = class(TPanel)
+  TDataDetailView = class(TPanel, IDataNotify)
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -23,10 +23,13 @@ type
     Fdata: TDataModel;
     procedure Setdata(const Value: TDataModel);
   public
-    property data:TDataModel read Fdata write Setdata;
+    property data: TDataModel read Fdata write Setdata;
+  public
+    procedure sendSingleData(recData: TDataModel);
   end;
 
 implementation
+
 { TDataDetailView }
 
 constructor TDataDetailView.Create(AOwner: TComponent);
@@ -45,7 +48,7 @@ begin
   SessionTimeValueLabel := TLabel.Create(Self);
   SessionTimeValueLabel.Caption := '--';
   SessionTimeValueLabel.Alignment := taRightJustify;
-  SessionTimeValueLabel.Left := self.Width - 110;
+  SessionTimeValueLabel.Left := Self.Width - 110;
   SessionTimeValueLabel.Top := 5;
   SessionTimeValueLabel.Width := 100;
   SessionTimeValueLabel.Height := 20;
@@ -65,7 +68,7 @@ begin
   VenousPressureValueLabel := TLabel.Create(Self);
   VenousPressureValueLabel.Caption := '--';
   VenousPressureValueLabel.Alignment := taRightJustify;
-  VenousPressureValueLabel.Left := self.Width - 110;
+  VenousPressureValueLabel.Left := Self.Width - 110;
   VenousPressureValueLabel.Top := 30;
   VenousPressureValueLabel.Width := 100;
   VenousPressureValueLabel.Height := 20;
@@ -85,7 +88,7 @@ begin
   DialysisPressureValueLabel := TLabel.Create(Self);
   DialysisPressureValueLabel.Caption := '--';
   DialysisPressureValueLabel.Alignment := taRightJustify;
-  DialysisPressureValueLabel.Left := self.Width - 110;
+  DialysisPressureValueLabel.Left := Self.Width - 110;
   DialysisPressureValueLabel.Top := 55;
   DialysisPressureValueLabel.Width := 100;
   DialysisPressureValueLabel.Height := 20;
@@ -105,18 +108,24 @@ begin
   TMPValueLabel := TLabel.Create(Self);
   TMPValueLabel.Caption := '--';
   TMPValueLabel.Alignment := taRightJustify;
-  TMPValueLabel.Left := self.Width - 110;
+  TMPValueLabel.Left := Self.Width - 110;
   TMPValueLabel.Top := 80;
   TMPValueLabel.Width := 100;
   TMPValueLabel.Height := 20;
   TMPValueLabel.Transparent := True;
   TMPValueLabel.Parent := Self;
+
 end;
 
 destructor TDataDetailView.Destroy;
 begin
 
   inherited;
+end;
+
+procedure TDataDetailView.sendSingleData(recData: TDataModel);
+begin
+  data := recData;
 end;
 
 procedure TDataDetailView.Setdata(const Value: TDataModel);
@@ -129,4 +138,3 @@ begin
 end;
 
 end.
-

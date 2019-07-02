@@ -4,7 +4,8 @@ interface
 
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
   Vcl.Forms, Winapi.Windows,
-  HConst;
+  HDataNotify, HDataModel,
+  HConst, HDataDetailView;
 
 type
   TBedView = class(TPanel)
@@ -17,7 +18,7 @@ type
     FImage: TImage;
     FLabel: TLabel;
     FTimer: TTimer;
-//    FPopMenu :TPopupMenu;
+    // FPopMenu :TPopupMenu;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -25,6 +26,7 @@ type
     procedure onClick(Sender: TObject);
     procedure onDblClick(Sender: TObject);
     procedure timerOnTimer(Sender: TObject);
+    function getDataDetailView: TDataDetailView;
   end;
 
 implementation
@@ -47,7 +49,7 @@ begin
   FLabel.Top := 0;
   FLabel.Width := 120;
   FLabel.Height := 20;
-  FLabel.Alignment := TAlignment.taCenter; // 为什么没居中
+  FLabel.Alignment := taCenter; // 为什么没居中
   // FLabel.Align := Align.alTop;
   FLabel.Layout := tlCenter;
   FLabel.Font.Color := clRed;
@@ -62,7 +64,7 @@ begin
   FImage.Height := 75;
   FImage.Stretch := True;
   ParentBackground := False;
-  // FImage.onClick := onClick;
+  FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
   bedStatus := EmBedNormal;
 end;
@@ -78,9 +80,38 @@ begin
   inherited;
 end;
 
-procedure TBedView.onClick(Sender: TObject);
+function TBedView.getDataDetailView: TDataDetailView;
+var
+  Obj: TObject;
+  view: TDataDetailView;
+  i: integer;
 begin
+  for i := 0 to Application.ComponentCount - 1 do
+  begin
+    Obj :=  Application.Components[i];
+    if Obj is TDataDetailView then
+    begin
+      Obj := Application.Components[i].FindComponent('DataDetailView');
+      if Obj is TDataDetailView then
+      begin
+        view := (Obj as TDataDetailView);
+        Result := view;
+      end;
+    end;
+  end;
 
+end;
+
+procedure TBedView.onClick(Sender: TObject);
+var
+  lData: TDataModel;
+  lDataNotify: IDataNotify;
+begin
+  // send message to TDataDetailView
+//  lData := TDataModel.Create;
+//  lData.generateDataForTest;
+//  lDataNotify := getDataDetailView;
+//  lDataNotify.sendSingleData(lData);
 end;
 
 procedure TBedView.onDblClick(Sender: TObject);

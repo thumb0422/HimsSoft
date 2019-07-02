@@ -74,6 +74,7 @@ procedure TFMainPage.InitRight;
 var rightView :TDataDetailView;
 begin
   rightView := TDataDetailView.Create(Self);
+  rightView.Name := 'DataDetailView';
   rightView.Align := alClient;
   rightView.Parent := cxScrollBox1;
 end;

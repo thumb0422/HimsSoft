@@ -12,7 +12,8 @@ uses
   HBedView in 'HBedView.pas',
   HMenu in 'HMenu.pas',
   HDataModel in 'HDataModel.pas',
-  HDataDetailView in 'HDataDetailView.pas';
+  HDataDetailView in 'HDataDetailView.pas',
+  HDataNotify in 'HDataNotify.pas';
 
 {$R *.res}
 
