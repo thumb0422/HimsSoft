@@ -60,7 +60,7 @@ begin
   end;
   fMax := 20;
   fWidth := 130;
-  fHeight := 100;
+  fHeight := 120;
   fSeperateWidth := 20;
   fCol := ceil((Self.Width - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
   fRow := ceil((Self.Height - fSeperateWidth) / (fHeight + fSeperateWidth)); //行数
@@ -95,6 +95,7 @@ begin
       bedView.Top := fTop;
       bedView.Width := fWidth;
       bedView.Height := fHeight;
+      bedView.Tag := StrToInt(IntToStr(I)+IntToStr(J));
     end;
   end;
 end;

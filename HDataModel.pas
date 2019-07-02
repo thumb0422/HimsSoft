@@ -1,10 +1,13 @@
 unit HDataModel;
 
 interface
+
 uses System.SysUtils;
+
 type
   TDataModel = class
   private
+    FBedId: string;
     FTotalBlood: string;
     FBloodFlow: string;
     FBloodPressure: string;
@@ -14,6 +17,7 @@ type
     FTemperature: string;
     FUFFlow: string;
     FTMP: string;
+    procedure SetBedId(const Value: string);
     procedure SetBloodFlow(const Value: string);
     procedure SetBloodPressure(const Value: string);
     procedure SetDialysisPressure(const Value: string);
@@ -24,9 +28,12 @@ type
     procedure SetUFFlow(const Value: string);
     procedure SetVenousPressure(const Value: string);
   published
+    property BedId: string read FBedId write SetBedId;
     property SessionTime: string read FSessionTime write SetSessionTime;
-    property VenousPressure: string read FVenousPressure write SetVenousPressure;
-    property DialysisPressure: string read FDialysisPressure write SetDialysisPressure;
+    property VenousPressure: string read FVenousPressure
+      write SetVenousPressure;
+    property DialysisPressure: string read FDialysisPressure
+      write SetDialysisPressure;
     property TMP: string read FTMP write SetTMP;
     property BloodFlow: string read FBloodFlow write SetBloodFlow;
     property UFFlow: string read FUFFlow write SetUFFlow;
@@ -52,6 +59,11 @@ begin
   FTemperature := IntToStr(Random(100));
   FUFFlow := IntToStr(Random(100));
   FTMP := IntToStr(Random(100));
+end;
+
+procedure TDataModel.SetBedId(const Value: string);
+begin
+  FBedId := Value;
 end;
 
 procedure TDataModel.SetBloodFlow(const Value: string);
@@ -100,4 +112,3 @@ begin
 end;
 
 end.
-

@@ -12,6 +12,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   private
+    bedIdLabel:TLabel;
     SessionTimeLabel: TLabel;
     VenousPressureLabel: TLabel;
     DialysisPressureLabel: TLabel;
@@ -35,11 +36,21 @@ implementation
 constructor TDataDetailView.Create(AOwner: TComponent);
 begin
   inherited;
+  bedIdLabel := TLabel.Create(Self);
+  bedIdLabel.Caption := 'Bed - ';
+  bedIdLabel.Alignment := taLeftJustify;
+  bedIdLabel.Left := 5;
+  bedIdLabel.Top := 5;
+  bedIdLabel.Width := 50;
+  bedIdLabel.Height := 20;
+  bedIdLabel.Transparent := True;
+  bedIdLabel.Parent := Self;
+
   SessionTimeLabel := TLabel.Create(Self);
   SessionTimeLabel.Caption := 'Session Time';
   SessionTimeLabel.Alignment := taLeftJustify;
   SessionTimeLabel.Left := 5;
-  SessionTimeLabel.Top := 5;
+  SessionTimeLabel.Top := 30;
   SessionTimeLabel.Width := 50;
   SessionTimeLabel.Height := 20;
   SessionTimeLabel.Transparent := True;
@@ -49,9 +60,9 @@ begin
   SessionTimeValueLabel.Caption := '--';
   SessionTimeValueLabel.Alignment := taRightJustify;
   SessionTimeValueLabel.Left := Self.Width - 110;
-  SessionTimeValueLabel.Top := 5;
+  SessionTimeValueLabel.Top := SessionTimeLabel.Top;
   SessionTimeValueLabel.Width := 100;
-  SessionTimeValueLabel.Height := 20;
+  SessionTimeValueLabel.Height := SessionTimeLabel.Height;
   SessionTimeValueLabel.Transparent := True;
   SessionTimeValueLabel.Parent := Self;
 
@@ -59,7 +70,7 @@ begin
   VenousPressureLabel.Caption := 'Venous Pressure';
   VenousPressureLabel.Alignment := taLeftJustify;
   VenousPressureLabel.Left := 5;
-  VenousPressureLabel.Top := 30;
+  VenousPressureLabel.Top := 55;
   VenousPressureLabel.Width := 50;
   VenousPressureLabel.Height := 20;
   VenousPressureLabel.Transparent := True;
@@ -69,9 +80,9 @@ begin
   VenousPressureValueLabel.Caption := '--';
   VenousPressureValueLabel.Alignment := taRightJustify;
   VenousPressureValueLabel.Left := Self.Width - 110;
-  VenousPressureValueLabel.Top := 30;
+  VenousPressureValueLabel.Top := VenousPressureLabel.Top;
   VenousPressureValueLabel.Width := 100;
-  VenousPressureValueLabel.Height := 20;
+  VenousPressureValueLabel.Height := VenousPressureLabel.Height;
   VenousPressureValueLabel.Transparent := True;
   VenousPressureValueLabel.Parent := Self;
 
@@ -79,7 +90,7 @@ begin
   DialysisPressureLabel.Caption := 'Dialysis Pressure';
   DialysisPressureLabel.Alignment := taLeftJustify;
   DialysisPressureLabel.Left := 5;
-  DialysisPressureLabel.Top := 55;
+  DialysisPressureLabel.Top := 80;
   DialysisPressureLabel.Width := 50;
   DialysisPressureLabel.Height := 20;
   DialysisPressureLabel.Transparent := True;
@@ -89,9 +100,9 @@ begin
   DialysisPressureValueLabel.Caption := '--';
   DialysisPressureValueLabel.Alignment := taRightJustify;
   DialysisPressureValueLabel.Left := Self.Width - 110;
-  DialysisPressureValueLabel.Top := 55;
+  DialysisPressureValueLabel.Top := DialysisPressureLabel.Top;
   DialysisPressureValueLabel.Width := 100;
-  DialysisPressureValueLabel.Height := 20;
+  DialysisPressureValueLabel.Height := DialysisPressureLabel.Height;
   DialysisPressureValueLabel.Transparent := True;
   DialysisPressureValueLabel.Parent := Self;
 
@@ -99,7 +110,7 @@ begin
   TMPLabel.Caption := 'TMP';
   TMPLabel.Alignment := taLeftJustify;
   TMPLabel.Left := 5;
-  TMPLabel.Top := 80;
+  TMPLabel.Top := 105;
   TMPLabel.Width := 50;
   TMPLabel.Height := 20;
   TMPLabel.Transparent := True;
@@ -109,9 +120,9 @@ begin
   TMPValueLabel.Caption := '--';
   TMPValueLabel.Alignment := taRightJustify;
   TMPValueLabel.Left := Self.Width - 110;
-  TMPValueLabel.Top := 80;
+  TMPValueLabel.Top := TMPLabel.Top;
   TMPValueLabel.Width := 100;
-  TMPValueLabel.Height := 20;
+  TMPValueLabel.Height := TMPLabel.Height;
   TMPValueLabel.Transparent := True;
   TMPValueLabel.Parent := Self;
 
@@ -131,6 +142,7 @@ end;
 procedure TDataDetailView.Setdata(const Value: TDataModel);
 begin
   Fdata := Value;
+  bedIdLabel.Caption := 'Bed - '+Fdata.BedId;
   SessionTimeValueLabel.Caption := Fdata.SessionTime;
   VenousPressureValueLabel.Caption := Fdata.VenousPressure;
   DialysisPressureValueLabel.Caption := Fdata.DialysisPressure;

@@ -17,8 +17,10 @@ type
   private
     FImage: TImage;
     FLabel: TLabel;
+    FBedIdLabel :TLabel;
     FTimer: TTimer;
     // FPopMenu :TPopupMenu;
+    FDataDetailView: TDataDetailView;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -27,6 +29,7 @@ type
     procedure onDblClick(Sender: TObject);
     procedure timerOnTimer(Sender: TObject);
     function getDataDetailView: TDataDetailView;
+    procedure resetData;
   end;
 
 implementation
@@ -67,6 +70,18 @@ begin
   FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
   bedStatus := EmBedNormal;
+
+  FDataDetailView := getDataDetailView;
+
+  FBedIdLabel := TLabel.Create(Self);
+  FBedIdLabel.Caption := 'Bed - '+ IntToStr(Self.Tag);
+  FBedIdLabel.Alignment := taCenter;
+  FBedIdLabel.Left := FImage.Left;
+  FBedIdLabel.Top := FImage.Top + FImage.Height;
+  FBedIdLabel.Width := 120;
+  FBedIdLabel.Height := 10;
+  FBedIdLabel.Transparent := True;
+  FBedIdLabel.Parent := Self;
 end;
 
 destructor TBedView.Destroy;
@@ -115,16 +130,15 @@ procedure TBedView.onClick(Sender: TObject);
 var
   lData: TDataModel;
   lDataNotify: IDataNotify;
-  lDataDetailView: TDataDetailView;
 begin
   // send message to TDataDetailView
-  lDataDetailView := getDataDetailView;
-  if Assigned(lDataDetailView) then
+  if Assigned(FDataDetailView) and (FbedStatus = EmBedUsed) then
   begin
     lData := TDataModel.Create;
     lData.generateDataForTest;
+    lData.BedId := IntToStr(Self.Tag);
 
-    lDataNotify := getDataDetailView;
+    lDataNotify := FDataDetailView;
     lDataNotify.sendSingleData(lData);
   end;
 
@@ -166,6 +180,11 @@ begin
   end;
 end;
 
+procedure TBedView.resetData;
+begin
+  FLabel.Caption := '';
+end;
+
 procedure TBedView.SetbedStatus(const Value: EmBedStatus);
 var
   fileStr: string;
@@ -177,6 +196,7 @@ begin
     EmBedNormal:
       begin
         fileStr := fileStr + 'bed_1.png';
+        resetData;
       end;
     EmBedUsed:
       begin
