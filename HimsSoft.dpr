@@ -3,7 +3,6 @@ program HimsSoft;
 uses
   Vcl.Forms,
   HCustomer in 'HCustomer.pas',
-  HCustomerSetting in 'HCustomerSetting.pas' {hsCustomerSetting},
   MainPage in 'MainPage.pas' {FMainPage},
   HBizBasePage in 'HBizBasePage.pas' {BizBasePage},
   HForm1 in 'HForm1.pas' {Form1},
@@ -13,7 +12,8 @@ uses
   HMenu in 'HMenu.pas',
   HDataModel in 'HDataModel.pas',
   HDataDetailView in 'HDataDetailView.pas',
-  HDataNotify in 'HDataNotify.pas';
+  HDataNotify in 'HDataNotify.pas',
+  HCustomerSet in 'HCustomerSet.pas' {CustomerSetForm};
 
 {$R *.res}
 

@@ -67,7 +67,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <Manifest_File>res\UAC.manifest</Manifest_File>
         <DCC_DcpOutput>dcp</DCC_DcpOutput>
         <DCC_ExeOutput>bin</DCC_ExeOutput>
         <DCC_DcuOutput>dcu</DCC_DcuOutput>
@@ -91,7 +91,6 @@
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Manifest_File>res\UAC.manifest</Manifest_File>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -102,16 +101,14 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="HCustomer.pas"/>
-        <DCCReference Include="HCustomerSetting.pas">
-            <Form>hsCustomerSetting</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="MainPage.pas">
             <Form>FMainPage</Form>
             <FormType>dfm</FormType>
@@ -134,6 +131,10 @@
         <DCCReference Include="HDataModel.pas"/>
         <DCCReference Include="HDataDetailView.pas"/>
         <DCCReference Include="HDataNotify.pas"/>
+        <DCCReference Include="HCustomerSet.pas">
+            <Form>CustomerSetForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

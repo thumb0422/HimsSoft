@@ -61,7 +61,7 @@ var
 
 implementation
 
-uses HMenu,HDataDetailView;
+uses HMenu, HDataDetailView;
 {$R *.dfm}
 
 procedure TFMainPage.FormCreate(Sender: TObject);
@@ -72,11 +72,12 @@ begin
 end;
 
 procedure TFMainPage.InitRight;
-var rightView :TDataDetailView;
+var
+  rightView: TDataDetailView;
 begin
   rightView := TDataDetailView.Create(Self);
   rightView.Name := 'DataDetailView';
-  rightView.Caption :='';
+  rightView.Caption := '';
   rightView.Align := alClient;
   rightView.Parent := cxScrollBox1;
 end;
@@ -86,7 +87,7 @@ var
   lMenu: TMenu;
   m: Integer;
 begin
-  fData := TClientdataset.Create(self);
+  fData := TClientdataset.Create(Self);
   fData.FieldDefs.Clear;
   fData.FieldDefs.Add('MID', ftInteger, 0); // ID
   fData.FieldDefs.Add('MDesc', ftString, 30); // œ‘ æCaption
@@ -186,9 +187,17 @@ var
 begin
   tempitem := TdxnavbarItem(Sender);
   Tag := tempitem.Tag;
-  cxPageControl1.ActivePage := cxTabSheet1;
-  cxTabSheet1.Caption := tempitem.Caption;
-  TRoomPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
+  if Tag < 2000 then
+  begin
+    cxPageControl1.ActivePage := cxTabSheet1;
+    cxTabSheet1.Caption := tempitem.Caption;
+    TRoomPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
+  end
+  else
+  begin
+
+  end;
+
 end;
 
 end.

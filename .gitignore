@@ -5,6 +5,7 @@ Win32
 *.identcache
 bin/*.exe
 bin/*.bpl
+bin/*.rar
 dcu
 dcp
 *.stat
