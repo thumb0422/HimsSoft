@@ -13,6 +13,8 @@ type
   public
     { Public declarations }
     class procedure loadSelf(var pForm: TBizBasePage; parentForm: TWinControl; AlignParent: TAlign);
+  private
+    destructor Destroy; override;
   end;
 
 var
@@ -23,6 +25,12 @@ implementation
 {$R *.dfm}
 
 { TBizBasePage }
+
+destructor TBizBasePage.Destroy;
+begin
+
+  inherited;
+end;
 
 class procedure TBizBasePage.loadSelf(var pForm: TBizBasePage;
   parentForm: TWinControl; AlignParent: TAlign);

@@ -30,18 +30,23 @@ object FMainPage: TFMainPage
   object cxPageControl1: TcxPageControl
     Left = 193
     Top = 0
-    Width = 550
-    Height = 509
-    Align = alCustom
+    Width = 718
+    Height = 506
+    Align = alClient
     Color = clWhite
     ParentBackground = False
     ParentColor = False
     TabOrder = 1
     Properties.ActivePage = cxTabSheet1
+    Properties.CloseButtonMode = cbmEveryTab
     Properties.CustomButtons.Buttons = <>
-    ClientRectBottom = 505
+    OnCanClose = cxPageControl1CanClose
+    OnCanCloseEx = cxPageControl1CanCloseEx
+    ExplicitWidth = 550
+    ExplicitHeight = 509
+    ClientRectBottom = 502
     ClientRectLeft = 4
-    ClientRectRight = 546
+    ClientRectRight = 714
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = 'Hims'
@@ -49,11 +54,13 @@ object FMainPage: TFMainPage
       Highlighted = True
       ImageIndex = 0
       ParentColor = False
+      ExplicitWidth = 542
+      ExplicitHeight = 481
       object bgLabel: TLabel
         Left = 0
         Top = 0
-        Width = 542
-        Height = 481
+        Width = 710
+        Height = 478
         Align = alClient
         Alignment = taCenter
         Caption = 'HimsSoft'
@@ -68,13 +75,5 @@ object FMainPage: TFMainPage
         ExplicitHeight = 77
       end
     end
-  end
-  object cxScrollBox1: TcxScrollBox
-    Left = 726
-    Top = 0
-    Width = 185
-    Height = 506
-    Align = alRight
-    TabOrder = 2
   end
 end

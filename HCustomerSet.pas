@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs,HBizBasePage;
 
 type
-  TCustomerSetForm = class(TBizBasePage)
+  TCustomerSetPage = class(TBizBasePage)
   private
     { Private declarations }
   public
@@ -15,7 +15,7 @@ type
   end;
 
 var
-  CustomerSetForm: TCustomerSetForm;
+  CustomerSetPage: TCustomerSetPage;
 
 implementation
 

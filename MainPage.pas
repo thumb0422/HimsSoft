@@ -12,13 +12,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, cxGraphics,
-  cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns, cxClasses,
+  System.Classes,Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls,Data.DB, Datasnap.DBClient,MidasLib,
+  cxGraphics,cxControls, cxLookAndFeels, cxLookAndFeelPainters, dxNavBarCollns, cxClasses,
   dxNavBar, dxNavBarGroupItems, Vcl.ExtCtrls, cxSplitter, dxBarBuiltInMenu,
-  cxPC,
-  HBizBasePage, HRoom1, Data.DB, Datasnap.DBClient, dxSkinsCore, dxSkinBlack,
-  dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkroom,
+  cxPC,dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkroom,
   dxSkinDarkSide, dxSkinDevExpressDarkStyle, dxSkinDevExpressStyle, dxSkinFoggy,
   dxSkinGlassOceans, dxSkinHighContrast, dxSkiniMaginary, dxSkinLilian,
   dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMetropolis,
@@ -32,21 +29,23 @@ uses
   dxSkinTheAsphaltWorld, dxSkinTheBezier, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, MidasLib, cxScrollBox, Vcl.StdCtrls;
+  dxSkinXmas2008Blue, cxScrollBox, Vcl.StdCtrls,
+  HBizBasePage, HRoom1,HCustomerSet;
 
 type
   TFMainPage = class(TForm)
     dxNavBar1: TdxNavBar;
     cxPageControl1: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
-    cxScrollBox1: TcxScrollBox;
     bgLabel: TLabel;
     procedure FormCreate(Sender: TObject);
+    procedure cxPageControl1CanClose(Sender: TObject; var ACanClose: Boolean);
+    procedure cxPageControl1CanCloseEx(Sender: TObject; ATabIndex: Integer;
+      var ACanClose: Boolean);
   private
     { Private declarations }
     procedure InitNavBar();
     procedure InitData;
-    procedure InitRight;
     procedure itemClick(Sender: TObject);
   public
     { Public declarations }
@@ -64,22 +63,23 @@ implementation
 uses HMenu, HDataDetailView;
 {$R *.dfm}
 
-procedure TFMainPage.FormCreate(Sender: TObject);
+procedure TFMainPage.cxPageControl1CanClose(Sender: TObject;
+  var ACanClose: Boolean);
 begin
-  InitRight;
-  InitData;
-  InitNavBar;
+  ACanClose := True;
 end;
 
-procedure TFMainPage.InitRight;
-var
-  rightView: TDataDetailView;
+procedure TFMainPage.cxPageControl1CanCloseEx(Sender: TObject;
+  ATabIndex: Integer; var ACanClose: Boolean);
 begin
-  rightView := TDataDetailView.Create(Self);
-  rightView.Name := 'DataDetailView';
-  rightView.Caption := '';
-  rightView.Align := alClient;
-  rightView.Parent := cxScrollBox1;
+  // Writeln('-----'+IntToStr(ATabIndex));
+  ACanClose := True;
+end;
+
+procedure TFMainPage.FormCreate(Sender: TObject);
+begin
+  InitData;
+  InitNavBar;
 end;
 
 procedure TFMainPage.InitData;
@@ -186,6 +186,20 @@ var
   tempitem: TdxnavbarItem;
 begin
   tempitem := TdxnavbarItem(Sender);
+  if not Assigned(cxTabSheet1) then
+  begin
+    cxTabSheet1 := TcxTabSheet.Create(Self);
+    with cxTabSheet1 do
+    begin
+      Parent := cxPageControl1;
+      Caption := 'Hims';
+      Color := clWhite;
+      Highlighted := True;
+      ImageIndex := 0;
+      ParentColor := False;
+    end;
+
+  end;
   Tag := tempitem.Tag;
   if Tag < 2000 then
   begin
@@ -195,7 +209,9 @@ begin
   end
   else
   begin
-
+    cxPageControl1.ActivePage := cxTabSheet1;
+    cxTabSheet1.Caption := tempitem.Caption;
+    TCustomerSetPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
   end;
 
 end;

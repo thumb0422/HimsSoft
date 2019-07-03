@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, HBizBasePage,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,cxScrollBox,
+  HDataDetailView;
 
 type
   TRoomPage = class(TBizBasePage)
@@ -14,8 +15,13 @@ type
   private
     { Private declarations }
     procedure reloadView;
+    procedure InitView;
   public
     { Public declarations }
+  protected
+    centerPanel :TPanel;
+    cxScrollBox1:TcxScrollBox;
+    fDataDetaiView :TDataDetailView;
   end;
 
 var
@@ -29,12 +35,48 @@ uses
 
 procedure TRoomPage.FormCreate(Sender: TObject);
 begin
+  InitView;
   reloadView;
 end;
 
 procedure TRoomPage.FormResize(Sender: TObject);
 begin
 //  reloadView; //FrameSizeChange 好像有问题
+end;
+
+procedure TRoomPage.InitView;
+begin
+  cxScrollBox1 := TcxScrollBox.Create(Self);
+  with cxScrollBox1 do
+  begin
+    Parent:=Self;
+    Caption := '';
+    Left := Self.Width - 200;;
+    Top := 0;
+    Width := 200;
+    Height := Self.Height;
+    Align := alRight;
+    Color := clWhite;
+  end;
+
+  fDataDetaiView := TDataDetailView.Create(Self);
+  fDataDetaiView.Name := 'DataDetailView';
+  fDataDetaiView.Caption := '';
+  fDataDetaiView.Align := alClient;
+  fDataDetaiView.Parent := cxScrollBox1;
+
+  centerPanel := TPanel.Create(Self);
+  with centerPanel do
+  begin
+    Parent:=Self;
+    Caption := '';
+    Left := 0;
+    Top := 0;
+    Width := Self.Width - centerPanel.Left;
+    Height := Self.Height;
+    Align := alClient;
+    Color := clWhite;
+  end;
 end;
 
 procedure TRoomPage.reloadView;
@@ -49,9 +91,9 @@ var
   aaa:string;
   fLeft,fTop:Integer;
 begin
-  for M := 0 to Self.ComponentCount - 1 do
+  for M := 0 to centerPanel.ComponentCount - 1 do
   begin
-    TempCom := Self.Components[M];
+    TempCom := centerPanel.Components[M];
     if Pos('bedView', TempCom.Name) > 0 then
     begin
       TempCom.Free;
@@ -62,8 +104,8 @@ begin
   fWidth := 130;
   fHeight := 120;
   fSeperateWidth := 20;
-  fCol := ceil((Self.Width - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
-  fRow := ceil((Self.Height - fSeperateWidth) / (fHeight + fSeperateWidth)); //行数
+  fCol := ceil((centerPanel.Width - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
+  fRow := ceil((centerPanel.Height - fSeperateWidth) / (fHeight + fSeperateWidth)); //行数
   if (fCol * fRow) > fMax then
   begin
     fRow := fMax div fCol;
@@ -76,25 +118,27 @@ begin
   for I := 0 to fCol - 1 do
   begin
     fLeft := fSeperateWidth + I * (fWidth + fSeperateWidth);
-    if (fLeft + fWidth + fSeperateWidth) > self.Width then
+    if (fLeft + fWidth + fSeperateWidth) > centerPanel.Width then
     begin
       Continue;
     end;
     for J := 0 to fRow - 1 do
     begin
       fTop := fSeperateWidth + J * (fHeight + fSeperateWidth);
-      if (fTop + fHeight + fSeperateWidth > self.Height) then
+      if (fTop + fHeight + fSeperateWidth > centerPanel.Height) then
       begin
         Continue;
       end;
       bedView := TBedView.Create(nil);
       bedView.Name := 'bedView' + IntToStr(I) + IntToStr(J);
-      bedView.Parent := Self;
+      bedView.Caption := '';
+      bedView.Parent := centerPanel;
       bedView.Left := fLeft;
       bedView.Top := fTop;
       bedView.Width := fWidth;
       bedView.Height := fHeight;
       bedView.bedId := IntToStr(I)+IntToStr(J);
+      bedView.notifyComponent := fDataDetaiView;
     end;
   end;
 end;

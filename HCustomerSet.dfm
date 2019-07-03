@@ -1,4 +1,4 @@
-object CustomerSetForm: TCustomerSetForm
+object CustomerSetPage: TCustomerSetPage
   Left = 0
   Top = 0
   ClientHeight = 568

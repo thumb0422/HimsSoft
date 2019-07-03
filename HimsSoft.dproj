@@ -132,7 +132,7 @@
         <DCCReference Include="HDataDetailView.pas"/>
         <DCCReference Include="HDataNotify.pas"/>
         <DCCReference Include="HCustomerSet.pas">
-            <Form>CustomerSetForm</Form>
+            <Form>CustomerSetPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

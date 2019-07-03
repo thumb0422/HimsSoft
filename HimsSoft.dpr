@@ -13,7 +13,7 @@ uses
   HDataModel in 'HDataModel.pas',
   HDataDetailView in 'HDataDetailView.pas',
   HDataNotify in 'HDataNotify.pas',
-  HCustomerSet in 'HCustomerSet.pas' {CustomerSetForm};
+  HCustomerSet in 'HCustomerSet.pas' {CustomerSetPage};
 
 {$R *.res}
 

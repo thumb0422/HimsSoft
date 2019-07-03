@@ -15,7 +15,11 @@ type
   private
     FbedId: string;
     procedure SetbedId(const Value: string);
+  private
+    FnotifyComponent: TComponent;
+    procedure SetnotifyComponent(const Value: TComponent);
   published
+    property notifyComponent :TComponent read FnotifyComponent write SetnotifyComponent;
     property bedStatus: EmBedStatus read FbedStatus write SetbedStatus;
     property bedId:string read FbedId write SetbedId;
   private
@@ -32,7 +36,7 @@ type
     procedure onClick(Sender: TObject);
     procedure onDblClick(Sender: TObject);
     procedure timerOnTimer(Sender: TObject);
-    function getDataDetailView: TDataDetailView;
+//    function getDataDetailView: TDataDetailView;
     procedure resetData;
   end;
 
@@ -76,8 +80,6 @@ begin
   FImage.onDblClick := onDblClick;
   bedStatus := EmBedNormal;
 
-  FDataDetailView := getDataDetailView;
-
   FBedIdLabel := TLabel.Create(Self);
   FBedIdLabel.Caption := 'Bed - ';
   FBedIdLabel.Align := alBottom;
@@ -101,36 +103,36 @@ begin
   inherited;
 end;
 
-function TBedView.getDataDetailView: TDataDetailView;
-var
-  Obj, detailObj: TObject;
-  mainPage: TForm;
-  dataDetailView: TDataDetailView;
-  i: integer;
-  J: integer;
-begin
-  for i := 0 to Application.ComponentCount - 1 do
-  begin
-    Obj := Application.Components[i];
-    if Obj is TForm then
-    begin
-      mainPage := (Obj as TForm);
-      if mainPage.Name = 'FMainPage' then
-      begin
-        for J := 0 to mainPage.ComponentCount - 1 do
-        begin
-          detailObj := mainPage.Components[J];
-          if detailObj is TDataDetailView then
-          begin
-            dataDetailView := (detailObj as TDataDetailView);
-            Result := dataDetailView;
-            Break;
-          end;
-        end;
-      end;
-    end;
-  end;
-end;
+//function TBedView.getDataDetailView: TDataDetailView;
+//var
+//  Obj, detailObj: TObject;
+//  mainPage: TForm;
+//  dataDetailView: TDataDetailView;
+//  i: integer;
+//  J: integer;
+//begin
+//  for i := 0 to Application.ComponentCount - 1 do
+//  begin
+//    Obj := Application.Components[i];
+//    if Obj is TForm then
+//    begin
+//      mainPage := (Obj as TForm);
+//      if mainPage.Name = 'FMainPage' then
+//      begin
+//        for J := 0 to mainPage.ComponentCount - 1 do
+//        begin
+//          detailObj := mainPage.Components[J];
+//          if detailObj is TDataDetailView then
+//          begin
+//            dataDetailView := (detailObj as TDataDetailView);
+//            Result := dataDetailView;
+//            Break;
+//          end;
+//        end;
+//      end;
+//    end;
+//  end;
+//end;
 
 procedure TBedView.onClick(Sender: TObject);
 var
@@ -221,6 +223,12 @@ begin
       end;
   end;
   FImage.Picture.LoadFromFile(fileStr);
+end;
+
+procedure TBedView.SetnotifyComponent(const Value: TComponent);
+begin
+  FnotifyComponent := Value;
+  FDataDetailView := FnotifyComponent as TDataDetailView;
 end;
 
 procedure TBedView.timerOnTimer(Sender: TObject);
