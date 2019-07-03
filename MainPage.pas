@@ -32,7 +32,7 @@ uses
   dxSkinTheAsphaltWorld, dxSkinTheBezier, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, MidasLib, cxScrollBox;
+  dxSkinXmas2008Blue, MidasLib, cxScrollBox, Vcl.StdCtrls;
 
 type
   TFMainPage = class(TForm)
@@ -40,6 +40,7 @@ type
     cxPageControl1: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
     cxScrollBox1: TcxScrollBox;
+    bgLabel: TLabel;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

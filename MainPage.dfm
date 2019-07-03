@@ -44,11 +44,29 @@ object FMainPage: TFMainPage
     ClientRectRight = 546
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
-      Caption = 'cxTabSheet1'
+      Caption = 'Hims'
       Color = clWhite
       Highlighted = True
       ImageIndex = 0
       ParentColor = False
+      object bgLabel: TLabel
+        Left = 0
+        Top = 0
+        Width = 542
+        Height = 481
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'HimsSoft'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -64
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold, fsItalic]
+        ParentFont = False
+        Layout = tlCenter
+        ExplicitWidth = 294
+        ExplicitHeight = 77
+      end
     end
   end
   object cxScrollBox1: TcxScrollBox

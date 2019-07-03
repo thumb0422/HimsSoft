@@ -90,12 +90,11 @@ begin
       bedView := TBedView.Create(nil);
       bedView.Name := 'bedView' + IntToStr(I) + IntToStr(J);
       bedView.Parent := Self;
-//      bedView.bedStatus := EmBedStatus(Random(2));
       bedView.Left := fLeft;
       bedView.Top := fTop;
       bedView.Width := fWidth;
       bedView.Height := fHeight;
-      bedView.Tag := StrToInt(IntToStr(I)+IntToStr(J));
+      bedView.bedId := IntToStr(I)+IntToStr(J);
     end;
   end;
 end;

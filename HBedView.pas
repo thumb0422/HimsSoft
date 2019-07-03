@@ -3,7 +3,7 @@ unit HBedView;
 interface
 
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
-  Vcl.Forms, Winapi.Windows,
+  Vcl.Forms, Winapi.Windows,Vcl.Controls,
   HDataNotify, HDataModel,
   HConst, HDataDetailView;
 
@@ -12,8 +12,12 @@ type
   private
     FbedStatus: EmBedStatus;
     procedure SetbedStatus(const Value: EmBedStatus);
+  private
+    FbedId: string;
+    procedure SetbedId(const Value: string);
   published
     property bedStatus: EmBedStatus read FbedStatus write SetbedStatus;
+    property bedId:string read FbedId write SetbedId;
   private
     FImage: TImage;
     FLabel: TLabel;
@@ -52,8 +56,8 @@ begin
   FLabel.Top := 0;
   FLabel.Width := 120;
   FLabel.Height := 20;
-  FLabel.Alignment := taCenter; // 为什么没居中
-  // FLabel.Align := Align.alTop;
+  FLabel.Align := alTop;
+  FLabel.Alignment := taCenter;
   FLabel.Layout := tlCenter;
   FLabel.Font.Color := clRed;
   FLabel.Transparent := True;
@@ -66,6 +70,7 @@ begin
   FImage.Width := 120;
   FImage.Height := 75;
   FImage.Stretch := True;
+  FImage.Align := alClient;
   ParentBackground := False;
   FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
@@ -74,7 +79,8 @@ begin
   FDataDetailView := getDataDetailView;
 
   FBedIdLabel := TLabel.Create(Self);
-  FBedIdLabel.Caption := 'Bed - '+ IntToStr(Self.Tag);
+  FBedIdLabel.Caption := 'Bed - ';
+  FBedIdLabel.Align := alBottom;
   FBedIdLabel.Alignment := taCenter;
   FBedIdLabel.Left := FImage.Left;
   FBedIdLabel.Top := FImage.Top + FImage.Height;
@@ -136,7 +142,7 @@ begin
   begin
     lData := TDataModel.Create;
     lData.generateDataForTest;
-    lData.BedId := IntToStr(Self.Tag);
+    lData.BedId := FbedId;
 
     lDataNotify := FDataDetailView;
     lDataNotify.sendSingleData(lData);
@@ -183,6 +189,12 @@ end;
 procedure TBedView.resetData;
 begin
   FLabel.Caption := '';
+end;
+
+procedure TBedView.SetbedId(const Value: string);
+begin
+  FbedId := Value;
+  FBedIdLabel.Caption := 'Bed - '+ FbedId;
 end;
 
 procedure TBedView.SetbedStatus(const Value: EmBedStatus);
