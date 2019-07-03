@@ -202,7 +202,7 @@ var
   fileStr: string;
 begin
   FbedStatus := Value;
-  fileStr := ExtractFilePath(paramstr(0));
+  fileStr := ExtractFilePath(paramstr(0))+'res/';
   FTimer.Enabled := False;
   case FbedStatus of
     EmBedNormal:

@@ -3,7 +3,8 @@ __history
 Win32
 *.local
 *.identcache
-bin
+bin/*.exe
+bin/*.bpl
 dcu
 dcp
 *.stat
