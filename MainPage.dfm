@@ -2,7 +2,7 @@ object FMainPage: TFMainPage
   Left = 0
   Top = 0
   Caption = 'HimsSoft'
-  ClientHeight = 506
+  ClientHeight = 611
   ClientWidth = 911
   Color = clWhite
   DefaultMonitor = dmMainForm
@@ -20,18 +20,19 @@ object FMainPage: TFMainPage
     Left = 0
     Top = 0
     Width = 193
-    Height = 506
+    Height = 611
     Align = alLeft
     ActiveGroupIndex = -1
     TabOrder = 0
     LookAndFeel.Kind = lfFlat
     View = 8
+    ExplicitHeight = 506
   end
   object cxPageControl1: TcxPageControl
     Left = 193
     Top = 0
     Width = 718
-    Height = 506
+    Height = 611
     Align = alClient
     Color = clWhite
     ParentBackground = False
@@ -44,7 +45,7 @@ object FMainPage: TFMainPage
     OnCanCloseEx = cxPageControl1CanCloseEx
     ExplicitWidth = 550
     ExplicitHeight = 509
-    ClientRectBottom = 502
+    ClientRectBottom = 607
     ClientRectLeft = 4
     ClientRectRight = 714
     ClientRectTop = 24
@@ -54,13 +55,15 @@ object FMainPage: TFMainPage
       Highlighted = True
       ImageIndex = 0
       ParentColor = False
+      ExplicitLeft = 0
+      ExplicitTop = 0
       ExplicitWidth = 542
       ExplicitHeight = 481
       object bgLabel: TLabel
         Left = 0
         Top = 0
-        Width = 710
-        Height = 478
+        Width = 294
+        Height = 77
         Align = alClient
         Alignment = taCenter
         Caption = 'HimsSoft'
@@ -71,8 +74,6 @@ object FMainPage: TFMainPage
         Font.Style = [fsBold, fsItalic]
         ParentFont = False
         Layout = tlCenter
-        ExplicitWidth = 294
-        ExplicitHeight = 77
       end
     end
   end

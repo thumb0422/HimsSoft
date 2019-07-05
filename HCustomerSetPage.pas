@@ -6,7 +6,7 @@
 {                                                       }
 {*******************************************************}
 
-unit HCustomerSet;
+unit HCustomerSetPage;
 
 interface
 

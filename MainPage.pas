@@ -30,7 +30,7 @@ uses
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
   dxSkinXmas2008Blue, cxScrollBox, Vcl.StdCtrls,
-  HBizBasePage, HRoom1,HCustomerSet,HSettingPage;
+  HBizBasePage, HRoom1,HSettingPage;
 
 type
   TFMainPage = class(TForm)

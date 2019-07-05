@@ -11,10 +11,10 @@ uses
   HDataModel in 'HDataModel.pas',
   HDataDetailView in 'HDataDetailView.pas',
   HDataNotify in 'HDataNotify.pas',
-  HCustomerSet in 'HCustomerSet.pas' {CustomerSetPage},
   HSettingPage in 'HSettingPage.pas' {SettingPage},
   HBedSetPage in 'HBedSetPage.pas' {BedSetPage},
-  HMechineSetPage in 'HMechineSetPage.pas' {MechineSetPage};
+  HMechineSetPage in 'HMechineSetPage.pas' {MechineSetPage},
+  HCustomerSetPage in 'HCustomerSetPage.pas' {CustomerSetPage};
 
 {$R *.res}
 

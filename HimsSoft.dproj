@@ -125,10 +125,6 @@
         <DCCReference Include="HDataModel.pas"/>
         <DCCReference Include="HDataDetailView.pas"/>
         <DCCReference Include="HDataNotify.pas"/>
-        <DCCReference Include="HCustomerSet.pas">
-            <Form>CustomerSetPage</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="HSettingPage.pas">
             <Form>SettingPage</Form>
             <FormType>dfm</FormType>
@@ -139,6 +135,10 @@
         </DCCReference>
         <DCCReference Include="HMechineSetPage.pas">
             <Form>MechineSetPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="HCustomerSetPage.pas">
+            <Form>CustomerSetPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
