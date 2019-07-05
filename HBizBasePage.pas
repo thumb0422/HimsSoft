@@ -13,6 +13,7 @@ type
   public
     { Public declarations }
     class procedure loadSelf(var pForm: TBizBasePage; parentForm: TWinControl; AlignParent: TAlign);
+    procedure initBaseView;virtual;abstract;
   private
     destructor Destroy; override;
   end;

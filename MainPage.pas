@@ -30,7 +30,7 @@ uses
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
   dxSkinXmas2008Blue, cxScrollBox, Vcl.StdCtrls,
-  HBizBasePage, HRoom1,HCustomerSet;
+  HBizBasePage, HRoom1,HCustomerSet,HSettingPage;
 
 type
   TFMainPage = class(TForm)
@@ -211,7 +211,7 @@ begin
   begin
     cxPageControl1.ActivePage := cxTabSheet1;
     cxTabSheet1.Caption := tempitem.Caption;
-    TCustomerSetPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
+    TSettingPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
   end;
 
 end;
