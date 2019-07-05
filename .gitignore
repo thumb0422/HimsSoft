@@ -15,3 +15,4 @@ ModelSupport_HLazy
 ModelSupport_HimsSoft
 *.stat
 *.stat
+bin/*.xml

@@ -116,12 +116,6 @@
         <DCCReference Include="HBizBasePage.pas">
             <Form>BizBasePage</Form>
         </DCCReference>
-        <DCCReference Include="HForm1.pas">
-            <Form>Form1</Form>
-        </DCCReference>
-        <DCCReference Include="HForm2.pas">
-            <Form>Form2</Form>
-        </DCCReference>
         <DCCReference Include="HRoom1.pas">
             <Form>RoomPage</Form>
             <FormType>dfm</FormType>
