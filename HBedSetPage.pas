@@ -67,7 +67,6 @@ end;
 procedure TBedSetPage.FormCreate(Sender: TObject);
 var
   lDtaFile: string;
-  lMDataFile :string;
 begin
   inherited;
   ClientDataSet1.CreateDataSet;

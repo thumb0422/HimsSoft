@@ -12,8 +12,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    class procedure loadSelf(var pForm: TBizBasePage; parentForm: TWinControl; AlignParent: TAlign);
-    procedure initBaseView;virtual;abstract;
+    class procedure loadSelf(parentForm: TWinControl; AlignParent: TAlign);
   private
     destructor Destroy; override;
   end;
@@ -33,11 +32,9 @@ begin
   inherited;
 end;
 
-class procedure TBizBasePage.loadSelf(var pForm: TBizBasePage;
-  parentForm: TWinControl; AlignParent: TAlign);
+class procedure TBizBasePage.loadSelf(parentForm: TWinControl; AlignParent: TAlign);
+var pForm:TBizBasePage;
 begin
-  if Assigned(pForm) then
-    pForm.Free;
   pForm := Create(parentForm);
   with pForm as Self do
   begin

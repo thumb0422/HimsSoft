@@ -45,7 +45,6 @@ procedure TSettingPage.FormPaint(Sender: TObject);
 var
   ps : array [0 .. 2] of TPoint;
   Rgn: HRGN;
-  lBedButton, lMechineButton, lCustomerButton, lLinkButton: TButton;
 begin
   ps[0] := Point(350, 100);
   ps[1] := Point(100, 500);

@@ -13,7 +13,7 @@ interface
     procedure SetMParent(const Value: Integer);
     procedure SetMVisible(const Value: Integer);
     procedure SetMClass(const Value: string);
-  published
+  public
      property MID:Integer read FMID write SetMID;//ID
      property MDesc:string read FMDesc write SetMDesc;//Caption
      property MParent:Integer read FMParent write SetMParent;//ParentId

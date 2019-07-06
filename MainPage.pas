@@ -53,7 +53,6 @@ type
 
 var
   FMainPage: TFMainPage;
-  FLoadForm: TBizBasePage;
   FMenuList: TList;
 
 implementation
@@ -185,7 +184,6 @@ end;
 
 procedure TFMainPage.itemClick(Sender: TObject);
 var
-  Tag: Integer;
   litem: TdxnavbarItem;
   I: Integer;
   lTabSheet :TcxTabSheet;
@@ -217,41 +215,12 @@ begin
   cxPageControl1.ActivePage := lTabSheet;
   if litem.Tag < 2000 then
   begin
-    TRoomPage.loadSelf(FLoadForm, lTabSheet, alClient);
+    TRoomPage.loadSelf(lTabSheet, alClient);
   end
   else
   begin
-    TSettingPage.loadSelf(FLoadForm, lTabSheet, alClient);
+    TSettingPage.loadSelf(lTabSheet, alClient);
   end;
-  {
-  if not Assigned(cxTabSheet1) then
-  begin
-    cxTabSheet1 := TcxTabSheet.Create(Self);
-    with cxTabSheet1 do
-    begin
-      Parent := cxPageControl1;
-      Caption := 'Hims';
-      Color := clWhite;
-      Highlighted := True;
-      ImageIndex := 0;
-      ParentColor := False;
-    end;
-
-  end;
-  Tag := tempitem.Tag;
-  if Tag < 2000 then
-  begin
-    cxPageControl1.ActivePage := cxTabSheet1;
-    cxTabSheet1.Caption := litem.Caption;
-    TRoomPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
-  end
-  else
-  begin
-    cxPageControl1.ActivePage := cxTabSheet1;
-    cxTabSheet1.Caption := litem.Caption;
-    TSettingPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
-  end;
-  }
 end;
 
 end.
