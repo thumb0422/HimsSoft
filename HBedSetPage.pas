@@ -30,7 +30,7 @@ uses
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
   dxSkinXmas2008Blue, Vcl.StdCtrls, cxButtons, Vcl.ExtCtrls, EhLibVCL, GridsEh,
-  DBAxisGridsEh, DBGridEh;
+  DBAxisGridsEh, DBGridEh, Data.DB, Datasnap.DBClient;
 
 type
   TBedSetPage = class(TForm)
@@ -38,6 +38,11 @@ type
     Panel1: TPanel;
     saveBtn: TcxButton;
     cancleBtn: TcxButton;
+    ClientDataSet1: TClientDataSet;
+    DataSource1: TDataSource;
+    ClientDataSet1MRoomId: TStringField;
+    ClientDataSet1MBedId: TStringField;
+    ClientDataSet1isValid: TBooleanField;
     procedure FormCreate(Sender: TObject);
     procedure saveBtnClick(Sender: TObject);
     procedure cancleBtnClick(Sender: TObject);
@@ -60,13 +65,35 @@ begin
 end;
 
 procedure TBedSetPage.FormCreate(Sender: TObject);
+var
+  lDtaFile: string;
+  lMDataFile :string;
 begin
-//
+  inherited;
+  ClientDataSet1.CreateDataSet;
+  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
+  if FileExists(lDtaFile) then
+  begin
+    ClientDataSet1.LoadFromFile(lDtaFile);
+  end;
+
+  if ClientDataSet1.Active = False then
+  begin
+    ClientDataSet1.Open;
+  end;
 end;
 
 procedure TBedSetPage.saveBtnClick(Sender: TObject);
+var
+  lDtaFile: string;
 begin
-//
+  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
+  if (ClientDataSet1.State in [dsInsert,dsEdit]) then
+    ClientDataSet1.Post;
+  if ClientDataSet1.RecordCount > 0 then
+  begin
+    ClientDataSet1.SaveToFile(lDtaFile);
+  end;
 end;
 
 end.

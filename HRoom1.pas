@@ -91,15 +91,14 @@ var
   aaa:string;
   fLeft,fTop:Integer;
 begin
-  for M := 0 to centerPanel.ComponentCount - 1 do
-  begin
-    TempCom := centerPanel.Components[M];
-    if Pos('bedView', TempCom.Name) > 0 then
-    begin
-      TempCom.Free;
-    end;
-
-  end;
+//  for M := 0 to centerPanel.ComponentCount - 1 do
+//  begin
+//    TempCom := centerPanel.Components[M];
+//    if Pos('bedView', TempCom.Name) > 0 then
+//    begin
+//      TempCom.Free;
+//    end;
+//  end;
   fMax := 20;
   fWidth := 130;
   fHeight := 120;
