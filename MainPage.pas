@@ -36,8 +36,6 @@ type
   TFMainPage = class(TForm)
     dxNavBar1: TdxNavBar;
     cxPageControl1: TcxPageControl;
-    cxTabSheet1: TcxTabSheet;
-    bgLabel: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cxPageControl1CanClose(Sender: TObject; var ACanClose: Boolean);
     procedure cxPageControl1CanCloseEx(Sender: TObject; ATabIndex: Integer;
@@ -93,6 +91,7 @@ begin
   fData.FieldDefs.Add('MDesc', ftString, 30); // 显示Caption
   fData.FieldDefs.Add('MParent', ftInteger, 0); // 父类
   fData.FieldDefs.Add('MVisible', ftInteger, 0); // 是否显示
+  fData.FieldDefs.Add('MClass', ftString, 100); // 显示的className
   fData.CreateDataSet;
 
   FMenuList := TList.Create;
@@ -109,6 +108,7 @@ begin
     lMenu.MDesc := '区域一';
     lMenu.MParent := 1000;
     lMenu.MVisible := 1;
+    lMenu.MClass := 'TRoomPage';
     FMenuList.Add(lMenu);
 
     lMenu := TMenu.Create;
@@ -123,6 +123,7 @@ begin
     lMenu.MDesc := '用户设置';
     lMenu.MParent := 2000;
     lMenu.MVisible := 1;
+    lMenu.MClass := 'TSettingPage';
     FMenuList.Add(lMenu);
   end;
 
@@ -137,6 +138,7 @@ begin
       FieldByName('MDesc').AsString := lMenu.MDesc;
       FieldByName('MParent').AsInteger := lMenu.MParent;
       FieldByName('MVisible').AsInteger := lMenu.MVisible;
+      FieldByName('MClass').AsString := lMenu.MClass;
       Post;
     end;
     EnableControls;
@@ -172,6 +174,7 @@ begin
         tempitem.Caption := FieldByName('MDesc').AsString;
         tempitem.Tag := FieldByName('MID').AsInteger;
         tempitem.OnClick := itemClick;
+        tempitem.Name := FieldByName('MClass').AsString;
         tempgroup.CreateLink(tempitem);
       end;
       Next;
@@ -183,9 +186,44 @@ end;
 procedure TFMainPage.itemClick(Sender: TObject);
 var
   Tag: Integer;
-  tempitem: TdxnavbarItem;
+  litem: TdxnavbarItem;
+  I: Integer;
+  lTabSheet :TcxTabSheet;
+  tabSheetCaption,itemCaption:string;
 begin
-  tempitem := TdxnavbarItem(Sender);
+  litem := TdxnavbarItem(Sender);
+  lTabSheet := nil;
+  for I := 0 to cxPageControl1.TabCount-1 do
+  begin
+    tabSheetCaption := cxPageControl1.Pages[I].Name;
+    itemCaption := litem.Name;
+    if tabSheetCaption.Contains(itemCaption) then
+    begin
+      lTabSheet := cxPageControl1.Pages[I];
+      Break;
+    end;
+  end;
+  if not Assigned(lTabSheet) then
+  begin
+    lTabSheet := TcxTabSheet.Create(Self);
+    with lTabSheet do
+    begin
+      Visible := True;
+      Caption := litem.Caption;
+      Name := litem.Name + 'sheet';
+      PageControl := cxPageControl1;
+    end;
+  end;
+  cxPageControl1.ActivePage := lTabSheet;
+  if litem.Tag < 2000 then
+  begin
+    TRoomPage.loadSelf(FLoadForm, lTabSheet, alClient);
+  end
+  else
+  begin
+    TSettingPage.loadSelf(FLoadForm, lTabSheet, alClient);
+  end;
+  {
   if not Assigned(cxTabSheet1) then
   begin
     cxTabSheet1 := TcxTabSheet.Create(Self);
@@ -204,16 +242,16 @@ begin
   if Tag < 2000 then
   begin
     cxPageControl1.ActivePage := cxTabSheet1;
-    cxTabSheet1.Caption := tempitem.Caption;
+    cxTabSheet1.Caption := litem.Caption;
     TRoomPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
   end
   else
   begin
     cxPageControl1.ActivePage := cxTabSheet1;
-    cxTabSheet1.Caption := tempitem.Caption;
+    cxTabSheet1.Caption := litem.Caption;
     TSettingPage.loadSelf(FLoadForm, cxTabSheet1, alClient);
   end;
-
+  }
 end;
 
 end.
