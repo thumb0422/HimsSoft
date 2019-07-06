@@ -14,7 +14,8 @@ uses
   HSettingPage in 'HSettingPage.pas' {SettingPage},
   HBedSetPage in 'HBedSetPage.pas' {BedSetPage},
   HMechineSetPage in 'HMechineSetPage.pas' {MechineSetPage},
-  HCustomerSetPage in 'HCustomerSetPage.pas' {CustomerSetPage};
+  HCustomerSetPage in 'HCustomerSetPage.pas' {CustomerSetPage},
+  HCBMLinkPage in 'HCBMLinkPage.pas' {HCBMLinkPage};
 
 {$R *.res}
 

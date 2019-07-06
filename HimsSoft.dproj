@@ -127,18 +127,18 @@
         <DCCReference Include="HDataNotify.pas"/>
         <DCCReference Include="HSettingPage.pas">
             <Form>SettingPage</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="HBedSetPage.pas">
             <Form>BedSetPage</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="HMechineSetPage.pas">
             <Form>MechineSetPage</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="HCustomerSetPage.pas">
             <Form>CustomerSetPage</Form>
+        </DCCReference>
+        <DCCReference Include="HCBMLinkPage.pas">
+            <Form>HCBMLinkPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

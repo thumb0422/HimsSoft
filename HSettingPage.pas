@@ -31,7 +31,7 @@ var
   SettingPage: TSettingPage;
 
 implementation
-uses HBedSetPage,HMechineSetPage,HCustomerSetPage;
+uses HBedSetPage,HMechineSetPage,HCustomerSetPage,HCBMLinkPage;
 {$R *.dfm}
 
 procedure TSettingPage.FormCreate(Sender: TObject);
@@ -121,6 +121,7 @@ var
   lbedSetPage:TBedSetPage;
   lmechineSetPage :TMechineSetPage;
   lcustomerSetPage:TCustomerSetPage;
+  llinkPage:THCBMLinkPage;
 begin
   lButton := TButton(Sender);
   if not Assigned(lButton) then
@@ -143,7 +144,8 @@ begin
       end;
     1003:
       begin
-
+        llinkPage := THCBMLinkPage.Create(nil);
+        llinkPage.ShowModal;
       end;
   end;
 end;
