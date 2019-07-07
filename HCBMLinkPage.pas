@@ -27,19 +27,12 @@ uses
 type
   THCBMLinkPage = class(TForm)
     Panel1: TPanel;
-    generateBtn: TcxButton;
+    saveBtn: TcxButton;
     cancelBtn: TcxButton;
-    custGrid: TDBGridEh;
-    mechineGrid: TDBGridEh;
-    bedGrid: TDBGridEh;
     dataGrid: TDBGridEh;
-    custDS: TDataSource;
     custCDS: TClientDataSet;
-    bedDS: TDataSource;
     bedCDS: TClientDataSet;
-    mechineDS: TDataSource;
     mechineCDS: TClientDataSet;
-    dataDS: TDataSource;
     dataCDS: TClientDataSet;
     custCDSMCustomerId: TStringField;
     custCDSMCustomerName: TStringField;
@@ -51,9 +44,17 @@ type
     dataCDSMBedId: TStringField;
     dataCDSMId: TStringField;
     dataCDSMDesc: TStringField;
-    procedure generateBtnClick(Sender: TObject);
+    dataDS: TDataSource;
+    addBtn: TcxButton;
+    editBtn: TcxButton;
+    delBtn: TcxButton;
+    procedure saveBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure custGridCellClick(Column: TColumnEh);
+    procedure addBtnClick(Sender: TObject);
+    procedure editBtnClick(Sender: TObject);
+    procedure delBtnClick(Sender: TObject);
+    procedure cancelBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,10 +65,45 @@ var
   HCBMLink: THCBMLinkPage;
 
 implementation
-
+uses HCBMLinkAddPage;
 {$R *.dfm}
 
+procedure THCBMLinkPage.addBtnClick(Sender: TObject);
+var form:TCBMLinkAddPage;
+    data :TClientDataSet;
+begin
+  form := TCBMLinkAddPage.Create(nil);
+  if form.ShowModal = mrOk then
+  begin
+    with dataCDS do
+    begin
+      Append;
+      FieldByName('MCustomerId').AsString := form.dataCDS.FieldByName('MCustomerId').AsString;
+      FieldByName('MCustomerName').AsString := form.dataCDS.FieldByName('MCustomerName').AsString;
+      FieldByName('MBedId').AsString := form.dataCDS.FieldByName('MBedId').AsString;
+      FieldByName('MId').AsString := form.dataCDS.FieldByName('MId').AsString;
+      FieldByName('MDesc').AsString := form.dataCDS.FieldByName('MDesc').AsString;
+      Post;
+    end;
+  end;
+end;
+
+procedure THCBMLinkPage.cancelBtnClick(Sender: TObject);
+begin
+//
+end;
+
 procedure THCBMLinkPage.custGridCellClick(Column: TColumnEh);
+begin
+//
+end;
+
+procedure THCBMLinkPage.delBtnClick(Sender: TObject);
+begin
+//
+end;
+
+procedure THCBMLinkPage.editBtnClick(Sender: TObject);
 begin
 //
 end;
@@ -104,9 +140,12 @@ begin
   begin
     dataCDS .LoadFromFile(lDtaFile);
   end;
+
+  delBtn.Enabled := dataCDS.RecordCount >0 ;
+  editBtn.Enabled := dataCDS.RecordCount >0 ;
 end;
 
-procedure THCBMLinkPage.generateBtnClick(Sender: TObject);
+procedure THCBMLinkPage.saveBtnClick(Sender: TObject);
 var
   lDtaFile: string;
 begin

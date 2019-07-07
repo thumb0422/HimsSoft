@@ -27,7 +27,6 @@ type
     FLabel: TLabel;
     FBedIdLabel :TLabel;
     FTimer: TTimer;
-    // FPopMenu :TPopupMenu;
     FDataDetailView: TDataDetailView;
   public
     constructor Create(AOwner: TComponent); override;
@@ -36,7 +35,6 @@ type
     procedure onClick(Sender: TObject);
     procedure onDblClick(Sender: TObject);
     procedure timerOnTimer(Sender: TObject);
-//    function getDataDetailView: TDataDetailView;
     procedure resetData;
   end;
 
@@ -75,7 +73,6 @@ begin
   FImage.Height := 75;
   FImage.Stretch := True;
   FImage.Align := alClient;
-  ParentBackground := False;
   FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
   bedStatus := EmBedNormal;
@@ -102,37 +99,6 @@ begin
     FLabel.Free;
   inherited;
 end;
-
-//function TBedView.getDataDetailView: TDataDetailView;
-//var
-//  Obj, detailObj: TObject;
-//  mainPage: TForm;
-//  dataDetailView: TDataDetailView;
-//  i: integer;
-//  J: integer;
-//begin
-//  for i := 0 to Application.ComponentCount - 1 do
-//  begin
-//    Obj := Application.Components[i];
-//    if Obj is TForm then
-//    begin
-//      mainPage := (Obj as TForm);
-//      if mainPage.Name = 'FMainPage' then
-//      begin
-//        for J := 0 to mainPage.ComponentCount - 1 do
-//        begin
-//          detailObj := mainPage.Components[J];
-//          if detailObj is TDataDetailView then
-//          begin
-//            dataDetailView := (detailObj as TDataDetailView);
-//            Result := dataDetailView;
-//            Break;
-//          end;
-//        end;
-//      end;
-//    end;
-//  end;
-//end;
 
 procedure TBedView.onClick(Sender: TObject);
 var
