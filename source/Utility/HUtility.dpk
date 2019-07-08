@@ -33,6 +33,9 @@ requires
 contains
   HConst in 'HConst.pas',
   HLog in 'HLog.pas',
-  HTool in 'HTool.pas';
+  HTool in 'HTool.pas',
+  HDBManager in 'HDBManager.pas',
+  SQLite3 in 'SQLite3.pas',
+  SQLiteTable3 in 'SQLiteTable3.pas';
 
 end.

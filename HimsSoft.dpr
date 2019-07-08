@@ -16,9 +16,7 @@ uses
   HMechineSetPage in 'HMechineSetPage.pas' {MechineSetPage},
   HCustomerSetPage in 'HCustomerSetPage.pas' {CustomerSetPage},
   HCBMLinkPage in 'HCBMLinkPage.pas' {HCBMLinkPage},
-  HCBMLinkAddPage in 'HCBMLinkAddPage.pas' {CBMLinkAddPage},
-  SQLite3 in 'SQLite3.pas',
-  SQLiteTable3 in 'SQLiteTable3.pas';
+  HCBMLinkAddPage in 'HCBMLinkAddPage.pas' {CBMLinkAddPage};
 
 {$R *.res}
 

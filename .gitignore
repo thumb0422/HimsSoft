@@ -16,3 +16,4 @@ ModelSupport_HimsSoft
 *.stat
 *.stat
 bin/*.xml
+bin/*.db
