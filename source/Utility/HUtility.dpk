@@ -36,6 +36,11 @@ contains
   HTool in 'HTool.pas',
   HDBManager in 'HDBManager.pas',
   SQLite3 in 'SQLite3.pas',
-  SQLiteTable3 in 'SQLiteTable3.pas';
+  SQLiteTable3 in 'SQLiteTable3.pas',
+  superdate in 'plugin\superdate.pas',
+  superobject in 'plugin\superobject.pas',
+  supertimezone in 'plugin\supertimezone.pas',
+  supertypes in 'plugin\supertypes.pas',
+  superxmlparser in 'plugin\superxmlparser.pas';
 
 end.

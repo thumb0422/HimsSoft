@@ -1,7 +1,7 @@
 unit HDBManager;
 
 interface
-uses System.SysUtils, System.SyncObjs,SQLite3,SQLiteTable3;
+uses System.Classes,System.SysUtils, System.SyncObjs,SQLite3,SQLiteTable3,superobject;
   type
   TDBManager = class
   private
@@ -10,12 +10,14 @@ uses System.SysUtils, System.SyncObjs,SQLite3,SQLiteTable3;
   public
     class property Instance: TDBManager read GetInstance;
     class procedure ReleaseInstance;
+    procedure execSql(sqls:TStringList);
+    function getDataBySql(sql:string):ISuperObject;
   protected
     constructor Create;
     destructor Destroy; override;
   private
-    sldb: TSQLiteDatabase;
-    sltb: TSQLIteTable;
+    fDB: TSQLiteDatabase;
+    fTB: TSQLIteTable;
   end;
 
 implementation
@@ -24,36 +26,125 @@ var dbPath :string;
 
 constructor TDBManager.Create;
 var
+  slDBpath: string;
   sSQL: String;
+  ts: TStringStream;
+  sltb: TSQLIteTable;
 begin
-  dbPath := ExtractFilePath(paramstr(0)) + 'data.db';
-  if FileExists(dbPath) then
-  begin
-    DeleteFile(dbPath);
-  end;
-  sldb := TSQLiteDatabase.Create(dbPath);
+  slDBpath := ExtractFilePath(paramstr(0)) + 'hims.db';
+  fDB := TSQLiteDatabase.Create(slDBpath);
+
+  {
+  //for test
   try
-    if sldb.TableExists('H_Bed') then
+    if fDB.TableExists('testTable') then
     begin
-      sSQL := 'DROP TABLE H_Bed';
-      sldb.execsql(sSQL);
+      sSQL := 'DROP TABLE testtable';
+      fDB.execSql(sSQL);
     end;
 
-    sSQL := 'CREATE TABLE H_Bed ([ID] INTEGER PRIMARY KEY,[OtherID] INTEGER NULL,';
-    sSQL := sSQL + '[Name] VARCHAR (255),[Number] FLOAT, [notes] BLOB, [picture] BLOB COLLATE NOCASE);';
+    sSQL := 'CREATE TABLE testtable ([ID] INTEGER PRIMARY KEY,[OtherID] INTEGER NULL,';
+    sSQL := sSQL +
+      '[Name] VARCHAR (255),[Number] FLOAT, [notes] BLOB, [picture] BLOB COLLATE NOCASE);';
 
-    sldb.execsql(sSQL);
+    fDB.execSql(sSQL);
 
-    sldb.execsql('CREATE INDEX TestTableName ON [H_Bed]([Name]);');
+    fDB.execSql('CREATE INDEX TestTableName ON [testtable]([Name]);');
+
+    // begin a transaction
+    fDB.BeginTransaction;
+
+    sSQL := 'INSERT INTO testtable(Name,OtherID,Number) VALUES ("Some Name",4,587.6594);';
+    // do the insert
+    fDB.execSql(sSQL);
+
+    sSQL := 'INSERT INTO testtable(Name,OtherID,Number,Notes) VALUES ("Another Name",12,4758.3265,"More notes");';
+    // do the insert
+    fDB.execSql(sSQL);
+
+    // end the transaction
+    fDB.Commit;
+
+    // add the notes using a parameter
+    ts := TStringStream.Create('Here are some notes with a unicode smiley: ' +
+      char($263A), TEncoding.UTF8);
+    try
+      // insert the text into the db
+      fDB.UpdateBlob('UPDATE testtable set notes = ? WHERE OtherID = 4', ts);
+    finally
+      ts.Free;
+    end;
+    if sltb <> nil then
+      sltb.Free;
   finally
-    sldb.Free;
+
   end;
+}
 end;
 
 destructor TDBManager.Destroy;
 begin
-
+  fDB.Free;
+  fTB.Free;
   inherited;
+end;
+
+procedure TDBManager.execSql(sqls: TStringList);
+var
+  I: Integer;
+begin
+  if Assigned(fDB) then
+  begin
+    fDB.BeginTransaction;
+    for I := 0 to sqls.Count - 1 do
+    begin
+      fDB.ExecSQL(sqls[I]);
+    end;
+    fDB.Commit;
+  end;
+end;
+
+function TDBManager.getDataBySql(sql: string):ISuperObject;
+var
+  lTB: TSQLIteTable;
+  lColStr, lRowStr: string;
+  I: Integer;
+  J: Integer;
+  lJson, subJson: ISuperObject;
+begin
+  lJson := SO;
+  if Assigned(fDB) then
+  begin
+    lTB := fDB.GetTable(sql);
+    try
+      if lTB.Count > 0 then
+      begin
+        lColStr := '';
+        lRowStr := '';
+        lJson.S['rowCount'] := IntToStr(lTB.Count);
+        lJson.S['colCount'] := IntToStr(lTB.ColCount);
+        lJson.O['data'] := SA([]);
+        for I := 0 to lTB.Count - 1 do
+        begin
+          for J := 0 to lTB.ColCount - 1 do
+          begin
+            lColStr := lTB.Columns[J];
+            lRowStr := lTB.FieldAsString(J);
+            subJson := SO;
+            subJson.S[lColStr] := lRowStr;
+            lJson.A['data'].Add(subJson);
+          end;
+        end;
+      end
+      else
+      begin
+
+      end;
+    finally
+      lTB.Free;
+    end;
+  end;
+  Result := lJson;
 end;
 
 class function TDBManager.GetInstance: TDBManager;

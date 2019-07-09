@@ -56,7 +56,7 @@ var
 
 implementation
 
-uses HMenu,HBizBasePage, HRoom1,HSettingPage;
+uses HMenu,HBizBasePage, HRoom1,HSettingPage,HDBManager,superobject;
 {$R *.dfm}
 
 procedure TFMainPage.cxPageControl1CanClose(Sender: TObject;
@@ -187,6 +187,9 @@ var
   I: Integer;
   lTabSheet :TcxTabSheet;
   tabSheetCaption,itemCaption:string;
+  ldata:ISuperObject;
+  lte: TSuperAvlIterator;
+  lname,lvalue:string;
 begin
   litem := TdxnavbarItem(Sender);
   lTabSheet := nil;
@@ -218,6 +221,19 @@ begin
   end
   else
   begin
+//    ldata := TDBManager.Instance.getDataBySql('SELECT * from testtable');
+//    lte := ldata.AsObject.GetEnumerator;
+//    try
+//        while lte.MoveNext do
+//      begin
+//        lname := lte.Current.Name;
+//        lvalue := lte.Current.Value.AsString;
+//        lname := lte.Current.Name;
+//      end;
+//    finally
+//      lte.Free;
+//    end;
+
     TSettingPage.loadSelf(lTabSheet, alClient);
   end;
 end;
