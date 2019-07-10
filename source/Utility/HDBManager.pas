@@ -12,6 +12,7 @@ uses System.Classes,System.SysUtils, System.SyncObjs,SQLite3,SQLiteTable3,supero
     class procedure ReleaseInstance;
     procedure execSql(sqls:TStringList);
     function getDataBySql(sql:string):ISuperObject;
+    procedure execSqlByFromLocalFile;
   protected
     constructor Create;
     destructor Destroy; override;
@@ -101,6 +102,41 @@ begin
       fDB.ExecSQL(sqls[I]);
     end;
     fDB.Commit;
+  end;
+end;
+
+procedure TDBManager.execSqlByFromLocalFile;
+var sourceScript,destScript:TStringList;
+    lscriptStr1,lscriptStr2:string;
+    sqlPath :string;
+    I: Integer;
+begin
+  sqlPath := ExtractFilePath(paramstr(0)) + 'sql/himsSoft.sql';
+  if FileExists(sqlPath) then
+  begin
+    destScript := TStringList.Create;
+    sourceScript := TStringList.Create;
+    sourceScript.LoadFromFile(sqlPath);
+    lscriptStr1 := '';
+    for I := 0 to sourceScript.Count-1 do
+    begin
+       lscriptStr2 := sourceScript[I];
+       if lscriptStr2.IsEmpty then
+       begin
+         Continue;
+       end;
+       if Pos(';',lscriptStr2) = 0  then
+       begin
+         lscriptStr1 := lscriptStr1 + lscriptStr2;
+       end
+       else
+       begin
+         lscriptStr1 := lscriptStr1 + lscriptStr2;
+         destScript.Add(lscriptStr1);
+         lscriptStr1 := '';
+       end;
+    end;
+    execSql(destScript);
   end;
 end;
 
