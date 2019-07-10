@@ -62,8 +62,6 @@ object BedSetPage: TBedSetPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 528
-    ExplicitWidth = 372
     object saveBtn: TcxButton
       Left = 48
       Top = 6

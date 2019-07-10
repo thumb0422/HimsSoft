@@ -56,7 +56,7 @@ var
   BedSetPage: TBedSetPage;
 
 implementation
-
+uses HDBManager,superobject;
 {$R *.dfm}
 
 procedure TBedSetPage.cancleBtnClick(Sender: TObject);
@@ -67,9 +67,29 @@ end;
 procedure TBedSetPage.FormCreate(Sender: TObject);
 var
   lDtaFile: string;
+  jsonData:ISuperObject;
+  subDataArray:TSuperArray;
+  subData:ISuperObject;
+  rowCount,colCount:Integer;
+  I: Integer;
+  item:ISuperObject;
 begin
   inherited;
   ClientDataSet1.CreateDataSet;
+  //
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_BedInfo');
+  rowCount := jsonData.I['rowCount'];
+  colCount := jsonData.I['colCount'];
+
+//  for item in jsonData['data'] do
+//  begin
+//    ShowMessage(item.AsJSon(False,False));
+//  end;
+    
+  subDataArray := jsonData['data'].AsArray;
+
+  ShowMessage(IntToStr(subDataArray.Length));
+   
   lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
   if FileExists(lDtaFile) then
   begin
@@ -85,8 +105,26 @@ end;
 procedure TBedSetPage.saveBtnClick(Sender: TObject);
 var
   lDtaFile: string;
+  I: Integer;
+  sql:string;
+  sqlList:TStringList;
 begin
   lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
+  sqlList := TStringList.Create;
+  sqlList.Add('Delete from H_BedInfo;');
+  with ClientDataSet1 do
+  begin
+    DisableControls;
+    First;
+    while not Eof do
+    begin
+        sql := Format('Insert Into H_BedInfo (MBedId,MRoomId,MUsed,isValid) Values (%s,%S,%d,%d)',
+           [QuotedStr(FieldByName('MBedId').AsString),QuotedStr(FieldByName('MRoomId').AsString),1,ord(FieldByName('isValid').AsBoolean)]);
+        sqlList.Add(sql);
+        Next;
+    end;
+  end;
+  TDBManager.Instance.execSql(sqlList);
   if (ClientDataSet1.State in [dsInsert,dsEdit]) then
     ClientDataSet1.Post;
   if ClientDataSet1.RecordCount > 0 then
