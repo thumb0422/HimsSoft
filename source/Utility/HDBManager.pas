@@ -162,14 +162,14 @@ begin
         lJson.O['data'] := SA([]);
         for I := 0 to lTB.Count - 1 do
         begin
+          subJson := SO;
           for J := 0 to lTB.ColCount - 1 do
           begin
             lColStr := lTB.Columns[J];
             lRowStr := lTB.FieldAsString(J);
-            subJson := SO;
             subJson.S[lColStr] := lRowStr;
-            lJson.A['data'].Add(subJson);
           end;
+          lJson.A['data'].Add(subJson);
         end;
       end
       else
