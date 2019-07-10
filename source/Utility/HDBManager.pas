@@ -160,16 +160,21 @@ begin
         lJson.S['rowCount'] := IntToStr(lTB.Count);
         lJson.S['colCount'] := IntToStr(lTB.ColCount);
         lJson.O['data'] := SA([]);
-        for I := 0 to lTB.Count - 1 do
+        with lTB do
         begin
-          subJson := SO;
-          for J := 0 to lTB.ColCount - 1 do
+          MoveFirst;
+          while not EOF do
           begin
-            lColStr := lTB.Columns[J];
-            lRowStr := lTB.FieldAsString(J);
-            subJson.S[lColStr] := lRowStr;
+            subJson := SO;
+            for J := 0 to lTB.ColCount - 1 do
+            begin
+              lColStr := lTB.Columns[J];
+              lRowStr := lTB.FieldAsString(J);
+              subJson.S[lColStr] := lRowStr;
+            end;
+            lJson.A['data'].Add(subJson);
+            Next;
           end;
-          lJson.A['data'].Add(subJson);
         end;
       end
       else
