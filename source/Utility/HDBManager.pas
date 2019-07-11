@@ -154,7 +154,7 @@ var
   lColStr, lRowStr: string;
   I: Integer;
   J: Integer;
-  lJson, subJson: ISuperObject;
+  lJson,arrayJson, subJson: ISuperObject;
 begin
   lJson := SO;
   if Assigned(fDB) then
@@ -167,7 +167,7 @@ begin
         lRowStr := '';
         lJson.S['rowCount'] := IntToStr(lTB.Count);
         lJson.S['colCount'] := IntToStr(lTB.ColCount);
-        lJson.O['data'] := SA([]);
+        arrayJson:= SA([]);
         with lTB do
         begin
           MoveFirst;
@@ -180,10 +180,11 @@ begin
               lRowStr := lTB.FieldAsString(J);
               subJson.S[lColStr] := lRowStr;
             end;
-            lJson.A['data'].Add(subJson);
+            arrayJson.AsArray.Add(subJson);
             Next;
           end;
         end;
+        lJson.O['data'] :=arrayJson;
       end
       else
       begin

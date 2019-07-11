@@ -80,10 +80,51 @@ begin
   rowCount := jsonData.I['rowCount'];
   colCount := jsonData.I['colCount'];
 
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
-  if FileExists(lDtaFile) then
+//  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
+//  if FileExists(lDtaFile) then
+//  begin
+//    ClientDataSet1.LoadFromFile(lDtaFile);
+//  end;
+  with ClientDataSet1 do
   begin
-    ClientDataSet1.LoadFromFile(lDtaFile);
+    if rowCount > 0 then
+    begin
+      {
+      subDataArray := jsonData['data'].AsArray;
+      for I := 0 to subDataArray.Length - 1 do
+      begin
+        subData := subDataArray[I];
+        ShowMessage(subData.AsString);
+        Append;
+        ClientDataSet1.FieldByName('MBedId').AsString := subData['MBedId'].AsString;
+        ClientDataSet1.FieldByName('MRoomId').AsString := subData['MRoomId'].AsString;
+//        ClientDataSet1.FieldByName('MBedDesc').AsString := subData.S['MBedDesc'];
+//        ClientDataSet1.FieldByName('MUsed').AsInteger := subData.I['MUsed'];
+        ClientDataSet1.FieldByName('isValid').AsBoolean := (subData['isValid'].AsInteger = 0) ;
+        Post;
+      end;
+      }
+
+      {TSuperArray}
+      subDataArray := jsonData['data'].AsArray;
+      for I := 0 to subDataArray.Length-1 do
+        begin
+          ShowMessage(subDataArray[I].AsString);
+          ShowMessage(subDataArray[I]['MID'].AsString);
+//          ShowMessage(subData.S['MBedId'] + '---' + subData['MBedId'].AsString);
+        end;
+      {ISuperObject array}
+      for subData in jsonData['data'] do
+      begin
+        ShowMessage(subData.AsString);
+        ShowMessage(subData.S['MBedId'] + '---' + subData['MBedId'].AsString);
+//        Append;
+//        ClientDataSet1.FieldByName('MBedId').AsString := subData.S['MBedId'];
+//        ClientDataSet1.FieldByName('MRoomId').AsString := subData['MRoomId'].AsString;
+//        Post;
+      end;
+
+    end;
   end;
 
   if ClientDataSet1.Active = False then
