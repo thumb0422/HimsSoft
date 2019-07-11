@@ -1,7 +1,15 @@
+{*******************************************************}
+{                                                       }
+{       HimsSoft                                        }
+{                                                       }
+{       ∞Ê»®À˘”– (C) 2019 thumb0422@163.com             }
+{                                                       }
+{*******************************************************}
+
 unit HDBManager;
 
 interface
-uses System.Classes,System.SysUtils, System.SyncObjs,SQLite3,SQLiteTable3,superobject;
+uses System.Classes,System.SysUtils, SQLiteTable3,superobject;
   type
   TDBManager = class
   private

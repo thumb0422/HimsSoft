@@ -23,9 +23,6 @@ object CustomerSetPage: TCustomerSetPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 48
-    ExplicitTop = 384
-    ExplicitWidth = 185
     object saveBtn: TcxButton
       Left = 40
       Top = 8

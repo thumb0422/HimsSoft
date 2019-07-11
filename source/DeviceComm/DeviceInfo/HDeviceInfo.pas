@@ -10,7 +10,7 @@ unit HDeviceInfo;
 
 interface
 
-uses System.Classes;
+
 
 type
   EDeviceLinkType = (dltUnKnow, dtlComm, dtlNet);

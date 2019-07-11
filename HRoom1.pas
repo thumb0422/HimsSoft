@@ -1,10 +1,18 @@
+{*******************************************************}
+{                                                       }
+{       HimsSoft                                        }
+{                                                       }
+{       ∞Ê»®À˘”– (C) 2019 thumb0422@163.com             }
+{                                                       }
+{*******************************************************}
+
 unit HRoom1;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, HBizBasePage,
+  System.SysUtils, System.Classes,
+  Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, HBizBasePage,
   Vcl.ExtCtrls,cxScrollBox,
   HDataDetailView;
 
@@ -30,7 +38,7 @@ var
 implementation
 
 uses
-  HConst, HBedView;
+  HBedView;
 {$R *.dfm}
 
 procedure TRoomPage.FormCreate(Sender: TObject);

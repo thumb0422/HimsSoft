@@ -1,9 +1,17 @@
+{*******************************************************}
+{                                                       }
+{       HimsSoft                                        }
+{                                                       }
+{       ∞Ê»®À˘”– (C) 2019 thumb0422@163.com             }
+{                                                       }
+{*******************************************************}
+
 unit HCate;
 
 interface
 
 uses
-  System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
+  System.SysUtils,
   Vcl.ExtCtrls,
   HDeviceInfo;
 

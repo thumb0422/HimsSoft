@@ -11,8 +11,8 @@ unit HSettingPage;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,Vcl.StdCtrls,HBizBasePage, Vcl.Buttons;
+  Winapi.Windows, Winapi.Messages, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls,HBizBasePage;
 
 type
   TSettingPage = class(TBizBasePage)

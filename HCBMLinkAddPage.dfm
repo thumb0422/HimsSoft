@@ -23,9 +23,6 @@ object CBMLinkAddPage: TCBMLinkAddPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 80
-    ExplicitTop = 424
-    ExplicitWidth = 185
     object cxSave: TcxButton
       Left = 48
       Top = 8

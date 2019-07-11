@@ -24,8 +24,6 @@ object HCBMLinkPage: THCBMLinkPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 465
-    ExplicitWidth = 700
     object saveBtn: TcxButton
       Left = 339
       Top = 6

@@ -1,9 +1,17 @@
+{*******************************************************}
+{                                                       }
+{       HimsSoft                                        }
+{                                                       }
+{       ∞Ê»®À˘”– (C) 2019 thumb0422@163.com             }
+{                                                       }
+{*******************************************************}
+
 unit HDataDetailView;
 
 interface
 
 uses
-  System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls,Vcl.Forms,
+  System.Classes, Vcl.Controls, Vcl.StdCtrls, Vcl.ExtCtrls,
   HDataModel, HDataNotify;
 
 type

@@ -1,18 +1,18 @@
-{ ******************************************************* }
-{ }
-{ HimsSoft }
-{ }
-{ 版权所有 (C) 2019 thumb0422@163.com }
-{ }
-{ ******************************************************* }
+{*******************************************************}
+{                                                       }
+{       HimsSoft                                        }
+{                                                       }
+{       版权所有 (C) 2019 thumb0422@163.com             }
+{                                                       }
+{*******************************************************}
 
 unit HNet;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls,
+  System.SysUtils, System.Classes,
+  Vcl.ExtCtrls,
   System.Win.ScktComp, System.Typinfo,HCate, HLog, HDeviceInfo;
 
 type

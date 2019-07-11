@@ -9,7 +9,7 @@
 unit HTool;
 
 interface
-uses Winapi.Windows,System.Math,System.SysUtils;
+uses System.SysUtils;
 type
   TTool = class
     class function StringToHex(str: string): string;

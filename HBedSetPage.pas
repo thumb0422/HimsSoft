@@ -11,8 +11,9 @@ unit HBedSetPage;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, DBGridEhGrouping, ToolCtrlsEh,
+  System.SysUtils, System.Classes,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,cxButtons, Vcl.ExtCtrls,
+  DBGridEh, Data.DB, Datasnap.DBClient, DBGridEhGrouping, ToolCtrlsEh,
   DBGridEhToolCtrls, DynVarsEh, cxGraphics, cxLookAndFeels,
   cxLookAndFeelPainters, Vcl.Menus, dxSkinsCore, dxSkinBlack, dxSkinBlue,
   dxSkinBlueprint, dxSkinCaramel, dxSkinCoffee, dxSkinDarkroom, dxSkinDarkSide,
@@ -29,8 +30,7 @@ uses
   dxSkinTheAsphaltWorld, dxSkinTheBezier, dxSkinsDefaultPainters,
   dxSkinValentine, dxSkinVisualStudio2013Blue, dxSkinVisualStudio2013Dark,
   dxSkinVisualStudio2013Light, dxSkinVS2010, dxSkinWhiteprint,
-  dxSkinXmas2008Blue, Vcl.StdCtrls, cxButtons, Vcl.ExtCtrls, EhLibVCL, GridsEh,
-  DBAxisGridsEh, DBGridEh, Data.DB, Datasnap.DBClient;
+  dxSkinXmas2008Blue, Vcl.StdCtrls, EhLibVCL, GridsEh, DBAxisGridsEh;
 
 type
   TBedSetPage = class(TForm)
@@ -67,29 +67,19 @@ end;
 procedure TBedSetPage.FormCreate(Sender: TObject);
 var
   lDtaFile: string;
-  jsonData:ISuperObject;
-  subDataArray:TSuperArray;
-  subData:ISuperObject;
-  rowCount,colCount:Integer;
+  jsonData: ISuperObject;
+  subDataArray: TSuperArray;
+  subData: ISuperObject;
+  rowCount, colCount: Integer;
   I: Integer;
-  item:ISuperObject;
+  item: ISuperObject;
 begin
   inherited;
   ClientDataSet1.CreateDataSet;
-  //
   jsonData := TDBManager.Instance.getDataBySql('Select * From H_BedInfo');
   rowCount := jsonData.I['rowCount'];
   colCount := jsonData.I['colCount'];
 
-//  for item in jsonData['data'] do
-//  begin
-//    ShowMessage(item.AsJSon(False,False));
-//  end;
-    
-  subDataArray := jsonData['data'].AsArray;
-
-  ShowMessage(IntToStr(subDataArray.Length));
-   
   lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
   if FileExists(lDtaFile) then
   begin

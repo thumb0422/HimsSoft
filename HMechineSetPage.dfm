@@ -73,7 +73,6 @@ object MechineSetPage: TMechineSetPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 398
     object saveBtn: TcxButton
       Left = 56
       Top = 8
