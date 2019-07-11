@@ -810,7 +810,9 @@ begin
               fColTypes := TList.Create;
               fColCount := SQLite3_ColumnCount(stmt);
               for i := 0 to Pred(fColCount) do begin
-                fCols.Add(UpperCase(Sqlite3_ColumnName16(stmt, i)));
+//                fCols.Add(UpperCase(Sqlite3_ColumnName16(stmt, i)));
+                //update by lch
+                fCols.Add(Sqlite3_ColumnName16(stmt, i));
               end;
               for i := 0 to Pred(fColCount) do
               begin
@@ -999,8 +1001,9 @@ begin
     exit;
   end;
 
-  Result := fCols.IndexOf(UpperCase(FieldName));
-
+//  Result := fCols.IndexOf(UpperCase(FieldName));
+  //update by lch
+  Result := fCols.IndexOf(FieldName);
   if (result < 0) then
   begin
     raise ESqliteException.Create('Field not found in dataset: ' + fieldname)
@@ -1211,7 +1214,9 @@ begin
   fCols := TStringList.Create;
   fColCount := SQLite3_ColumnCount(fstmt);
   for i := 0 to Pred(fColCount) do begin
-    fCols.Add(UpperCase(Sqlite3_ColumnName16(fstmt, i)));
+//    fCols.Add(UpperCase(Sqlite3_ColumnName16(fstmt, i)));
+    //update by lch
+    fCols.Add(Sqlite3_ColumnName16(fstmt, i));
    end;
   Next;
 end;
@@ -1325,8 +1330,9 @@ begin
     exit;
   end;
 
-  Result := fCols.IndexOf(AnsiUpperCase(FieldName));
-
+//  Result := fCols.IndexOf(AnsiUpperCase(FieldName));
+  //update by lch
+    Result := fCols.IndexOf(FieldName);
   if (result < 0) then
   begin
     raise ESqliteException.Create('Field not found in dataset: ' + fieldname)
