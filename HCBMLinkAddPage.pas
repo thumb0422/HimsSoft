@@ -72,7 +72,6 @@ uses HDBManager,superobject;
 
 procedure TCBMLinkAddPage.cxSaveClick(Sender: TObject);
 var
-  I: Integer;
   sql:string;
   sqlList:TStringList;
 begin

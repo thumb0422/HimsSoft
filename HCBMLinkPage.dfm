@@ -24,10 +24,8 @@ object HCBMLinkPage: THCBMLinkPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 459
-    ExplicitWidth = 554
     object cancelBtn: TcxButton
-      Left = 476
+      Left = 396
       Top = 6
       Width = 75
       Height = 25
@@ -37,7 +35,7 @@ object HCBMLinkPage: THCBMLinkPage
       OnClick = cancelBtnClick
     end
     object addBtn: TcxButton
-      Left = 152
+      Left = 168
       Top = 6
       Width = 75
       Height = 25
@@ -45,22 +43,13 @@ object HCBMLinkPage: THCBMLinkPage
       TabOrder = 1
       OnClick = addBtnClick
     end
-    object editBtn: TcxButton
-      Left = 257
-      Top = 6
-      Width = 75
-      Height = 25
-      Caption = #20462#25913
-      TabOrder = 2
-      OnClick = editBtnClick
-    end
     object delBtn: TcxButton
-      Left = 362
+      Left = 282
       Top = 6
       Width = 75
       Height = 25
       Caption = #21024#38500
-      TabOrder = 3
+      TabOrder = 2
       OnClick = delBtnClick
     end
   end
@@ -140,6 +129,7 @@ object HCBMLinkPage: THCBMLinkPage
         EditButtons = <>
         FieldName = 'MMechineDesc'
         Footers = <>
+        ReadOnly = True
         Title.Caption = #35774#22791#25551#36848
         Width = 120
       end
@@ -149,6 +139,7 @@ object HCBMLinkPage: THCBMLinkPage
         EditButtons = <>
         FieldName = 'MCom'
         Footers = <>
+        ReadOnly = True
         Title.Caption = #20018#21475
         Width = 40
       end
@@ -158,6 +149,7 @@ object HCBMLinkPage: THCBMLinkPage
         EditButtons = <>
         FieldName = 'MNet'
         Footers = <>
+        ReadOnly = True
         Title.Caption = #32593#21475
         Width = 40
       end
@@ -167,6 +159,7 @@ object HCBMLinkPage: THCBMLinkPage
         EditButtons = <>
         FieldName = 'MHDBox'
         Footers = <>
+        ReadOnly = True
         Title.Caption = 'HDBox'
         Width = 40
       end>

@@ -40,7 +40,6 @@ type
     dataCDS: TClientDataSet;
     dataDS: TDataSource;
     addBtn: TcxButton;
-    editBtn: TcxButton;
     delBtn: TcxButton;
     dataCDSMCustId: TStringField;
     dataCDSMCustName: TStringField;
@@ -54,7 +53,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure custGridCellClick(Column: TColumnEh);
     procedure addBtnClick(Sender: TObject);
-    procedure editBtnClick(Sender: TObject);
     procedure delBtnClick(Sender: TObject);
     procedure cancelBtnClick(Sender: TObject);
   private
@@ -93,13 +91,15 @@ begin
 end;
 
 procedure THCBMLinkPage.delBtnClick(Sender: TObject);
+var
+  sql:string;
+  sqlList:TStringList;
 begin
-//
-end;
-
-procedure THCBMLinkPage.editBtnClick(Sender: TObject);
-begin
-//
+  sqlList := TStringList.Create;
+  sql := Format('Delete from H_CBMData where MCustId =%s',[QuotedStr(dataCDS.FieldByName('MCustId').AsString)]);
+  sqlList.Add(sql);
+  TDBManager.Instance.execSql(sqlList);
+  queryAllData;
 end;
 
 procedure THCBMLinkPage.FormCreate(Sender: TObject);
@@ -107,8 +107,6 @@ begin
   inherited;
   dataCDS.CreateDataSet;
   queryAllData;
-  delBtn.Enabled := dataCDS.RecordCount >0 ;
-  editBtn.Enabled := dataCDS.RecordCount >0 ;
 end;
 
 procedure THCBMLinkPage.queryAllData;
@@ -117,14 +115,18 @@ var
   subData: ISuperObject;
   sql :string;
 begin
+  dataCDS.Close;
   sql :='SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox ' +
         'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M ' +
         'where D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId';
   jsonData := TDBManager.Instance.getDataBySql(sql);
   with dataCDS do
   begin
+    Open;
+    EmptyDataSet;
     if jsonData.I['rowCount'] > 0 then
     begin
+
       for subData in jsonData['data'] do
       begin
         Append;
@@ -141,6 +143,7 @@ begin
       end;
     end;
   end;
+  delBtn.Enabled := dataCDS.RecordCount > 0 ;
 end;
 
 end.
