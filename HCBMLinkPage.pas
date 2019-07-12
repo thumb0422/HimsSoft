@@ -35,28 +35,22 @@ uses
 type
   THCBMLinkPage = class(TForm)
     Panel1: TPanel;
-    saveBtn: TcxButton;
     cancelBtn: TcxButton;
     dataGrid: TDBGridEh;
-    custCDS: TClientDataSet;
-    bedCDS: TClientDataSet;
-    mechineCDS: TClientDataSet;
     dataCDS: TClientDataSet;
-    custCDSMCustomerId: TStringField;
-    custCDSMCustomerName: TStringField;
-    bedCDSMBedId: TStringField;
-    mechineCDSMId: TStringField;
-    mechineCDSMDesc: TStringField;
-    dataCDSMCustomerId: TStringField;
-    dataCDSMCustomerName: TStringField;
-    dataCDSMBedId: TStringField;
-    dataCDSMId: TStringField;
-    dataCDSMDesc: TStringField;
     dataDS: TDataSource;
     addBtn: TcxButton;
     editBtn: TcxButton;
     delBtn: TcxButton;
-    procedure saveBtnClick(Sender: TObject);
+    dataCDSMCustId: TStringField;
+    dataCDSMCustName: TStringField;
+    dataCDSMRoomId: TStringField;
+    dataCDSMBedId: TStringField;
+    dataCDSMMechineId: TStringField;
+    dataCDSMMechineDesc: TStringField;
+    dataCDSMCom: TBooleanField;
+    dataCDSMNet: TBooleanField;
+    dataCDSMHDBox: TBooleanField;
     procedure FormCreate(Sender: TObject);
     procedure custGridCellClick(Column: TColumnEh);
     procedure addBtnClick(Sender: TObject);
@@ -65,6 +59,7 @@ type
     procedure cancelBtnClick(Sender: TObject);
   private
     { Private declarations }
+    procedure queryAllData;
   public
     { Public declarations }
   end;
@@ -73,7 +68,7 @@ var
   HCBMLink: THCBMLinkPage;
 
 implementation
-uses HCBMLinkAddPage;
+uses HCBMLinkAddPage,HDBManager,superobject;
 {$R *.dfm}
 
 procedure THCBMLinkPage.addBtnClick(Sender: TObject);
@@ -83,16 +78,7 @@ begin
   form := TCBMLinkAddPage.Create(nil);
   if form.ShowModal = mrOk then
   begin
-    with dataCDS do
-    begin
-      Append;
-      FieldByName('MCustomerId').AsString := form.dataCDS.FieldByName('MCustomerId').AsString;
-      FieldByName('MCustomerName').AsString := form.dataCDS.FieldByName('MCustomerName').AsString;
-      FieldByName('MBedId').AsString := form.dataCDS.FieldByName('MBedId').AsString;
-      FieldByName('MId').AsString := form.dataCDS.FieldByName('MId').AsString;
-      FieldByName('MDesc').AsString := form.dataCDS.FieldByName('MDesc').AsString;
-      Post;
-    end;
+    queryAllData;
   end;
 end;
 
@@ -117,52 +103,43 @@ begin
 end;
 
 procedure THCBMLinkPage.FormCreate(Sender: TObject);
-var
-  lDtaFile: string;
 begin
   inherited;
-  custCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'customer.xml';
-  if FileExists(lDtaFile) then
-  begin
-    custCDS.LoadFromFile(lDtaFile);
-  end;
-
-  bedCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
-  if FileExists(lDtaFile) then
-  begin
-    bedCDS.LoadFromFile(lDtaFile);
-  end;
-
-  mechineCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'mechine.xml';
-  if FileExists(lDtaFile) then
-  begin
-    mechineCDS.LoadFromFile(lDtaFile);
-  end;
-
   dataCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'linkData.xml';
-  if FileExists(lDtaFile) then
-  begin
-    dataCDS .LoadFromFile(lDtaFile);
-  end;
-
+  queryAllData;
   delBtn.Enabled := dataCDS.RecordCount >0 ;
   editBtn.Enabled := dataCDS.RecordCount >0 ;
 end;
 
-procedure THCBMLinkPage.saveBtnClick(Sender: TObject);
+procedure THCBMLinkPage.queryAllData;
 var
-  lDtaFile: string;
+  jsonData: ISuperObject;
+  subData: ISuperObject;
+  sql :string;
 begin
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'linkData.xml';
-  if (dataCDS.State in [dsInsert,dsEdit]) then
-    dataCDS.Post;
-  if dataCDS.RecordCount > 0 then
+  sql :='SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox ' +
+        'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M ' +
+        'where D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId';
+  jsonData := TDBManager.Instance.getDataBySql(sql);
+  with dataCDS do
   begin
-    dataCDS.SaveToFile(lDtaFile);
+    if jsonData.I['rowCount'] > 0 then
+    begin
+      for subData in jsonData['data'] do
+      begin
+        Append;
+        dataCDS.FieldByName('MCustId').AsString := subData.S['MCustId'];
+        dataCDS.FieldByName('MCustName').AsString := subData.S['MCustName'];
+        dataCDS.FieldByName('MRoomId').AsString := subData.S['MRoomId'];
+        dataCDS.FieldByName('MBedId').AsString := subData.S['MBedId'];
+        dataCDS.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
+        dataCDS.FieldByName('MMechineDesc').AsString := subData.S['MMechineDesc'];
+        dataCDS.FieldByName('MCom').AsBoolean := not (subData['MCom'].AsInteger = 0);
+        dataCDS.FieldByName('MNet').AsBoolean := not (subData['MNet'].AsInteger = 0);
+        dataCDS.FieldByName('MHDBox').AsBoolean := not (subData['MHDBox'].AsInteger = 0);
+        Post;
+      end;
+    end;
   end;
 end;
 

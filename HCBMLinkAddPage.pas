@@ -36,19 +36,9 @@ uses
 type
   TCBMLinkAddPage = class(TForm)
     custCDS: TClientDataSet;
-    custCDSMCustomerId: TStringField;
-    custCDSMCustomerName: TStringField;
     bedCDS: TClientDataSet;
     bedCDSMBedId: TStringField;
     mechineCDS: TClientDataSet;
-    mechineCDSMId: TStringField;
-    mechineCDSMDesc: TStringField;
-    dataCDS: TClientDataSet;
-    dataCDSMCustomerId: TStringField;
-    dataCDSMCustomerName: TStringField;
-    dataCDSMBedId: TStringField;
-    dataCDSMId: TStringField;
-    dataCDSMDesc: TStringField;
     Panel1: TPanel;
     cxSave: TcxButton;
     cancelBtn: TcxButton;
@@ -61,6 +51,10 @@ type
     custCombox: TDBLookupComboBox;
     bedCombox: TDBComboBox;
     mechineCombox: TDBLookupComboBox;
+    custCDSMCustId: TStringField;
+    custCDSMCustName: TStringField;
+    mechineCDSMMechineId: TStringField;
+    mechineCDSMMechineDesc: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure cxSaveClick(Sender: TObject);
   private
@@ -73,42 +67,71 @@ var
   CBMLinkAddPage: TCBMLinkAddPage;
 
 implementation
-
+uses HDBManager,superobject;
 {$R *.dfm}
 
 procedure TCBMLinkAddPage.cxSaveClick(Sender: TObject);
+var
+  I: Integer;
+  sql:string;
+  sqlList:TStringList;
 begin
-  with dataCDS do
-  begin
-    Append;
-    FieldByName('MCustomerId').AsString := custCDS.FieldByName('MCustomerId').AsString;
-    FieldByName('MCustomerName').AsString := custCDS.FieldByName('MCustomerName').AsString;
-    FieldByName('MBedId').AsString := bedCombox.Text;
-    FieldByName('MId').AsString := mechineCDS.FieldByName('MId').AsString;
-    FieldByName('MDesc').AsString := mechineCDS.FieldByName('MDesc').AsString;
-    Post;
-  end;
+  sqlList := TStringList.Create;
+  sql := Format('Delete from H_CBMData where MCustId =%s;',[QuotedStr(custCDS.FieldByName('MCustId').AsString)]);
+  sqlList.Add(sql);
+  sql := Format('Insert Into H_CBMData (MCustId,MBedId,MMechineId,isValid) Values (%s,%s,%s,%d)',
+           [QuotedStr(custCDS.FieldByName('MCustId').AsString),
+           QuotedStr(bedCDS.FieldByName('MBedId').AsString),
+           QuotedStr(mechineCDS.FieldByName('MMechineId').AsString),1]);
+  sqlList.Add(sql);
+  TDBManager.Instance.execSql(sqlList);
   ModalResult := mrOk;
 end;
 
 procedure TCBMLinkAddPage.FormCreate(Sender: TObject);
 var
-  lDtaFile: string;
+  jsonData: ISuperObject;
+  subData: ISuperObject;
 begin
   inherited;
-  dataCDS.CreateDataSet;
   custCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'customer.xml';
-  if FileExists(lDtaFile) then
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_CustomerInfo  Where isValid = 1  Order By MCustId');
+  with custCDS do
   begin
-    custCDS.LoadFromFile(lDtaFile);
+    if jsonData.I['rowCount'] > 0 then
+    begin
+      for subData in jsonData['data'] do
+      begin
+        Append;
+        custCDS.FieldByName('MCustId').AsString := subData.S['MCustId'];
+        custCDS.FieldByName('MCustName').AsString := subData['MCustName'].AsString;
+        Post;
+      end;
+    end;
+  end;
+  if custCDS.Active = False then
+  begin
+    custCDS.Open;
   end;
 
+
   bedCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
-  if FileExists(lDtaFile) then
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_BedInfo  Where isValid = 1 Order By MBedId');
+  with bedCDS do
   begin
-    bedCDS.LoadFromFile(lDtaFile);
+    if jsonData.I['rowCount'] > 0 then
+    begin
+      for subData in jsonData['data'] do
+      begin
+        Append;
+        bedCDS.FieldByName('MBedId').AsString := subData.S['MBedId'];
+        Post;
+      end;
+    end;
+  end;
+  if bedCDS.Active = False then
+  begin
+    bedCDS.Open;
   end;
 
   with bedCDS do
@@ -123,11 +146,25 @@ begin
     EnableControls;
   end;
 
+
   mechineCDS.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'mechine.xml';
-  if FileExists(lDtaFile) then
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_MechineInfo  Where isValid = 1  Order By MMechineId');
+  with mechineCDS do
   begin
-    mechineCDS.LoadFromFile(lDtaFile);
+    if jsonData.I['rowCount'] > 0 then
+    begin
+      for subData in jsonData['data'] do
+      begin
+        Append;
+        mechineCDS.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
+        mechineCDS.FieldByName('MMechineDesc').AsString := subData['MMechineDesc'].AsString;
+        Post;
+      end;
+    end;
+  end;
+  if mechineCDS.Active = False then
+  begin
+    mechineCDS.Open;
   end;
 end;
 

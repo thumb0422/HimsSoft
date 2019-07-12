@@ -25,3 +25,8 @@ MCustName varchar(50),
 MCustEId varchar(30),
 MUsed Integer,
 isValid Integer);
+
+CREATE TABLE IF NOT EXISTS H_CBMData (MID INTEGER PRIMARY KEY AUTOINCREMENT,MCustId varchar(10),
+MBedId varchar(10),MMechineId varchar(10),
+MDesc varchar(50),isValid INTEGER,
+createDate datetime DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')));

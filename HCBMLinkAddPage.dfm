@@ -63,9 +63,8 @@ object CBMLinkAddPage: TCBMLinkAddPage
     Top = 24
     Width = 145
     Height = 21
-    DataField = 'MCustomerId'
-    KeyField = 'MCustomerId'
-    ListField = 'MCustomerName'
+    KeyField = 'MCustId'
+    ListField = 'MCustName'
     ListSource = custDS
     TabOrder = 4
   end
@@ -83,8 +82,8 @@ object CBMLinkAddPage: TCBMLinkAddPage
     Top = 126
     Width = 145
     Height = 21
-    KeyField = 'MId'
-    ListField = 'MDesc'
+    KeyField = 'MMechineId'
+    ListField = 'MMechineDesc'
     ListSource = mechineDS
     TabOrder = 6
   end
@@ -93,13 +92,13 @@ object CBMLinkAddPage: TCBMLinkAddPage
     Params = <>
     Left = 88
     Top = 16
-    object custCDSMCustomerId: TStringField
-      FieldName = 'MCustomerId'
-      Size = 30
+    object custCDSMCustId: TStringField
+      FieldName = 'MCustId'
+      Size = 10
     end
-    object custCDSMCustomerName: TStringField
-      FieldName = 'MCustomerName'
-      Size = 30
+    object custCDSMCustName: TStringField
+      FieldName = 'MCustName'
+      Size = 50
     end
   end
   object bedCDS: TClientDataSet
@@ -117,39 +116,13 @@ object CBMLinkAddPage: TCBMLinkAddPage
     Params = <>
     Left = 92
     Top = 120
-    object mechineCDSMId: TStringField
-      FieldName = 'MId'
+    object mechineCDSMMechineId: TStringField
+      FieldName = 'MMechineId'
       Size = 10
     end
-    object mechineCDSMDesc: TStringField
-      FieldName = 'MDesc'
-      Size = 30
-    end
-  end
-  object dataCDS: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    Left = 228
-    Top = 64
-    object dataCDSMCustomerId: TStringField
-      FieldName = 'MCustomerId'
-      Size = 10
-    end
-    object dataCDSMCustomerName: TStringField
-      FieldName = 'MCustomerName'
-      Size = 30
-    end
-    object dataCDSMBedId: TStringField
-      FieldName = 'MBedId'
-      Size = 10
-    end
-    object dataCDSMId: TStringField
-      FieldName = 'MId'
-      Size = 10
-    end
-    object dataCDSMDesc: TStringField
-      FieldName = 'MDesc'
-      Size = 30
+    object mechineCDSMMechineDesc: TStringField
+      FieldName = 'MMechineDesc'
+      Size = 50
     end
   end
   object custDS: TDataSource
