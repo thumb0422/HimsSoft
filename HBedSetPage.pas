@@ -95,12 +95,10 @@ end;
 
 procedure TBedSetPage.saveBtnClick(Sender: TObject);
 var
-  lDtaFile: string;
   I: Integer;
   sql:string;
   sqlList:TStringList;
 begin
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'bed.xml';
   sqlList := TStringList.Create;
   sqlList.Add('Delete from H_BedInfo;');
   with ClientDataSet1 do
@@ -116,12 +114,6 @@ begin
     end;
   end;
   TDBManager.Instance.execSql(sqlList);
-  if (ClientDataSet1.State in [dsInsert,dsEdit]) then
-    ClientDataSet1.Post;
-  if ClientDataSet1.RecordCount > 0 then
-  begin
-    ClientDataSet1.SaveToFile(lDtaFile);
-  end;
 end;
 
 end.

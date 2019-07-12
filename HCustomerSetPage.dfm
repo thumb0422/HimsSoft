@@ -58,7 +58,7 @@ object CustomerSetPage: TCustomerSetPage
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'MCustomerId'
+        FieldName = 'MCustId'
         Footers = <>
         Title.Caption = 'ID'
         Width = 88
@@ -67,7 +67,7 @@ object CustomerSetPage: TCustomerSetPage
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'MCustomerName'
+        FieldName = 'MCustName'
         Footers = <>
         Title.Caption = #22995#21517
         Width = 130
@@ -76,9 +76,9 @@ object CustomerSetPage: TCustomerSetPage
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'MSex'
+        FieldName = 'isValid'
         Footers = <>
-        Title.Caption = #30007#24615
+        Title.Caption = #26377#25928
         Width = 40
       end>
     object RowDetailData: TRowDetailPanelControlEh
@@ -89,16 +89,16 @@ object CustomerSetPage: TCustomerSetPage
     Params = <>
     Left = 96
     Top = 80
-    object ClientDataSet1MCustomerId: TStringField
-      FieldName = 'MCustomerId'
-      Size = 30
+    object ClientDataSet1MCustId: TStringField
+      FieldName = 'MCustId'
+      Size = 10
     end
-    object ClientDataSet1MCustomerName: TStringField
-      FieldName = 'MCustomerName'
-      Size = 30
+    object ClientDataSet1MCustName: TStringField
+      FieldName = 'MCustName'
+      Size = 50
     end
-    object ClientDataSet1MSex: TBooleanField
-      FieldName = 'MSex'
+    object ClientDataSet1isValid: TBooleanField
+      FieldName = 'isValid'
     end
   end
   object DataSource1: TDataSource

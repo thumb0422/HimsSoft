@@ -42,9 +42,9 @@ type
     DBGridEh1: TDBGridEh;
     ClientDataSet1: TClientDataSet;
     DataSource1: TDataSource;
-    ClientDataSet1MCustomerId: TStringField;
-    ClientDataSet1MCustomerName: TStringField;
-    ClientDataSet1MSex: TBooleanField;
+    ClientDataSet1MCustId: TStringField;
+    ClientDataSet1MCustName: TStringField;
+    ClientDataSet1isValid: TBooleanField;
     procedure FormCreate(Sender: TObject);
     procedure cancelBtnClick(Sender: TObject);
     procedure saveBtnClick(Sender: TObject);
@@ -58,20 +58,29 @@ var
   CustomerSetPage: TCustomerSetPage;
 
 implementation
-
+uses HDBManager,superobject;
 {$R *.dfm}
 
 procedure TCustomerSetPage.FormCreate(Sender: TObject);
 var
-  lDtaFile: string;
-  lMDataFile :string;
+  jsonData: ISuperObject;
+  subData: ISuperObject;
 begin
-  inherited;
   ClientDataSet1.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'customer.xml';
-  if FileExists(lDtaFile) then
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_CustomerInfo Order By MCustId');
+  with ClientDataSet1 do
   begin
-    ClientDataSet1.LoadFromFile(lDtaFile);
+    if jsonData.I['rowCount'] > 0 then
+    begin
+      for subData in jsonData['data'] do
+      begin
+        Append;
+        ClientDataSet1.FieldByName('MCustId').AsString := subData.S['MCustId'];
+        ClientDataSet1.FieldByName('MCustName').AsString := subData['MCustName'].AsString;
+        ClientDataSet1.FieldByName('isValid').AsBoolean := not (subData['isValid'].AsInteger = 0);
+        Post;
+      end;
+    end;
   end;
 
   if ClientDataSet1.Active = False then
@@ -82,15 +91,25 @@ end;
 
 procedure TCustomerSetPage.saveBtnClick(Sender: TObject);
 var
-  lDtaFile: string;
+  I: Integer;
+  sql:string;
+  sqlList:TStringList;
 begin
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'customer.xml';
-  if (ClientDataSet1.State in [dsInsert,dsEdit]) then
-    ClientDataSet1.Post;
-  if ClientDataSet1.RecordCount > 0 then
+  sqlList := TStringList.Create;
+  sqlList.Add('Delete from H_CustomerInfo;');
+  with ClientDataSet1 do
   begin
-    ClientDataSet1.SaveToFile(lDtaFile);
+    DisableControls;
+    First;
+    while not Eof do
+    begin
+        sql := Format('Insert Into H_CustomerInfo (MCustId,MCustName,MUsed,isValid) Values (%s,%S,%d,%d)',
+           [QuotedStr(FieldByName('MCustId').AsString),QuotedStr(FieldByName('MCustName').AsString),1,ord(FieldByName('isValid').AsBoolean)]);
+        sqlList.Add(sql);
+        Next;
+    end;
   end;
+  TDBManager.Instance.execSql(sqlList);
 end;
 
 procedure TCustomerSetPage.cancelBtnClick(Sender: TObject);

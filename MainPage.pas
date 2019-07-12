@@ -57,7 +57,7 @@ var
 
 implementation
 
-uses HMenu,HBizBasePage, HRoom1,HSettingPage,superobject;
+uses HMenu,HBizBasePage, HRoom1,HSettingPage,HSecuritySetPage,superobject;
 {$R *.dfm}
 
 procedure TFMainPage.cxPageControl1CanClose(Sender: TObject;
@@ -124,6 +124,22 @@ begin
     lMenu.MVisible := 1;
     lMenu.MClass := 'TSettingPage';
     FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 100000;
+    lMenu.MDesc := '隐藏功能';
+    lMenu.MParent := 0;
+    lMenu.MVisible := 1;
+    lMenu.MClass := '';
+    FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 100001;
+    lMenu.MDesc := '功能一';
+    lMenu.MParent := 100000;
+    lMenu.MVisible := 1;
+    lMenu.MClass := 'TSecuritySetPage';
+    FMenuList.Add(lMenu);
   end;
 
   with fData do
@@ -162,19 +178,24 @@ begin
     First;
     while not Eof do
     begin
-      if FieldByName('MParent').AsInteger = 0 then
+      if (FieldByName('MParent').AsInteger = 0) and
+        (FieldByName('MVisible').AsInteger = 1) then
+      // 父节点
       begin
         tempgroup := dxNavBar1.Groups.Add;
         tempgroup.Caption := FieldByName('MDesc').AsString;
       end
       else
-      begin
-        tempitem := dxNavBar1.Items.Add;
-        tempitem.Caption := FieldByName('MDesc').AsString;
-        tempitem.Tag := FieldByName('MID').AsInteger;
-        tempitem.OnClick := itemClick;
-        tempitem.Name := FieldByName('MClass').AsString;
-        tempgroup.CreateLink(tempitem);
+      begin // 子节点
+        if (FieldByName('MVisible').AsInteger = 1) then
+        begin
+          tempitem := dxNavBar1.Items.Add;
+          tempitem.Caption := FieldByName('MDesc').AsString;
+          tempitem.Tag := FieldByName('MID').AsInteger;
+          tempitem.OnClick := itemClick;
+          tempitem.Name := FieldByName('MClass').AsString;
+          tempgroup.CreateLink(tempitem);
+        end;
       end;
       Next;
     end;
@@ -216,26 +237,19 @@ begin
     end;
   end;
   cxPageControl1.ActivePage := lTabSheet;
-  if litem.Tag < 2000 then
-  begin
-    TRoomPage.loadSelf(lTabSheet, alClient);
-  end
-  else
-  begin
-//    ldata := TDBManager.Instance.getDataBySql('SELECT * from testtable');
-//    lte := ldata.AsObject.GetEnumerator;
-//    try
-//        while lte.MoveNext do
-//      begin
-//        lname := lte.Current.Name;
-//        lvalue := lte.Current.Value.AsString;
-//        lname := lte.Current.Name;
-//      end;
-//    finally
-//      lte.Free;
-//    end;
-
-    TSettingPage.loadSelf(lTabSheet, alClient);
+  case litem.Tag of
+    1001:
+    begin
+      TRoomPage.loadSelf(lTabSheet, alClient);
+    end;
+    2001:
+    begin
+      TSettingPage.loadSelf(lTabSheet, alClient);
+    end;
+    100001:
+    begin
+      TSecuritySetPage.loadSelf(lTabSheet, alClient);
+    end;
   end;
 end;
 

@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS H_MechineInfo (
 MId INTEGER PRIMARY KEY AUTOINCREMENT,
 MMechineId varchar(10) UNIQUE,
 MMechineDesc varchar(50),
-MType varchar(10),
+MCom Integer,
+MNet Integer,
+MHDBox Integer,
 MUsed Integer,
 isValid Integer );
 

@@ -40,10 +40,12 @@ type
     cancelBtn: TcxButton;
     DataSource1: TDataSource;
     ClientDataSet1: TClientDataSet;
-    ClientDataSet1MDesc: TStringField;
     ClientDataSet1MCom: TBooleanField;
     ClientDataSet1MNet: TBooleanField;
-    ClientDataSet1MId: TStringField;
+    ClientDataSet1MMechineId: TStringField;
+    ClientDataSet1MMechineDesc: TStringField;
+    ClientDataSet1MHDBox: TBooleanField;
+    ClientDataSet1isValid: TBooleanField;
     procedure FormCreate(Sender: TObject);
     procedure saveBtnClick(Sender: TObject);
     procedure cancelBtnClick(Sender: TObject);
@@ -57,7 +59,7 @@ var
   MechineSetPage: TMechineSetPage;
 
 implementation
-
+uses HDBManager,superobject;
 {$R *.dfm}
 
 procedure TMechineSetPage.cancelBtnClick(Sender: TObject);
@@ -67,15 +69,30 @@ end;
 
 procedure TMechineSetPage.FormCreate(Sender: TObject);
 var
-  lDtaFile: string;
+  jsonData: ISuperObject;
+  subData: ISuperObject;
 begin
   inherited;
   ClientDataSet1.CreateDataSet;
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'mechine.xml';
-  if FileExists(lDtaFile) then
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_MechineInfo Order By MMechineId');
+  with ClientDataSet1 do
   begin
-    ClientDataSet1.LoadFromFile(lDtaFile);
+    if jsonData.I['rowCount'] > 0 then
+    begin
+      for subData in jsonData['data'] do
+      begin
+        Append;
+        ClientDataSet1.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
+        ClientDataSet1.FieldByName('MMechineDesc').AsString := subData['MMechineDesc'].AsString;
+        ClientDataSet1.FieldByName('MCom').AsBoolean := not (subData['MCom'].AsInteger = 0);
+        ClientDataSet1.FieldByName('MNet').AsBoolean := not (subData['MNet'].AsInteger = 0);
+        ClientDataSet1.FieldByName('MHDBox').AsBoolean := not (subData['MHDBox'].AsInteger = 0);
+        ClientDataSet1.FieldByName('isValid').AsBoolean := not (subData['isValid'].AsInteger = 0);
+        Post;
+      end;
+    end;
   end;
+
   if ClientDataSet1.Active = False then
   begin
     ClientDataSet1.Open;
@@ -84,15 +101,32 @@ end;
 
 procedure TMechineSetPage.saveBtnClick(Sender: TObject);
 var
-  lDtaFile: string;
+  I: Integer;
+  sql:string;
+  sqlList:TStringList;
 begin
-  lDtaFile := ExtractFilePath(paramstr(0)) + 'mechine.xml';
-  if (ClientDataSet1.State in [dsInsert,dsEdit]) then
-    ClientDataSet1.Post;
-  if ClientDataSet1.RecordCount > 0 then
+  sqlList := TStringList.Create;
+  sqlList.Add('Delete from H_MechineInfo;');
+  with ClientDataSet1 do
   begin
-    ClientDataSet1.SaveToFile(lDtaFile);
+    DisableControls;
+    First;
+    while not Eof do
+    begin
+      sql := Format
+        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MCom,MNet,MHDBox,MUsed,isValid) Values (%s,%s,%d,%d,%d,%d,%d)',
+        [QuotedStr(FieldByName('MMechineId').AsString),
+        QuotedStr(FieldByName('MMechineDesc').AsString),
+        ord(FieldByName('MCom').AsBoolean),
+        ord(FieldByName('MNet').AsBoolean),
+        ord(FieldByName('MHDBox').AsBoolean),
+        1,
+        ord(FieldByName('isValid').AsBoolean)]);
+      sqlList.Add(sql);
+      Next;
+    end;
   end;
+  TDBManager.Instance.execSql(sqlList);
 end;
 
 end.
