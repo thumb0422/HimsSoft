@@ -45,6 +45,7 @@ contains
   HFresenius in 'DeviceInfo\HFresenius.pas',
   HGambro in 'DeviceInfo\HGambro.pas',
   HNikkiso in 'DeviceInfo\HNikkiso.pas',
-  HToray in 'DeviceInfo\HToray.pas';
+  HToray in 'DeviceInfo\HToray.pas',
+  HMConst in 'DeviceInfo\HMConst.pas';
 
 end.

@@ -126,7 +126,6 @@ begin
     EmptyDataSet;
     if jsonData.I['rowCount'] > 0 then
     begin
-
       for subData in jsonData['data'] do
       begin
         Append;

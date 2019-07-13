@@ -9,39 +9,55 @@
 unit HCustomer;
 
 interface
-
+uses HMConst;
 type
   TCustomer = class
   private
-    FcId: string;
-    FcBedId: string;
-    FcRoomId: string;
-    procedure SetcBedId(const Value: string);
-    procedure SetcId(const Value: string);
-    procedure SetcRoomId(const Value: string);
-  published
-    property cId: string read FcId write SetcId; // 用户唯一ID
-    property cRoomId: string read FcRoomId write SetcRoomId; // 房间号
-    property cBedId: string read FcBedId write SetcBedId; // 床位号
+    FMCustName: string;
+    FMMechineId: string;
+    FMLinkType: DLinkType;
+    FMCustId: string;
+    FMBedId: string;
+    procedure SetMBedId(const Value: string);
+    procedure SetMCustId(const Value: string);
+    procedure SetMCustName(const Value: string);
+    procedure SetMLinkType(const Value: DLinkType);
+    procedure SetMMechineId(const Value: string);
+  public
+    property MCustId :string read FMCustId write SetMCustId;
+    property MCustName :string read FMCustName write SetMCustName;
+    property MBedId :string read FMBedId write SetMBedId;
+    property MMechineId :string read FMMechineId write SetMMechineId;
+    property MLinkType:DLinkType read FMLinkType write SetMLinkType;
   end;
 
 implementation
 
 { TCustomer }
 
-procedure TCustomer.SetcBedId(const Value: string);
+procedure TCustomer.SetMBedId(const Value: string);
 begin
-  FcBedId := Value;
+  FMBedId := Value;
 end;
 
-procedure TCustomer.SetcId(const Value: string);
+procedure TCustomer.SetMCustId(const Value: string);
 begin
-  FcId := Value;
+  FMCustId := Value;
 end;
 
-procedure TCustomer.SetcRoomId(const Value: string);
+procedure TCustomer.SetMCustName(const Value: string);
 begin
-  FcRoomId := Value;
+  FMCustName := Value;
+end;
+
+procedure TCustomer.SetMLinkType(const Value: DLinkType);
+begin
+  FMLinkType := Value;
+end;
+
+procedure TCustomer.SetMMechineId(const Value: string);
+begin
+  FMMechineId := Value;
 end;
 
 end.
