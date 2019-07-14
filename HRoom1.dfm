@@ -11,6 +11,7 @@ object RoomPage: TRoomPage
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
 end

@@ -11,7 +11,7 @@ unit HRoom1;
 interface
 
 uses
-  System.SysUtils, System.Classes,
+  System.SysUtils, System.Classes,Vcl.Dialogs,
   Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, HBizBasePage,
   Vcl.ExtCtrls,cxScrollBox,
   HDataDetailView;
@@ -19,6 +19,7 @@ uses
 type
   TRoomPage = class(TBizBasePage)
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     procedure reloadView;
@@ -26,7 +27,8 @@ type
   public
     { Public declarations }
   protected
-    centerPanel :TPanel;
+//    centerPanel :TPanel;
+    cxScrollBoxCenter:TcxScrollBox;
     cxScrollBox1:TcxScrollBox;
     fDataDetaiView :TDataDetailView;
   end;
@@ -42,7 +44,13 @@ uses superobject,HDBManager,HBedView,HCustomer,HMConst;
 procedure TRoomPage.FormCreate(Sender: TObject);
 begin
   InitView;
-//  reloadView;
+end;
+
+procedure TRoomPage.FormShow(Sender: TObject);
+begin
+  inherited;
+  cxScrollBox1.Width := 200;
+  reloadView;
 end;
 
 procedure TRoomPage.InitView;
@@ -50,9 +58,9 @@ begin
   cxScrollBox1 := TcxScrollBox.Create(Self);
   with cxScrollBox1 do
   begin
-    Parent:=Self;
+    Parent:= Self;
     Caption := '';
-    Width := 200;
+//    Width := 200;
     Align := alRight;
     Color := clWhite;
   end;
@@ -63,14 +71,23 @@ begin
   fDataDetaiView.Align := alClient;
   fDataDetaiView.Parent := cxScrollBox1;
 
-  centerPanel := TPanel.Create(Self);
-  with centerPanel do
+//  centerPanel := TPanel.Create(Self);
+//  with centerPanel do
+//  begin
+//    Parent:=Self;
+//    Caption := '';
+//    Align := alClient;
+//    Color := clWhite;
+//  end;
+  cxScrollBoxCenter := TcxScrollBox.Create(Self);
+  with cxScrollBoxCenter do
   begin
-    Parent:=Self;
+    Parent:= Self;
     Caption := '';
     Align := alClient;
     Color := clWhite;
   end;
+
 end;
 
 procedure TRoomPage.reloadView;
@@ -78,7 +95,7 @@ var
   I: Integer;
   bedView: TBedView;
   fWidth, fHeight, fSeperateWidth: Integer;
-  fCol, fRow, fMax: Integer;
+  fCol, fRow: Integer;
   J: Integer;
   fLeft,fTop:Integer;
   jsonData: ISuperObject;
@@ -86,13 +103,15 @@ var
   sql :string;
   customers :TList;
   customer :TCustomer;
+  dataCount:Integer;
 begin
   customers := TList.Create;
   sql := 'SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox '+
          'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M '+
          'where D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId AND D.isValid = 1 ';
   jsonData := TDBManager.Instance.getDataBySql(sql);
-  if jsonData.I['rowCount'] > 0 then
+  dataCount := jsonData.I['rowCount'];
+  if dataCount > 0 then
   begin
     for subData in jsonData['data'] do
     begin
@@ -106,40 +125,27 @@ begin
     end;
   end;
 
-  fMax := 20;
   fWidth := 130;
   fHeight := 120;
   fSeperateWidth := 20;
-  fCol := trunc((centerPanel.ClientWidth - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
-  fRow := trunc((centerPanel.ClientHeight - fSeperateWidth) / (fHeight + fSeperateWidth)); //行数
-  if (fCol * fRow) > fMax then
-  begin
-    fRow := fMax div fCol;
-  end;
-
-  //For test  循环数组好像有问题
-//  fRow := 2;
-//  fCol := 3;
+//  dataCount := 50;
+  fCol := Trunc((cxScrollBoxCenter.ClientWidth - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
+  fRow := Ceil(dataCount div fCol);   //行数
 
   for I := 0 to fRow - 1 do
   begin
     fTop := fSeperateWidth + I * (fHeight + fSeperateWidth);
-    if (fTop + fHeight + fSeperateWidth > centerPanel.Height) then
-    begin
-      Continue;
-    end;
-
     for J := 0 to fCol - 1 do
     begin
       fLeft := fSeperateWidth + J * (fWidth + fSeperateWidth);
-      if (fLeft + fWidth + fSeperateWidth) > centerPanel.Width then
+      if (fLeft + fWidth + fSeperateWidth) > cxScrollBoxCenter.Width then
       begin
         Continue;
       end;
       bedView := TBedView.Create(nil);
       bedView.Name := 'bedView' + IntToStr(I) + IntToStr(J);
       bedView.Caption := '';
-      bedView.Parent := centerPanel;
+      bedView.Parent := cxScrollBoxCenter;
       bedView.Left := fLeft;
       bedView.Top := fTop;
       bedView.Width := fWidth;
