@@ -104,7 +104,7 @@ begin
     while not Eof do
     begin
         sql := Format('Insert Into H_CustomerInfo (MCustId,MCustName,MUsed,isValid) Values (%s,%S,%d,%d)',
-           [QuotedStr(FieldByName('MCustId').AsString),QuotedStr(FieldByName('MCustName').AsString),1,ord(FieldByName('isValid').AsBoolean)]);
+           [QuotedStr(FieldByName('MCustId').AsString),QuotedStr(FieldByName('MCustName').AsString),0,ord(FieldByName('isValid').AsBoolean)]);
         sqlList.Add(sql);
         Next;
     end;

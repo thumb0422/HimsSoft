@@ -113,7 +113,6 @@ var
   lData: TDataModel;
   lDataNotify: IDataNotify;
 begin
-  // send message to TDataDetailView
   if Assigned(FDataDetailView) and (FbedStatus = EmBedUsed) then
   begin
     lData := TDataModel.Create;

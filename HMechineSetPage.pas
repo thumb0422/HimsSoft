@@ -120,7 +120,7 @@ begin
         ord(FieldByName('MCom').AsBoolean),
         ord(FieldByName('MNet').AsBoolean),
         ord(FieldByName('MHDBox').AsBoolean),
-        1,
+        0,
         ord(FieldByName('isValid').AsBoolean)]);
       sqlList.Add(sql);
       Next;

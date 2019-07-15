@@ -119,7 +119,6 @@ begin
   fWidth := 130;
   fHeight := 120;
   fSeperateWidth := 20;
-//  dataCount := 50;
   fCol := Trunc((cxScrollBoxCenter.ClientWidth - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
   fRow := Ceil(dataCount / fCol);   //行数
   tmpCount := 0;

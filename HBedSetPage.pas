@@ -100,7 +100,7 @@ var
   sqlList:TStringList;
 begin
   sqlList := TStringList.Create;
-  sqlList.Add('Delete from H_BedInfo;');
+  sqlList.Add('Delete from H_BedInfo');
   with ClientDataSet1 do
   begin
     DisableControls;
@@ -108,7 +108,7 @@ begin
     while not Eof do
     begin
         sql := Format('Insert Into H_BedInfo (MBedId,MRoomId,MUsed,isValid) Values (%s,%S,%d,%d)',
-           [QuotedStr(FieldByName('MBedId').AsString),QuotedStr(FieldByName('MRoomId').AsString),1,ord(FieldByName('isValid').AsBoolean)]);
+           [QuotedStr(FieldByName('MBedId').AsString),QuotedStr(FieldByName('MRoomId').AsString),0,ord(FieldByName('isValid').AsBoolean)]);
         sqlList.Add(sql);
         Next;
     end;

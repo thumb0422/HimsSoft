@@ -76,7 +76,13 @@ var
   sqlList:TStringList;
 begin
   sqlList := TStringList.Create;
-  sql := Format('Delete from H_CBMData where MCustId =%s;',[QuotedStr(custCDS.FieldByName('MCustId').AsString)]);
+  sql := Format('update H_BedInfo set MUsed = 1 where MBedId = %s',[QuotedStr(bedCDS.FieldByName('MBedId').AsString)]);
+  sqlList.Add(sql);
+  sql := Format('update H_CustomerInfo set MUsed = 1 where MCustId = %s',[QuotedStr(custCDS.FieldByName('MCustId').AsString)]);
+  sqlList.Add(sql);
+  sql := Format('update H_MechineInfo set MUsed = 1 where MMechineId = %s',[QuotedStr(mechineCDS.FieldByName('MMechineId').AsString)]);
+  sqlList.Add(sql);
+  sql := Format('Delete from H_CBMData where MCustId =%s',[QuotedStr(custCDS.FieldByName('MCustId').AsString)]);
   sqlList.Add(sql);
   sql := Format('Insert Into H_CBMData (MCustId,MBedId,MMechineId,isValid) Values (%s,%s,%s,%d)',
            [QuotedStr(custCDS.FieldByName('MCustId').AsString),
@@ -94,7 +100,7 @@ var
 begin
   inherited;
   custCDS.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_CustomerInfo  Where isValid = 1  Order By MCustId');
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_CustomerInfo  Where MUsed = 0 and isValid = 1  Order By MCustId');
   with custCDS do
   begin
     if jsonData.I['rowCount'] > 0 then
@@ -115,7 +121,7 @@ begin
 
 
   bedCDS.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_BedInfo  Where isValid = 1 Order By MBedId');
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_BedInfo  Where MUsed = 0 and isValid = 1 Order By MBedId');
   with bedCDS do
   begin
     if jsonData.I['rowCount'] > 0 then
@@ -147,7 +153,7 @@ begin
 
 
   mechineCDS.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_MechineInfo  Where isValid = 1  Order By MMechineId');
+  jsonData := TDBManager.Instance.getDataBySql('Select * From H_MechineInfo  Where MUsed = 0 and isValid = 1  Order By MMechineId');
   with mechineCDS do
   begin
     if jsonData.I['rowCount'] > 0 then
