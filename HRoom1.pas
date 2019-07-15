@@ -27,7 +27,6 @@ type
   public
     { Public declarations }
   protected
-//    centerPanel :TPanel;
     cxScrollBoxCenter:TcxScrollBox;
     cxScrollBox1:TcxScrollBox;
     fDataDetaiView :TDataDetailView;
@@ -60,7 +59,6 @@ begin
   begin
     Parent:= Self;
     Caption := '';
-//    Width := 200;
     Align := alRight;
     Color := clWhite;
   end;
@@ -71,14 +69,6 @@ begin
   fDataDetaiView.Align := alClient;
   fDataDetaiView.Parent := cxScrollBox1;
 
-//  centerPanel := TPanel.Create(Self);
-//  with centerPanel do
-//  begin
-//    Parent:=Self;
-//    Caption := '';
-//    Align := alClient;
-//    Color := clWhite;
-//  end;
   cxScrollBoxCenter := TcxScrollBox.Create(Self);
   with cxScrollBoxCenter do
   begin
@@ -104,6 +94,7 @@ var
   customers :TList;
   customer :TCustomer;
   dataCount:Integer;
+  tmpCount :Integer;
 begin
   customers := TList.Create;
   sql := 'SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox '+
@@ -130,13 +121,17 @@ begin
   fSeperateWidth := 20;
 //  dataCount := 50;
   fCol := Trunc((cxScrollBoxCenter.ClientWidth - fSeperateWidth) / (fWidth + fSeperateWidth)); //列数
-  fRow := Ceil(dataCount div fCol);   //行数
-
+  fRow := Ceil(dataCount / fCol);   //行数
+  tmpCount := 0;
   for I := 0 to fRow - 1 do
   begin
     fTop := fSeperateWidth + I * (fHeight + fSeperateWidth);
     for J := 0 to fCol - 1 do
     begin
+      if tmpCount >= dataCount then
+      begin
+        Break;
+      end;
       fLeft := fSeperateWidth + J * (fWidth + fSeperateWidth);
       if (fLeft + fWidth + fSeperateWidth) > cxScrollBoxCenter.Width then
       begin
@@ -150,8 +145,10 @@ begin
       bedView.Top := fTop;
       bedView.Width := fWidth;
       bedView.Height := fHeight;
-      bedView.bedId := IntToStr(I)+IntToStr(J);
       bedView.notifyComponent := fDataDetaiView;
+      bedView.customer := customers[tmpCount];
+
+      tmpCount := tmpCount + 1;
     end;
   end;
 end;

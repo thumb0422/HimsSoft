@@ -12,7 +12,7 @@ interface
 
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
   Vcl.Forms, Winapi.Windows,Vcl.Controls,
-  HDataNotify, HDataModel,
+  HDataNotify, HDataModel,HCustomer,
   HConst, HDataDetailView;
 
 type
@@ -21,15 +21,15 @@ type
     FbedStatus: EmBedStatus;
     procedure SetbedStatus(const Value: EmBedStatus);
   private
-    FbedId: string;
-    procedure SetbedId(const Value: string);
-  private
     FnotifyComponent: TComponent;
     procedure SetnotifyComponent(const Value: TComponent);
+  private
+    Fcustomer: TCustomer;
+    procedure Setcustomer(const Value: TCustomer);
   published
     property notifyComponent :TComponent read FnotifyComponent write SetnotifyComponent;
     property bedStatus: EmBedStatus read FbedStatus write SetbedStatus;
-    property bedId:string read FbedId write SetbedId;
+    property customer:TCustomer read Fcustomer write Setcustomer;
   private
     FImage: TImage;
     FLabel: TLabel;
@@ -118,7 +118,7 @@ begin
   begin
     lData := TDataModel.Create;
     lData.generateDataForTest;
-    lData.BedId := FbedId;
+    lData.BedId := Fcustomer.MBedId;
 
     lDataNotify := FDataDetailView;
     lDataNotify.sendSingleData(lData);
@@ -167,12 +167,6 @@ begin
   FLabel.Caption := '';
 end;
 
-procedure TBedView.SetbedId(const Value: string);
-begin
-  FbedId := Value;
-  FBedIdLabel.Caption := 'Bed - '+ FbedId;
-end;
-
 procedure TBedView.SetbedStatus(const Value: EmBedStatus);
 var
   fileStr: string;
@@ -197,6 +191,12 @@ begin
       end;
   end;
   FImage.Picture.LoadFromFile(fileStr);
+end;
+
+procedure TBedView.Setcustomer(const Value: TCustomer);
+begin
+  Fcustomer := Value;
+  FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
 end;
 
 procedure TBedView.SetnotifyComponent(const Value: TComponent);
