@@ -189,7 +189,10 @@ begin
         fileStr := fileStr + 'bed.png';
       end;
   end;
-  FImage.Picture.LoadFromFile(fileStr);
+  if FileExists(fileStr) then
+  begin
+    FImage.Picture.LoadFromFile(fileStr);
+  end;
 end;
 
 procedure TBedView.Setcustomer(const Value: TCustomer);

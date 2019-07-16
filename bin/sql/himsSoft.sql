@@ -30,3 +30,11 @@ CREATE TABLE IF NOT EXISTS H_CBMData (MID INTEGER PRIMARY KEY AUTOINCREMENT,MCus
 MBedId varchar(10),MMechineId varchar(10),
 MDesc varchar(50),isValid INTEGER,
 createDate datetime DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')));
+
+CREATE TABLE if NOT EXISTS H_Data_Main (MId INTEGER PRIMARY KEY AUTOINCREMENT,DId varchar(30) UNIQUE,MCustId varchar(10),
+cureDate date,startTime datetime,endTime datetime,createDate datetime DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')));
+
+CREATE TABLE if NOT EXISTS H_Data_Detail (MId INTEGER PRIMARY KEY AUTOINCREMENT,DId varchar(30),
+VenousPressure NUMERIC(10,2),DialysisPressure NUMERIC(10,2),TMP NUMERIC(10,2),BloodFlow NUMERIC(10,2),
+UFFlow NUMERIC(10,2),BloodPressure NUMERIC(10,2),TotalBlood NUMERIC(10,2),Temperature NUMERIC(10,2),
+createDate datetime DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')));
