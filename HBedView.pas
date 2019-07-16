@@ -44,10 +44,13 @@ type
     procedure onDblClick(Sender: TObject);
     procedure timerOnTimer(Sender: TObject);
     procedure resetData;
+  private
+    FDId:string;//H_Data_Main.DId (由custId加随机生成码)
+    FRspData:TDataModel;
   end;
 
 implementation
-
+uses HDBManager,superobject;
 { TBedView }
 
 constructor TBedView.Create(AOwner: TComponent);
@@ -196,9 +199,25 @@ begin
 end;
 
 procedure TBedView.Setcustomer(const Value: TCustomer);
+var sql:string;
+    jsonData: ISuperObject;
+    subData: ISuperObject;
 begin
   Fcustomer := Value;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
+  FDId := '';
+  sql := Format('Select DId From H_DataMain Where MCustId = %s And cureDate = %s',FCustomer.MCustId,FormatDateTime('yyyy-mm-dd',Now));
+  if jsonData.I['rowCount'] > 0 then
+  begin
+    for subData in jsonData['data'] do
+    begin
+      FDId := subData.S['DId'];
+    end;
+  end
+  else
+  begin
+    FDId := Fcustomer.MCustId + FormatDateTime('c',Now);
+  end;
 end;
 
 procedure TBedView.SetnotifyComponent(const Value: TComponent);
@@ -208,8 +227,18 @@ begin
 end;
 
 procedure TBedView.timerOnTimer(Sender: TObject);
+var sql:string;
+    sqls:TStringList;
 begin
   FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
+  sqls := TStringList.Create;
+  sql := Format('Update H_DataMain set endTime = %d Where DId = %s',Now,FDId);
+  sqls.Add(sql);
+  sql := Format('Insert Into H_DataDetail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
+                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',[FDId,FRspData.VenousPressure,FRspData.DialysisPressure,FRspData.TMP,FRspData.BloodFlow,
+                FRspData.UFFlow,FRspData.BloodPressure,FRspData.TotalBlood,FRspData.Temperature]);
+  sqls.Add(sql);
+  TDBManager.Instance.execSql(sqls);
 end;
 
 end.
