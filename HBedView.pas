@@ -59,7 +59,7 @@ begin
   Color := clWhite;
 
   FTimer := TTimer.Create(Self);
-  FTimer.Interval := 1000;
+  FTimer.Interval := 5000;
   FTimer.OnTimer := timerOnTimer;
   FTimer.Enabled := False;
 
@@ -118,10 +118,7 @@ var
 begin
   if Assigned(FDataDetailView) and (FbedStatus = EmBedUsed) then
   begin
-    lData := TDataModel.Create;
-    lData.generateDataForTest;
-    lData.BedId := Fcustomer.MBedId;
-
+    lData := TDataModel.generateDataForTest;
     lDataNotify := FDataDetailView;
     lDataNotify.sendSingleData(lData);
   end;
@@ -172,8 +169,11 @@ end;
 procedure TBedView.SetbedStatus(const Value: EmBedStatus);
 var
   fileStr: string;
+  sql:string;
+  sqls:TStringList;
 begin
   FbedStatus := Value;
+  sqls := TStringList.Create;
   fileStr := ExtractFilePath(paramstr(0))+'res/';
   FTimer.Enabled := False;
   case FbedStatus of
@@ -186,6 +186,10 @@ begin
       begin
         fileStr := fileStr + 'bed_2.png';
         FTimer.Enabled := True;
+        sql := Format('Update H_Data_Main set startTime =%s where DId =%s And MCustId = %s And cureDate = %s' ,
+                [FormatDateTime('yyyymmddhhmmss',Now),FDId,FCustomer.MCustId,FormatDateTime('yyyymmdd',Now)]);
+        sqls.Add(sql);
+        TDBManager.Instance.execSql(sqls);
       end;
     EmBedAlarm:
       begin
@@ -200,13 +204,16 @@ end;
 
 procedure TBedView.Setcustomer(const Value: TCustomer);
 var sql:string;
+    sqls:TStringList;
     jsonData: ISuperObject;
     subData: ISuperObject;
 begin
   Fcustomer := Value;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
   FDId := '';
-  sql := Format('Select DId From H_DataMain Where MCustId = %s And cureDate = %s',FCustomer.MCustId,FormatDateTime('yyyy-mm-dd',Now));
+  sql := Format('Select DId From H_Data_Main Where MCustId = %s And cureDate = %s ORDER by createDate LIMIT 1',
+                [FCustomer.MCustId,FormatDateTime('yyyymmdd',Now)]);
+  jsonData := TDBManager.Instance.getDataBySql(sql);
   if jsonData.I['rowCount'] > 0 then
   begin
     for subData in jsonData['data'] do
@@ -216,7 +223,12 @@ begin
   end
   else
   begin
-    FDId := Fcustomer.MCustId + FormatDateTime('c',Now);
+    FDId := Fcustomer.MCustId + FormatDateTime('yyyymmddhhmmss',Now);
+    sqls:=TStringList.Create;
+    sql := Format('Insert Into H_Data_Main (DId,MCustId,cureDate)' +
+                'Values (%s,%s,%s)',[FDId,FCustomer.MCustId,FormatDateTime('yyyymmdd',Now)]);
+    sqls.Add(sql);
+    TDBManager.Instance.execSql(sqls);
   end;
 end;
 
@@ -230,11 +242,12 @@ procedure TBedView.timerOnTimer(Sender: TObject);
 var sql:string;
     sqls:TStringList;
 begin
+  FRspData := TDataModel.generateDataForTest;
   FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
   sqls := TStringList.Create;
-  sql := Format('Update H_DataMain set endTime = %d Where DId = %s',Now,FDId);
+  sql := Format('Update H_Data_Main set endTime = %f Where DId = %s',[Now,FDId]);
   sqls.Add(sql);
-  sql := Format('Insert Into H_DataDetail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
+  sql := Format('Insert Into H_Data_Detail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
                 'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',[FDId,FRspData.VenousPressure,FRspData.DialysisPressure,FRspData.TMP,FRspData.BloodFlow,
                 FRspData.UFFlow,FRspData.BloodPressure,FRspData.TotalBlood,FRspData.Temperature]);
   sqls.Add(sql);

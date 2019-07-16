@@ -49,24 +49,27 @@ type
     property TotalBlood: string read FTotalBlood write SetTotalBlood;
     property Temperature: string read FTemperature write SetTemperature;
   public
-    procedure generateDataForTest;
+    class function generateDataForTest:TDataModel;
   end;
 
 implementation
 
 { TDataModel }
 
-procedure TDataModel.generateDataForTest;
+class function TDataModel.generateDataForTest: TDataModel;
+var rspData:TDataModel;
 begin
-  FTotalBlood := IntToStr(Random(100));
-  FBloodFlow := IntToStr(Random(100));
-  FBloodPressure := IntToStr(Random(100));
-  FSessionTime := IntToStr(Random(100));
-  FDialysisPressure := IntToStr(Random(100));
-  FVenousPressure := IntToStr(Random(100));
-  FTemperature := IntToStr(Random(100));
-  FUFFlow := IntToStr(Random(100));
-  FTMP := IntToStr(Random(100));
+  rspData := TDataModel.Create;
+  rspData.FTotalBlood := IntToStr(Random(100));
+  rspData.FBloodFlow := IntToStr(Random(100));
+  rspData.FBloodPressure := IntToStr(Random(100));
+  rspData.FSessionTime := IntToStr(Random(100));
+  rspData.FDialysisPressure := IntToStr(Random(100));
+  rspData.FVenousPressure := IntToStr(Random(100));
+  rspData.FTemperature := IntToStr(Random(100));
+  rspData.FUFFlow := IntToStr(Random(100));
+  rspData.FTMP := IntToStr(Random(100));
+  Result := rspData;
 end;
 
 procedure TDataModel.SetBedId(const Value: string);

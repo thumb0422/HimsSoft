@@ -209,9 +209,6 @@ var
   I: Integer;
   lTabSheet :TcxTabSheet;
   tabSheetCaption,itemCaption:string;
-  ldata:ISuperObject;
-  lte: TSuperAvlIterator;
-  lname,lvalue:string;
 begin
   litem := TdxnavbarItem(Sender);
   lTabSheet := nil;
