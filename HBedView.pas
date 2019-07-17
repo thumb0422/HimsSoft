@@ -187,7 +187,7 @@ begin
         fileStr := fileStr + 'bed_2.png';
         FTimer.Enabled := True;
         sql := Format('Update H_Data_Main set startTime =%s where DId =%s And MCustId = %s And cureDate = %s' ,
-                [FormatDateTime('yyyymmddhhmmss',Now),FDId,FCustomer.MCustId,FormatDateTime('yyyymmdd',Now)]);
+                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyy-mm-dd',Now))]);
         sqls.Add(sql);
         TDBManager.Instance.execSql(sqls);
       end;
@@ -212,7 +212,7 @@ begin
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
   FDId := '';
   sql := Format('Select DId From H_Data_Main Where MCustId = %s And cureDate = %s ORDER by createDate LIMIT 1',
-                [FCustomer.MCustId,FormatDateTime('yyyymmdd',Now)]);
+                [QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyy-mm-dd',Now))]);
   jsonData := TDBManager.Instance.getDataBySql(sql);
   if jsonData.I['rowCount'] > 0 then
   begin
@@ -223,10 +223,10 @@ begin
   end
   else
   begin
-    FDId := Fcustomer.MCustId + FormatDateTime('yyyymmddhhmmss',Now);
+    FDId := Fcustomer.MCustId +'|'+ FormatDateTime('yyyymmddhhmmss',Now);
     sqls:=TStringList.Create;
     sql := Format('Insert Into H_Data_Main (DId,MCustId,cureDate)' +
-                'Values (%s,%s,%s)',[FDId,FCustomer.MCustId,FormatDateTime('yyyymmdd',Now)]);
+                'Values (%s,%s,%s)',[QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyy-mm-dd',Now))]);
     sqls.Add(sql);
     TDBManager.Instance.execSql(sqls);
   end;
@@ -245,11 +245,14 @@ begin
   FRspData := TDataModel.generateDataForTest;
   FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
   sqls := TStringList.Create;
-  sql := Format('Update H_Data_Main set endTime = %f Where DId = %s',[Now,FDId]);
+  sql := Format('Update H_Data_Main set endTime = %s Where DId = %s And MCustId = %s And cureDate = %s',
+                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyymmdd',Now))]);
   sqls.Add(sql);
   sql := Format('Insert Into H_Data_Detail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
-                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',[FDId,FRspData.VenousPressure,FRspData.DialysisPressure,FRspData.TMP,FRspData.BloodFlow,
-                FRspData.UFFlow,FRspData.BloodPressure,FRspData.TotalBlood,FRspData.Temperature]);
+                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+                [QuotedStr(FDId),QuotedStr(FRspData.VenousPressure),QuotedStr(FRspData.DialysisPressure),
+                QuotedStr(FRspData.TMP),QuotedStr(FRspData.BloodFlow),QuotedStr(FRspData.UFFlow),
+                QuotedStr(FRspData.BloodPressure),QuotedStr(FRspData.TotalBlood),QuotedStr(FRspData.Temperature)]);
   sqls.Add(sql);
   TDBManager.Instance.execSql(sqls);
 end;
