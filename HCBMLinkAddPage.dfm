@@ -72,7 +72,8 @@ object CBMLinkAddPage: TCBMLinkAddPage
     Left = 58
     Top = 75
     Width = 145
-    Height = 21
+    Height = 22
+    Style = csOwnerDrawFixed
     DataField = 'MBedId'
     DataSource = bedDS
     TabOrder = 5
