@@ -71,7 +71,6 @@ uses HCBMLinkAddPage,HDBManager,superobject;
 
 procedure THCBMLinkPage.addBtnClick(Sender: TObject);
 var form:TCBMLinkAddPage;
-    data :TClientDataSet;
 begin
   form := TCBMLinkAddPage.Create(nil);
   if form.ShowModal = mrOk then

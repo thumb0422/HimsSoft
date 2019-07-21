@@ -21,7 +21,7 @@ type
     FcInterval: Integer;
     FisConnected: Boolean;
     procedure SetcInterval(const Value: Integer);
-  published
+  public
     procedure init; virtual; abstract;
     procedure send; virtual; abstract;
     procedure close; virtual; abstract;

@@ -95,7 +95,6 @@ end;
 
 procedure TBedSetPage.saveBtnClick(Sender: TObject);
 var
-  I: Integer;
   sql:string;
   sqlList:TStringList;
 begin

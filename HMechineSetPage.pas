@@ -101,7 +101,6 @@ end;
 
 procedure TMechineSetPage.saveBtnClick(Sender: TObject);
 var
-  I: Integer;
   sql:string;
   sqlList:TStringList;
 begin

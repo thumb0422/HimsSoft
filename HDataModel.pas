@@ -35,7 +35,7 @@ type
     procedure SetTotalBlood(const Value: string);
     procedure SetUFFlow(const Value: string);
     procedure SetVenousPressure(const Value: string);
-  published
+  public
     property BedId: string read FBedId write SetBedId;
     property SessionTime: string read FSessionTime write SetSessionTime;
     property VenousPressure: string read FVenousPressure

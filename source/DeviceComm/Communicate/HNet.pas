@@ -76,7 +76,6 @@ begin
 end;
 
 procedure TNet.close;
-var a:Boolean;
 begin
   FisConnected := False;
   if Assigned(reqTimer) then

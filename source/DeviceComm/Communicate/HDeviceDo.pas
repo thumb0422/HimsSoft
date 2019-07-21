@@ -62,7 +62,7 @@ end;
 
 procedure TDeviceAct.initTestData;
 var
-  i, n: Integer;
+  i: Integer;
   deviceInfo: TDeviceInfo;
   com32: THComm;
   net485: TNet;
@@ -101,8 +101,6 @@ begin
     net485.init;
     FComGroupList.Add(net485);
   end;
-
-  n := FComGroupList.count;
 end;
 
 procedure TDeviceAct.startTestData;

@@ -30,15 +30,14 @@ uses System.Classes,System.SysUtils, SQLiteTable3,superobject;
   end;
 
 implementation
-var dbPath :string;
 { TDBManager }
 
 constructor TDBManager.Create;
 var
   slDBpath: string;
-  sSQL: String;
-  ts: TStringStream;
-  sltb: TSQLIteTable;
+//  sSQL: String;
+//  ts: TStringStream;
+//  sltb: TSQLIteTable;
 begin
   slDBpath := ExtractFilePath(paramstr(0)) + 'hims.db';
   fDB := TSQLiteDatabase.Create(slDBpath);
@@ -152,7 +151,6 @@ function TDBManager.getDataBySql(sql: string):ISuperObject;
 var
   lTB: TSQLIteTable;
   lColStr, lRowStr: string;
-  I: Integer;
   J: Integer;
   lJson,arrayJson, subJson: ISuperObject;
 begin

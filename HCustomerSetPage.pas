@@ -91,7 +91,6 @@ end;
 
 procedure TCustomerSetPage.saveBtnClick(Sender: TObject);
 var
-  I: Integer;
   sql:string;
   sqlList:TStringList;
 begin
