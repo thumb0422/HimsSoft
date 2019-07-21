@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls, System.Win.Registry, CnRS232, HLog, HDeviceInfo, HCate;
+  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HLog, HDeviceInfo, HCate;
 
 type
   THComm = class(TCate)
@@ -21,14 +21,12 @@ type
     procedure send; override; // writeCommX
     procedure close; override; // stopCommX
     constructor Create(deviceInfo: TDeviceInfo); override; // 设备
-  public
-    class function getAllCommPorts: TStringList; // 获取所有的串口
   private
     FDeviceInfo: TDeviceInfo;
     procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
-    procedure onWriteData(Sender: TObject);
+    procedure onWriteData;
   protected
     rs232Obj: TCnRS232;
     destructor Destroy; override;
@@ -37,13 +35,11 @@ type
 implementation
 
 uses
-  Data.DBXClassRegistry, HDeviceBase, HBellco, HToray;
+  HDeviceBase, HBellco, HToray;
 
 procedure THComm.init;
 begin
   FisConnected := False;
-  if Assigned(reqTimer) then
-    reqTimer.Enabled := False;
   if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
   begin
     rs232Obj := TCnRS232.Create(nil);
@@ -73,11 +69,7 @@ procedure THComm.send;
 begin
   if FisConnected then
   begin
-    if Assigned(reqTimer) then
-    begin
-      reqTimer.Enabled := False;
-      reqTimer.Enabled := True;
-    end
+    onWriteData;
   end
   else
   begin
@@ -88,8 +80,6 @@ end;
 procedure THComm.close;
 begin
   FisConnected := False;
-  if Assigned(reqTimer) then
-    reqTimer.Enabled := False;
   if Assigned(rs232Obj) then
   begin
     TLog.Instance.DDLogInfo(rs232Obj.CommName + ' stopComm');
@@ -101,10 +91,6 @@ constructor THComm.Create(deviceInfo: TDeviceInfo);
 begin
   FDeviceInfo := deviceInfo;
   FisConnected := False;
-  reqTimer := TTimer.Create(nil);
-  reqTimer.interval := 1000; // default
-  reqTimer.OnTimer := onWriteData;
-  reqTimer.Enabled := False;
 end;
 
 destructor THComm.Destroy;
@@ -114,11 +100,9 @@ begin
     rs232Obj.Free;
   if Assigned(FDeviceInfo) then
     FDeviceInfo.Free;
-  if Assigned(reqTimer) then
-    reqTimer.Free;
 end;
 
-procedure THComm.onWriteData(Sender: TObject);
+procedure THComm.onWriteData;
 begin
   if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
   begin
@@ -179,29 +163,6 @@ begin
   rspCNRs232Obj := TCnRS232(Sender);
   ss := rspCNRs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
-end;
-
-class function THComm.getAllCommPorts: TStringList;
-var
-  reg: TRegistry;
-  ts: TStrings;
-  i: Integer;
-  commports: TStringList;
-begin
-  commports := TStringList.Create;
-  reg := TRegistry.Create;
-  reg.RootKey := HKEY_LOCAL_MACHINE;
-  reg.OpenKey('hardware\devicemap\serialcomm', False);
-  ts := TStringList.Create;
-  reg.GetValueNames(ts);
-  for i := 0 to ts.Count - 1 do
-  begin
-    commports.Add(reg.ReadString(ts.Strings[i]));
-  end;
-  ts.Free;
-  reg.CloseKey;
-  reg.Free;
-  Result := commports;
 end;
 
 initialization

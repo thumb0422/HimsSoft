@@ -14,8 +14,8 @@ uses
   SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo;
 
 type
-  TDeviceAct = class(TObject)
-    class function GetInstance(): TDeviceAct;
+  TDeviceDo = class(TObject)
+    class function GetInstance(): TDeviceDo;
     class function NewInstance: TObject; override;
     procedure FreeInstance; override;
   protected
@@ -30,37 +30,37 @@ type
 implementation
 
 var
-  GlobalSingle: TDeviceAct;
+  GlobalSingle: TDeviceDo;
   { TDeviceAct }
 
-constructor TDeviceAct.Create;
+constructor TDeviceDo.Create;
 begin
   FComGroupList := TList.Create;
 end;
 
-procedure TDeviceAct.FreeInstance;
+procedure TDeviceDo.FreeInstance;
 begin
   inherited;
   GlobalSingle := nil;
 end;
 
-class function TDeviceAct.GetInstance: TDeviceAct;
+class function TDeviceDo.GetInstance: TDeviceDo;
 begin
   if not Assigned(GlobalSingle) then
   begin
-    GlobalSingle := TDeviceAct.Create();
+    GlobalSingle := TDeviceDo.Create();
   end;
   Result := GlobalSingle;
 end;
 
-class function TDeviceAct.NewInstance: TObject;
+class function TDeviceDo.NewInstance: TObject;
 begin
   if not Assigned(GlobalSingle) then
-    GlobalSingle := TDeviceAct(inherited NewInstance);
+    GlobalSingle := TDeviceDo(inherited NewInstance);
   Result := GlobalSingle;
 end;
 
-procedure TDeviceAct.initTestData;
+procedure TDeviceDo.initTestData;
 var
   i: Integer;
   deviceInfo: TDeviceInfo;
@@ -80,7 +80,6 @@ begin
     deviceInfo.dPort := 9600;
     deviceInfo.dTag := 1 * 100 + i;
     com32 := THComm.Create(deviceInfo);
-    com32.cInterval := 3000;
     com32.init;
     FComGroupList.Add(com32);
   end;
@@ -97,17 +96,20 @@ begin
     deviceInfo.dPort := 6666 + i;
     deviceInfo.dTag := 2 * 100 + i;
     net485 := TNet.Create(deviceInfo);
-    net485.cInterval := 3000;
     net485.init;
     FComGroupList.Add(net485);
   end;
 end;
 
-procedure TDeviceAct.startTestData;
+procedure TDeviceDo.startTestData;
 var
   i: Integer;
   cat:TCate;
 begin
+  if FComGroupList.Count < 1 then
+  begin
+    initTestData;
+  end;
   for i := 0 to FComGroupList.count - 1 do
   begin
     cat := FComGroupList.Items[i];
@@ -115,7 +117,7 @@ begin
   end;
 end;
 
-procedure TDeviceAct.stopTestData;
+procedure TDeviceDo.stopTestData;
 var
   i: Integer;
   cat:TCate;

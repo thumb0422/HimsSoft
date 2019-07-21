@@ -29,7 +29,7 @@ type
     procedure ClientSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
     procedure ClientSocketRead(Sender: TObject; Socket: TCustomWinSocket);
 //    procedure ClientSocketWrite(Sender: TObject; Socket: TCustomWinSocket);
-    procedure onWriteData(Sender: TObject);
+    procedure onWriteData;
   protected
     netIPObj: TClientSocket;
     destructor Destroy; override;
@@ -40,8 +40,6 @@ implementation
 procedure TNet.init;
 begin
   FisConnected := False;
-  if Assigned(reqTimer) then
-    reqTimer.Enabled := False;
   if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
   begin
     netIPObj := TClientSocket.Create(nil);
@@ -63,11 +61,7 @@ procedure TNet.send;
 begin
   if FisConnected then
   begin
-    if Assigned(reqTimer) then
-    begin
-      reqTimer.Enabled := False;
-      reqTimer.Enabled := True;
-    end
+    onWriteData;
   end
   else
   begin
@@ -78,8 +72,6 @@ end;
 procedure TNet.close;
 begin
   FisConnected := False;
-  if Assigned(reqTimer) then
-    reqTimer.Enabled := False;
   if Assigned(netIPObj) and netIPObj.Socket.Connected then
   begin
     TLog.Instance.DDLogInfo('NET ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' stopNet');
@@ -91,10 +83,6 @@ constructor TNet.Create(deviceInfo: TDeviceInfo);
 begin
   FDeviceInfo := deviceInfo;
   FisConnected := False;
-  reqTimer := TTimer.Create(nil);
-  reqTimer.interval := 1000; // default
-  reqTimer.OnTimer := onWriteData;
-  reqTimer.Enabled := False;
 end;
 
 destructor TNet.Destroy;
@@ -104,11 +92,9 @@ begin
     netIPObj.Free;
   if Assigned(FDeviceInfo) then
     FDeviceInfo.Free;
-  if Assigned(reqTimer) then
-    reqTimer.Free;
 end;
 
-procedure TNet.onWriteData(Sender: TObject);
+procedure TNet.onWriteData;
 begin
   if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
   begin

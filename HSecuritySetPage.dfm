@@ -22,4 +22,19 @@ object SecuritySetPage: TSecuritySetPage
     TabOrder = 0
     OnClick = Button1Click
   end
+  object Button2: TButton
+    Left = 88
+    Top = 120
+    Width = 161
+    Height = 25
+    Caption = 'TestDComNet'
+    TabOrder = 1
+    OnClick = Button2Click
+  end
+  object Timer1: TTimer
+    Interval = 5000
+    OnTimer = Timer1Timer
+    Left = 392
+    Top = 64
+  end
 end

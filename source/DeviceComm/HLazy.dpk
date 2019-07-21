@@ -46,7 +46,8 @@ contains
   HGambro in 'DeviceInfo\HGambro.pas',
   HNikkiso in 'DeviceInfo\HNikkiso.pas',
   HToray in 'DeviceInfo\HToray.pas',
-  HMConst in 'DeviceInfo\HMConst.pas';
+  HMConst in 'DeviceInfo\HMConst.pas',
+  HDeviceTool in 'HDeviceTool.pas';
 
 end.
 
