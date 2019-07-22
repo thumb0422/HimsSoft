@@ -86,7 +86,7 @@ begin
   FImage.Align := alClient;
   FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
-  bedStatus := EmBedNormal;
+//  bedStatus := EmBedNormal;
 
   FBedIdLabel := TLabel.Create(Self);
   FBedIdLabel.Caption := 'Bed - ';
@@ -171,7 +171,7 @@ var
   fileStr: string;
   sql:string;
   sqls:TStringList;
-  subData: ISuperObject;
+  jsonData: ISuperObject;
 begin
   FbedStatus := Value;
   sqls := TStringList.Create;
@@ -198,14 +198,10 @@ begin
       end;
     EmBedUsed:
       begin
-        // ï¿½ï¿½ï¿½ï¿½
+        // ¿ªÆô
         fileStr := fileStr + 'bed_2.png';
         FTimer.Enabled := True;
-        if jsonData.I['rowCount'] > 0 then
-        begin
-
-        end
-        else
+        if jsonData.I['rowCount'] = 0 then
         begin
           sql := Format
             ('Insert Into H_Data_Main (DId,MCustId,startTime,MCureDate)' +
@@ -231,11 +227,12 @@ end;
 procedure TBedView.Setcustomer(const Value: TCustomer);
 var
   sql: string;
-    sqls:TStringList;
-    jsonData: ISuperObject;
-    subData: ISuperObject;
+  sqls:TStringList;
+  jsonData: ISuperObject;
+  subData: ISuperObject;
 begin
   Fcustomer := Value;
+  bedStatus := EmBedNormal;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
   FDId := '';
   sql := Format('Select DId From H_Data_Main Where MCustId = %s And MCureDate = %s ORDER by createDate LIMIT 1',
