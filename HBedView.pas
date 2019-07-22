@@ -171,31 +171,57 @@ var
   fileStr: string;
   sql:string;
   sqls:TStringList;
+  subData: ISuperObject;
 begin
   FbedStatus := Value;
   sqls := TStringList.Create;
-  fileStr := ExtractFilePath(paramstr(0))+'res/';
+  fileStr := ExtractFilePath(paramstr(0)) + 'res/';
   FTimer.Enabled := False;
+
+  sql := Format
+    ('Select DId From H_Data_Main Where MCustId = %s And MCureDate = %s ORDER by createDate LIMIT 1',
+    [QuotedStr(Fcustomer.MCustId),
+    QuotedStr(FormatDateTime('yyyy-mm-dd', Now))]);
+  jsonData := TDBManager.Instance.getDataBySql(sql);
   case FbedStatus of
     EmBedNormal:
       begin
+        // ֹͣ
         fileStr := fileStr + 'bed_1.png';
+        sql := Format
+          ('Update H_Data_Main set endTime =%s where DId =%s And MCustId = %s And MCureDate = %s',
+          [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss', Now)),
+          QuotedStr(FDId), QuotedStr(Fcustomer.MCustId),
+          QuotedStr(FormatDateTime('yyyy-mm-dd', Now))]);
+        sqls.Add(sql);
         resetData;
       end;
     EmBedUsed:
       begin
+        // ����
         fileStr := fileStr + 'bed_2.png';
         FTimer.Enabled := True;
-        sql := Format('Update H_Data_Main set startTime =%s where DId =%s And MCustId = %s And MCureDate = %s' ,
-                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyy-mm-dd',Now))]);
-        sqls.Add(sql);
-        TDBManager.Instance.execSql(sqls);
+        if jsonData.I['rowCount'] > 0 then
+        begin
+
+        end
+        else
+        begin
+          sql := Format
+            ('Insert Into H_Data_Main (DId,MCustId,startTime,MCureDate)' +
+            'Values (%s,%s,%s,%s)',
+            [QuotedStr(FDId), QuotedStr(Fcustomer.MCustId),
+            QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss', Now)),
+            QuotedStr(FormatDateTime('yyyy-mm-dd', Now))]);
+          sqls.Add(sql);
+        end;
       end;
     EmBedAlarm:
       begin
         fileStr := fileStr + 'bed.png';
       end;
   end;
+  TDBManager.Instance.execSql(sqls);
   if FileExists(fileStr) then
   begin
     FImage.Picture.LoadFromFile(fileStr);
@@ -203,7 +229,8 @@ begin
 end;
 
 procedure TBedView.Setcustomer(const Value: TCustomer);
-var sql:string;
+var
+  sql: string;
     sqls:TStringList;
     jsonData: ISuperObject;
     subData: ISuperObject;
@@ -224,11 +251,6 @@ begin
   else
   begin
     FDId := Fcustomer.MCustId +'|'+ FormatDateTime('yyyymmddhhmmss',Now);
-    sqls:=TStringList.Create;
-    sql := Format('Insert Into H_Data_Main (DId,MCustId,MCureDate)' +
-                'Values (%s,%s,%s)',[QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyy-mm-dd',Now))]);
-    sqls.Add(sql);
-    TDBManager.Instance.execSql(sqls);
   end;
 end;
 
