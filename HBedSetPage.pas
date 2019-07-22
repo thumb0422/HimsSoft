@@ -106,8 +106,8 @@ begin
     First;
     while not Eof do
     begin
-        sql := Format('Insert Into H_BedInfo (MBedId,MRoomId,MUsed,isValid) Values (%s,%S,%d,%d)',
-           [QuotedStr(FieldByName('MBedId').AsString),QuotedStr(FieldByName('MRoomId').AsString),0,ord(FieldByName('isValid').AsBoolean)]);
+        sql := Format('Insert Into H_BedInfo (MBedId,MRoomId,isValid) Values (%s,%S,%d)',
+           [QuotedStr(FieldByName('MBedId').AsString),QuotedStr(FieldByName('MRoomId').AsString),ord(FieldByName('isValid').AsBoolean)]);
         sqlList.Add(sql);
         Next;
     end;

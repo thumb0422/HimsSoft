@@ -11,6 +11,7 @@ object SecuritySetPage: TSecuritySetPage
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton
@@ -32,6 +33,7 @@ object SecuritySetPage: TSecuritySetPage
     OnClick = Button2Click
   end
   object Timer1: TTimer
+    Enabled = False
     Interval = 5000
     OnTimer = Timer1Timer
     Left = 392

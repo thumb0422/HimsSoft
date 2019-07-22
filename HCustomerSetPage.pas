@@ -67,7 +67,7 @@ var
   subData: ISuperObject;
 begin
   ClientDataSet1.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_CustomerInfo Order By MCustId');
+  jsonData := TDBManager.Instance.getDataBySql('Select C.MCustId,C.MCustName,C.isValid From H_CustomerInfo C Order By C.MCustId');
   with ClientDataSet1 do
   begin
     if jsonData.I['rowCount'] > 0 then
@@ -95,15 +95,15 @@ var
   sqlList:TStringList;
 begin
   sqlList := TStringList.Create;
-  sqlList.Add('Delete from H_CustomerInfo;');
+  sqlList.Add('Delete from H_CustomerInfo');
   with ClientDataSet1 do
   begin
     DisableControls;
     First;
     while not Eof do
     begin
-        sql := Format('Insert Into H_CustomerInfo (MCustId,MCustName,MUsed,isValid) Values (%s,%S,%d,%d)',
-           [QuotedStr(FieldByName('MCustId').AsString),QuotedStr(FieldByName('MCustName').AsString),0,ord(FieldByName('isValid').AsBoolean)]);
+        sql := Format('Insert Into H_CustomerInfo (MCustId,MCustName,isValid) Values (%s,%S,%d)',
+           [QuotedStr(FieldByName('MCustId').AsString),QuotedStr(FieldByName('MCustName').AsString),ord(FieldByName('isValid').AsBoolean)]);
         sqlList.Add(sql);
         Next;
     end;

@@ -14,6 +14,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -37,6 +38,12 @@ begin
   inherited;
   Timer1.Enabled := False;
   Timer1.Enabled := True;
+end;
+
+procedure TSecuritySetPage.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Timer1.Enabled :=False;
 end;
 
 procedure TSecuritySetPage.Timer1Timer(Sender: TObject);

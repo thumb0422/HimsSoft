@@ -58,6 +58,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure cxSaveClick(Sender: TObject);
   private
+    curDate:string;
     { Private declarations }
   public
     { Public declarations }
@@ -76,18 +77,22 @@ var
   sqlList:TStringList;
 begin
   sqlList := TStringList.Create;
-  sql := Format('update H_BedInfo set MUsed = 1 where MBedId = %s',[QuotedStr(bedCDS.FieldByName('MBedId').AsString)]);
+  sql := Format('Insert Into H_Bed_States (MBedId,MUsedDate) Values (%s,%s)',[QuotedStr(bedCDS.FieldByName('MBedId').AsString),QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('update H_CustomerInfo set MUsed = 1 where MCustId = %s',[QuotedStr(custCDS.FieldByName('MCustId').AsString)]);
+
+  sql := Format('Insert Into H_Mechine_States (MMechineId,MUsedDate) Values (%s,%s)',[QuotedStr(mechineCDS.FieldByName('MMechineId').AsString),QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('update H_MechineInfo set MUsed = 1 where MMechineId = %s',[QuotedStr(mechineCDS.FieldByName('MMechineId').AsString)]);
+
+  sql := Format('Insert Into H_Customer_States (MCustId,MUsedDate) Values (%s,%s)',[QuotedStr(custCDS.FieldByName('MCustId').AsString),QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('Delete from H_CBMData where MCustId =%s',[QuotedStr(custCDS.FieldByName('MCustId').AsString)]);
+
+  sql := Format('Delete from H_CBMData where MCustId =%s And MCureDate = %s',[QuotedStr(custCDS.FieldByName('MCustId').AsString),QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('Insert Into H_CBMData (MCustId,MBedId,MMechineId,isValid) Values (%s,%s,%s,%d)',
+  sql := Format('Insert Into H_CBMData (MCustId,MBedId,MMechineId,isValid,MCureDate) Values (%s,%s,%s,%d,%s)',
            [QuotedStr(custCDS.FieldByName('MCustId').AsString),
            QuotedStr(bedCDS.FieldByName('MBedId').AsString),
-           QuotedStr(mechineCDS.FieldByName('MMechineId').AsString),1]);
+           QuotedStr(mechineCDS.FieldByName('MMechineId').AsString),1,
+           QuotedStr(curDate)]);
   sqlList.Add(sql);
   TDBManager.Instance.execSql(sqlList);
   ModalResult := mrOk;
@@ -97,10 +102,17 @@ procedure TCBMLinkAddPage.FormCreate(Sender: TObject);
 var
   jsonData: ISuperObject;
   subData: ISuperObject;
+  sql:string;
 begin
   inherited;
+  curDate := FormatDateTime('yyyy-mm-dd',Now);
+
   custCDS.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_CustomerInfo  Where MUsed = 0 and isValid = 1  Order By MCustId');
+  sql := Format('Select C.MCustId,C.MCustName From H_CustomerInfo C Where 1 = 1 '+
+                'AND C.isValid = 1 '+
+                'AND C.MCustId NOT In (SELECT S.MCustId FROM H_Customer_States S WHERE S.MUsedDate = %s) '+
+                'Order By C.MCustId',[QuotedStr(curDate)]);
+  jsonData := TDBManager.Instance.getDataBySql(sql);
   with custCDS do
   begin
     if jsonData.I['rowCount'] > 0 then
@@ -121,7 +133,11 @@ begin
 
 
   bedCDS.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_BedInfo  Where MUsed = 0 and isValid = 1 Order By MBedId');
+  sql := Format('Select B.MBedId From H_BedInfo B Where 1 = 1 '+
+                'AND B.isValid = 1 '+
+                'AND B.MBedId NOT In (SELECT S.MBedId FROM H_Bed_States S WHERE S.MUsedDate = %s) ' +
+                'Order By B.MBedId',[QuotedStr(curDate)]);
+  jsonData := TDBManager.Instance.getDataBySql(sql);
   with bedCDS do
   begin
     if jsonData.I['rowCount'] > 0 then
@@ -151,9 +167,12 @@ begin
     EnableControls;
   end;
 
-
   mechineCDS.CreateDataSet;
-  jsonData := TDBManager.Instance.getDataBySql('Select * From H_MechineInfo  Where MUsed = 0 and isValid = 1  Order By MMechineId');
+  sql := Format('Select B.MMechineId,B.MMechineDesc From H_MechineInfo B Where 1=1 '+
+                'AND B.isValid = 1 '+
+                'AND B.MMechineId NOT In (SELECT S.MMechineId FROM H_Mechine_States S WHERE S.MUsedDate = %s) '+
+                'Order By B.MMechineId',[QuotedStr(curDate)]);
+  jsonData := TDBManager.Instance.getDataBySql(sql);
   with mechineCDS do
   begin
     if jsonData.I['rowCount'] > 0 then

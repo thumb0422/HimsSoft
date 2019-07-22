@@ -57,6 +57,7 @@ type
     procedure cancelBtnClick(Sender: TObject);
   private
     { Private declarations }
+    curDate:string;
     procedure queryAllData;
   public
     { Public declarations }
@@ -95,7 +96,13 @@ var
   sqlList:TStringList;
 begin
   sqlList := TStringList.Create;
-  sql := Format('Delete from H_CBMData where MCustId =%s',[QuotedStr(dataCDS.FieldByName('MCustId').AsString)]);
+  sql := Format('Delete from H_Bed_States where 1=1 and MBedId = %s and MUsedDate =%s ',[QuotedStr(dataCDS.FieldByName('MBedId').AsString),QuotedStr(curDate)]);
+  sqlList.Add(sql);
+  sql := Format('Delete from H_Mechine_States where 1=1 and MMechineId = %s and MUsedDate =%s ',[QuotedStr(dataCDS.FieldByName('MMechineId').AsString),QuotedStr(curDate)]);
+  sqlList.Add(sql);
+  sql := Format('Delete from H_Customer_States where 1=1 and MCustId = %s and MUsedDate =%s ',[QuotedStr(dataCDS.FieldByName('MCustId').AsString),QuotedStr(curDate)]);
+  sqlList.Add(sql);
+  sql := Format('Delete from H_CBMData where MCustId =%s And MCureDate = %s',[QuotedStr(dataCDS.FieldByName('MCustId').AsString),QuotedStr(curDate)]);
   sqlList.Add(sql);
   TDBManager.Instance.execSql(sqlList);
   queryAllData;
@@ -104,6 +111,7 @@ end;
 procedure THCBMLinkPage.FormCreate(Sender: TObject);
 begin
   inherited;
+  curDate := FormatDateTime('yyyy-mm-dd',Now);
   dataCDS.CreateDataSet;
   queryAllData;
 end;
@@ -115,9 +123,9 @@ var
   sql :string;
 begin
   dataCDS.Close;
-  sql :='SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox ' +
-        'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M ' +
-        'where D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId';
+  sql :=Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox ' +
+               'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M ' +
+               'where D.MCureDate = %s And D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId',[QuotedStr(curDate)]);
   jsonData := TDBManager.Instance.getDataBySql(sql);
   with dataCDS do
   begin
