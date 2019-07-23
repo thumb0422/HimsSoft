@@ -11,7 +11,7 @@ unit HCBMLinkPage;
 interface
 
 uses
-  System.SysUtils, System.Classes,
+  System.SysUtils, System.Classes,Winapi.Windows,
   Vcl.Controls, Vcl.Forms,cxButtons, Vcl.ExtCtrls,
   DBGridEh, Data.DB, Datasnap.DBClient, cxGraphics, cxLookAndFeels,
   cxLookAndFeelPainters, Vcl.Menus, dxSkinsCore, dxSkinBlack, dxSkinBlue,
@@ -92,18 +92,60 @@ end;
 
 procedure THCBMLinkPage.delBtnClick(Sender: TObject);
 var
-  sql:string;
-  sqlList:TStringList;
+  sql: string;
+  sqlList: TStringList;
+  jsonData: ISuperObject;
 begin
+  sql := Format
+    ('SELECT M.* from H_Data_Main M LEFT JOIN H_CBMData D WHERE 1=1 AND M.MCustId = %s AND M.MCureDate = %s And M.MCustId = D.MCustId',
+    [QuotedStr(dataCDS.FieldByName('MCustId').AsString), QuotedStr(curDate)]);
+  jsonData := TDBManager.Instance.getDataBySql(sql);
   sqlList := TStringList.Create;
-  sql := Format('Delete from H_Bed_States where 1=1 and MBedId = %s and MUsedDate =%s ',[QuotedStr(dataCDS.FieldByName('MBedId').AsString),QuotedStr(curDate)]);
+  if jsonData.I['rowCount'] > 0 then
+  begin
+    case Application.MessageBox('存在当天诊疗记录,是否继续删除?', '提示',
+      MB_OKCANCEL + MB_ICONQUESTION) of
+      IDOK:
+        begin
+          sql := Format('DELETE FROM H_Data_Detail  WHERE 1=1 ' +
+            'AND DId in (SELECT D.DId FROM H_Data_Detail D LEFT JOIN H_Data_Main M '+
+            'WHERE 1=1 AND M.MCustId = %s AND D.DId = M.DId AND M.MCureDate=%s)',
+            [QuotedStr(dataCDS.FieldByName('MCustId').AsString),
+            QuotedStr(curDate)]);
+          sqlList.Add(sql);
+
+          sql := Format
+            ('DELETE FROM H_Data_Main WHERE 1=1 and MCustId = %s and MCureDate =%s ',
+            [QuotedStr(dataCDS.FieldByName('MCustId').AsString),
+            QuotedStr(curDate)]);
+          sqlList.Add(sql);
+        end;
+      IDCANCEL:
+        begin
+
+        end;
+    end;
+  end;
+  sql := Format
+    ('Delete from H_Bed_States where 1=1 and MBedId = %s and MUsedDate =%s ',
+    [QuotedStr(dataCDS.FieldByName('MBedId').AsString), QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('Delete from H_Mechine_States where 1=1 and MMechineId = %s and MUsedDate =%s ',[QuotedStr(dataCDS.FieldByName('MMechineId').AsString),QuotedStr(curDate)]);
+
+  sql := Format
+    ('Delete from H_Mechine_States where 1=1 and MMechineId = %s and MUsedDate =%s ',
+    [QuotedStr(dataCDS.FieldByName('MMechineId').AsString),
+    QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('Delete from H_Customer_States where 1=1 and MCustId = %s and MUsedDate =%s ',[QuotedStr(dataCDS.FieldByName('MCustId').AsString),QuotedStr(curDate)]);
+
+  sql := Format
+    ('Delete from H_Customer_States where 1=1 and MCustId = %s and MUsedDate =%s ',
+    [QuotedStr(dataCDS.FieldByName('MCustId').AsString), QuotedStr(curDate)]);
   sqlList.Add(sql);
-  sql := Format('Delete from H_CBMData where MCustId =%s And MCureDate = %s',[QuotedStr(dataCDS.FieldByName('MCustId').AsString),QuotedStr(curDate)]);
+
+  sql := Format('Delete from H_CBMData where MCustId =%s And MCureDate = %s',
+    [QuotedStr(dataCDS.FieldByName('MCustId').AsString), QuotedStr(curDate)]);
   sqlList.Add(sql);
+
   TDBManager.Instance.execSql(sqlList);
   queryAllData;
 end;

@@ -20,7 +20,7 @@ uses System.Classes,System.SysUtils, SQLiteTable3,superobject;
     class procedure ReleaseInstance;
     procedure execSql(sqls:TStringList);
     function getDataBySql(sql:string):ISuperObject;
-    procedure execSqlByFromLocalFile;
+    procedure execSqlByFromLocalFile(filePath:string = '');
   protected
     constructor Create;
     destructor Destroy; override;
@@ -112,13 +112,20 @@ begin
   end;
 end;
 
-procedure TDBManager.execSqlByFromLocalFile;
+procedure TDBManager.execSqlByFromLocalFile(filePath:string = '');
 var sourceScript,destScript:TStringList;
     lscriptStr1,lscriptStr2:string;
     sqlPath :string;
     I: Integer;
 begin
-  sqlPath := ExtractFilePath(paramstr(0)) + 'sql/himsSoft.sql';
+  if filePath = '' then
+  begin
+    sqlPath := ExtractFilePath(paramstr(0)) + 'sql/himsSoft.sql';
+  end
+  else
+  begin
+    sqlPath := ExtractFilePath(paramstr(0)) + 'sql/'+ filePath;
+  end;
   if FileExists(sqlPath) then
   begin
     destScript := TStringList.Create;

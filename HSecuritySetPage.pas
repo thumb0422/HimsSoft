@@ -11,10 +11,12 @@ type
     Button1: TButton;
     Button2: TButton;
     Timer1: TTimer;
+    Button3: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,6 +40,12 @@ begin
   inherited;
   Timer1.Enabled := False;
   Timer1.Enabled := True;
+end;
+
+procedure TSecuritySetPage.Button3Click(Sender: TObject);
+begin
+  inherited;
+  TDBManager.Instance.execSqlByFromLocalFile('hims.db.sql');
 end;
 
 procedure TSecuritySetPage.FormCreate(Sender: TObject);

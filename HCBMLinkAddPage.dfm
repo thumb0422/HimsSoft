@@ -29,7 +29,6 @@ object CBMLinkAddPage: TCBMLinkAddPage
       Width = 75
       Height = 25
       Caption = #20445#23384
-      ModalResult = 1
       TabOrder = 0
       OnClick = cxSaveClick
     end

@@ -86,7 +86,6 @@ begin
   FImage.Align := alClient;
   FImage.onClick := onClick;
   FImage.onDblClick := onDblClick;
-//  bedStatus := EmBedNormal;
 
   FBedIdLabel := TLabel.Create(Self);
   FBedIdLabel.Caption := 'Bed - ';

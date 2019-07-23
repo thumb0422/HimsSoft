@@ -11,7 +11,7 @@ unit HCBMLinkAddPage;
 interface
 
 uses
-  System.SysUtils, System.Classes,
+  System.SysUtils, System.Classes,Winapi.Windows,
   Vcl.Controls, Vcl.Forms, cxButtons, Vcl.ExtCtrls, Data.DB,
   Datasnap.DBClient,
   cxLabel,
@@ -59,6 +59,7 @@ type
     procedure cxSaveClick(Sender: TObject);
   private
     curDate:string;
+    function checkValidValue:Boolean;
     { Private declarations }
   public
     { Public declarations }
@@ -71,11 +72,29 @@ implementation
 uses HDBManager,superobject;
 {$R *.dfm}
 
+function TCBMLinkAddPage.checkValidValue: Boolean;
+var checkValue:Boolean;
+begin
+  checkValue := True;
+  if bedCombox.Text = '' then
+    checkValue := False;
+  if custCombox.Text = '' then
+    checkValue := False;
+  if mechineCombox.Text = '' then
+    checkValue := False;
+  Result := checkValue;
+end;
+
 procedure TCBMLinkAddPage.cxSaveClick(Sender: TObject);
 var
   sql:string;
   sqlList:TStringList;
 begin
+  if not checkValidValue then
+  begin
+    Application.MessageBox('请输入必填数据', '警告', MB_OK + MB_ICONWARNING);
+    Exit;
+  end;
   sqlList := TStringList.Create;
   sql := Format('Insert Into H_Bed_States (MBedId,MUsedDate) Values (%s,%s)',[QuotedStr(bedCDS.FieldByName('MBedId').AsString),QuotedStr(curDate)]);
   sqlList.Add(sql);
