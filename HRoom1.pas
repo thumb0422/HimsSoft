@@ -22,6 +22,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
+    cureDate:string;
     procedure reloadView;
     procedure InitView;
   public
@@ -42,6 +43,8 @@ uses superobject,HDBManager,HBedView,HCustomer,HMConst;
 
 procedure TRoomPage.FormCreate(Sender: TObject);
 begin
+  inherited;
+  cureDate := FormatDateTime('yyyy-mm-dd',Now);
   InitView;
 end;
 
@@ -97,9 +100,10 @@ var
   tmpCount :Integer;
 begin
   customers := TList.Create;
-  sql := 'SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox '+
+  sql := Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox '+
          'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M '+
-         'where D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId AND D.isValid = 1 ';
+         'where 1=1 AND D.MCureDate = %s AND D.isValid = 1 AND D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId ',
+         [QuotedStr(cureDate)]);
   jsonData := TDBManager.Instance.getDataBySql(sql);
   dataCount := jsonData.I['rowCount'];
   if dataCount > 0 then
