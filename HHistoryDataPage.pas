@@ -42,6 +42,8 @@ begin
   with ClientDataSet1 do
   begin
     FieldDefs.Clear;
+    FieldDefs.Add('curDate',ftString,20);
+    FieldDefs.Add('curTime',ftString,20);
     FieldDefs.Add('MCustId', ftString, 10);
     FieldDefs.Add('MCustName', ftString, 50);
     FieldDefs.Add('MId', ftInteger, 0);
@@ -65,7 +67,8 @@ var
   subData: ISuperObject;
 begin
   sql := Format
-    ('SELECT M.MCustId,C.MCustName,D.* FROM H_Data_Detail D LEFT JOIN H_Data_Main M LEFT JOIN H_CustomerInfo C WHERE 1=1 '
+    ('SELECT date(D.createDate) as curDate,time(D.createDate) as curTime,M.MCustId,C.MCustName,D.* FROM H_Data_Detail D LEFT JOIN H_Data_Main M '
+    + 'LEFT JOIN H_CustomerInfo C WHERE 1=1 '
     + 'AND D.DId = M.DId AND M.MCustId = C.MCustId  AND C.MCustId = %s AND M.MCureDate BETWEEN %s AND %s',
     [QuotedStr(custIdEdit.Text), QuotedStr(FormatDateTime('yyyy-mm-dd',
     startDate.Date)), QuotedStr(FormatDateTime('yyyy-mm-dd', endDate.Date))]);
@@ -79,6 +82,8 @@ begin
       for subData in jsonData['data'] do
       begin
         Append;
+        FieldByName('curDate').AsString := subData.S['curDate'];
+        FieldByName('curTime').AsString := subData.S['curTime'];
         FieldByName('MCustId').AsString := subData.S['MCustId'];
         FieldByName('MCustName').AsString := subData.S['MCustName'];
         FieldByName('MId').AsString := subData.S['MId'];

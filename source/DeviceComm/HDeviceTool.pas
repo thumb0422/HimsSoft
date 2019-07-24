@@ -14,6 +14,8 @@ uses
   Vcl.ExtCtrls, System.Win.Registry;
 
 type
+  TFailedCallBack  = procedure() of object;
+  TSuccessCallBack = procedure () of object;
   TDeviceTool = class
     class function getAllCommPorts: TStringList; // 获取所有的串口
   end;
