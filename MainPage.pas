@@ -57,7 +57,7 @@ var
 
 implementation
 
-uses HMenu,HBizBasePage, HRoom1,HSettingPage,HSecuritySetPage,superobject;
+uses HMenu,HBizBasePage, HRoom1,HSettingPage,HSecuritySetPage,superobject,HHistoryDataPage;
 {$R *.dfm}
 
 procedure TFMainPage.cxPageControl1CanClose(Sender: TObject;
@@ -108,6 +108,14 @@ begin
     lMenu.MParent := 1000;
     lMenu.MVisible := 1;
     lMenu.MClass := 'TRoomPage';
+    FMenuList.Add(lMenu);
+
+    lMenu := TMenu.Create;
+    lMenu.MID := 1002;
+    lMenu.MDesc := '历史数据查询';
+    lMenu.MParent := 1000;
+    lMenu.MVisible := 1;
+    lMenu.MClass := 'THistoryDataPage';
     FMenuList.Add(lMenu);
 
     lMenu := TMenu.Create;
@@ -209,6 +217,7 @@ var
   I: Integer;
   lTabSheet :TcxTabSheet;
   tabSheetCaption,itemCaption:string;
+  pForm:TBizBasePage;
 begin
   litem := TdxnavbarItem(Sender);
   lTabSheet := nil;
@@ -238,6 +247,10 @@ begin
     1001:
     begin
       TRoomPage.loadSelf(lTabSheet, alClient);
+    end;
+    1002:
+    begin
+      THistoryDataPage.loadSelf(lTabSheet,alClient);
     end;
     2001:
     begin
