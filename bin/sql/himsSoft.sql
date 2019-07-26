@@ -14,9 +14,7 @@ CREATE TABLE IF NOT EXISTS H_MechineInfo (
 MId INTEGER PRIMARY KEY AUTOINCREMENT,
 MMechineId varchar(10) UNIQUE,
 MMechineDesc varchar(50),
-MCom Integer,
-MNet Integer,
-MHDBox Integer,
+MLink varchar(8),
 isValid Integer );
 
 CREATE TABLE IF NOT EXISTS H_Mechine_States (
@@ -67,3 +65,11 @@ BloodPressure NUMERIC(10,2),
 TotalBlood NUMERIC(10,2),
 Temperature NUMERIC(10,2),
 createDate datetime DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')));
+
+CREATE TABLE if NOT EXISTS H_Const (
+MId INTEGER PRIMARY KEY AUTOINCREMENT,MType varchar(4),MCode varchar(8) UNIQUE,MDesc varchar(50));
+
+INSERT INTO H_Const (MType,MCode,MDesc) VALUES
+('1000','10001001','´®¿Ú'),
+('1000','10001002','Íø¿Ú'),
+('1000','10001003','HD-BOX');

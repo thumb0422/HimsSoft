@@ -47,9 +47,7 @@ type
     dataCDSMBedId: TStringField;
     dataCDSMMechineId: TStringField;
     dataCDSMMechineDesc: TStringField;
-    dataCDSMCom: TBooleanField;
-    dataCDSMNet: TBooleanField;
-    dataCDSMHDBox: TBooleanField;
+    dataCDSMLink: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure custGridCellClick(Column: TColumnEh);
     procedure addBtnClick(Sender: TObject);
@@ -165,7 +163,7 @@ var
   sql :string;
 begin
   dataCDS.Close;
-  sql :=Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MCom,M.MNet,M.MHDBox ' +
+  sql :=Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink ' +
                'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M ' +
                'where D.MCureDate = %s And D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId',[QuotedStr(curDate)]);
   jsonData := TDBManager.Instance.getDataBySql(sql);
@@ -184,9 +182,7 @@ begin
         dataCDS.FieldByName('MBedId').AsString := subData.S['MBedId'];
         dataCDS.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
         dataCDS.FieldByName('MMechineDesc').AsString := subData.S['MMechineDesc'];
-        dataCDS.FieldByName('MCom').AsBoolean := not (subData['MCom'].AsInteger = 0);
-        dataCDS.FieldByName('MNet').AsBoolean := not (subData['MNet'].AsInteger = 0);
-        dataCDS.FieldByName('MHDBox').AsBoolean := not (subData['MHDBox'].AsInteger = 0);
+        dataCDS.FieldByName('MLink').AsString := subData.S['MLink'];
         Post;
       end;
     end;

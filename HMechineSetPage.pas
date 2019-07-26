@@ -40,12 +40,10 @@ type
     cancelBtn: TcxButton;
     DataSource1: TDataSource;
     ClientDataSet1: TClientDataSet;
-    ClientDataSet1MCom: TBooleanField;
-    ClientDataSet1MNet: TBooleanField;
     ClientDataSet1MMechineId: TStringField;
     ClientDataSet1MMechineDesc: TStringField;
-    ClientDataSet1MHDBox: TBooleanField;
     ClientDataSet1isValid: TBooleanField;
+    ClientDataSet1MLink: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure saveBtnClick(Sender: TObject);
     procedure cancelBtnClick(Sender: TObject);
@@ -84,9 +82,7 @@ begin
         Append;
         ClientDataSet1.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
         ClientDataSet1.FieldByName('MMechineDesc').AsString := subData['MMechineDesc'].AsString;
-        ClientDataSet1.FieldByName('MCom').AsBoolean := not (subData['MCom'].AsInteger = 0);
-        ClientDataSet1.FieldByName('MNet').AsBoolean := not (subData['MNet'].AsInteger = 0);
-        ClientDataSet1.FieldByName('MHDBox').AsBoolean := not (subData['MHDBox'].AsInteger = 0);
+        ClientDataSet1.FieldByName('MLink').AsString := subData['MLink'].AsString;
         ClientDataSet1.FieldByName('isValid').AsBoolean := not (subData['isValid'].AsInteger = 0);
         Post;
       end;
@@ -113,12 +109,10 @@ begin
     while not Eof do
     begin
       sql := Format
-        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MCom,MNet,MHDBox,isValid) Values (%s,%s,%d,%d,%d,%d)',
+        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MLink,isValid) Values (%s,%s,%s,%d)',
         [QuotedStr(FieldByName('MMechineId').AsString),
         QuotedStr(FieldByName('MMechineDesc').AsString),
-        ord(FieldByName('MCom').AsBoolean),
-        ord(FieldByName('MNet').AsBoolean),
-        ord(FieldByName('MHDBox').AsBoolean),
+        QuotedStr(FieldByName('MLink').AsString),
         ord(FieldByName('isValid').AsBoolean)]);
       sqlList.Add(sql);
       Next;

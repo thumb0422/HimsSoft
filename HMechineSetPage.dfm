@@ -48,37 +48,17 @@ object MechineSetPage: TMechineSetPage
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'MCom'
-        Footers = <>
-        Title.Caption = #20018#21475
-        Width = 40
-      end
-      item
-        CellButtons = <>
-        DynProps = <>
-        EditButtons = <>
-        FieldName = 'MNet'
-        Footers = <>
-        Title.Caption = #32593#21475
-        Width = 40
-      end
-      item
-        CellButtons = <>
-        DynProps = <>
-        EditButtons = <>
-        FieldName = 'MHDBox'
-        Footers = <>
-        Title.Caption = 'HD-BOX'
-        Width = 40
-      end
-      item
-        CellButtons = <>
-        DynProps = <>
-        EditButtons = <>
         FieldName = 'isValid'
         Footers = <>
         Title.Caption = #26377#25928
         Width = 40
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'MLink'
+        Footers = <>
       end>
     object RowDetailData: TRowDetailPanelControlEh
     end
@@ -130,14 +110,9 @@ object MechineSetPage: TMechineSetPage
       FieldName = 'MMechineDesc'
       Size = 50
     end
-    object ClientDataSet1MCom: TBooleanField
-      FieldName = 'MCom'
-    end
-    object ClientDataSet1MNet: TBooleanField
-      FieldName = 'MNet'
-    end
-    object ClientDataSet1MHDBox: TBooleanField
-      FieldName = 'MHDBox'
+    object ClientDataSet1MLink: TStringField
+      FieldName = 'MLink'
+      Size = 8
     end
     object ClientDataSet1isValid: TBooleanField
       FieldName = 'isValid'

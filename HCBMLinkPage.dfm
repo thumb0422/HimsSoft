@@ -4,7 +4,7 @@ object HCBMLinkPage: THCBMLinkPage
   BorderIcons = [biSystemMenu]
   Caption = #25968#25454#20851#32852
   ClientHeight = 493
-  ClientWidth = 671
+  ClientWidth = 611
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,13 +19,14 @@ object HCBMLinkPage: THCBMLinkPage
   object Panel1: TPanel
     Left = 0
     Top = 452
-    Width = 671
+    Width = 611
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 671
     object cancelBtn: TcxButton
-      Left = 396
+      Left = 372
       Top = 6
       Width = 75
       Height = 25
@@ -35,7 +36,7 @@ object HCBMLinkPage: THCBMLinkPage
       OnClick = cancelBtnClick
     end
     object addBtn: TcxButton
-      Left = 168
+      Left = 144
       Top = 6
       Width = 75
       Height = 25
@@ -44,7 +45,7 @@ object HCBMLinkPage: THCBMLinkPage
       OnClick = addBtnClick
     end
     object delBtn: TcxButton
-      Left = 282
+      Left = 258
       Top = 6
       Width = 75
       Height = 25
@@ -56,7 +57,7 @@ object HCBMLinkPage: THCBMLinkPage
   object dataGrid: TDBGridEh
     Left = 0
     Top = 0
-    Width = 671
+    Width = 611
     Height = 452
     Align = alClient
     DataSource = dataDS
@@ -137,31 +138,9 @@ object HCBMLinkPage: THCBMLinkPage
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'MCom'
+        FieldName = 'MLink'
         Footers = <>
-        ReadOnly = True
-        Title.Caption = #20018#21475
-        Width = 40
-      end
-      item
-        CellButtons = <>
-        DynProps = <>
-        EditButtons = <>
-        FieldName = 'MNet'
-        Footers = <>
-        ReadOnly = True
-        Title.Caption = #32593#21475
-        Width = 40
-      end
-      item
-        CellButtons = <>
-        DynProps = <>
-        EditButtons = <>
-        FieldName = 'MHDBox'
-        Footers = <>
-        ReadOnly = True
-        Title.Caption = 'HDBox'
-        Width = 40
+        Width = 60
       end>
     object RowDetailData: TRowDetailPanelControlEh
     end
@@ -195,14 +174,9 @@ object HCBMLinkPage: THCBMLinkPage
       FieldName = 'MMechineDesc'
       Size = 50
     end
-    object dataCDSMCom: TBooleanField
-      FieldName = 'MCom'
-    end
-    object dataCDSMNet: TBooleanField
-      FieldName = 'MNet'
-    end
-    object dataCDSMHDBox: TBooleanField
-      FieldName = 'MHDBox'
+    object dataCDSMLink: TStringField
+      FieldName = 'MLink'
+      Size = 8
     end
   end
   object dataDS: TDataSource

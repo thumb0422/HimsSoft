@@ -1,7 +1,7 @@
 unit HDeviceDefine;
 
 interface
-uses HDataModel;
+uses HDataModel,System.Generics.Collections;
   //串口
   const Com32OpenError: string = '串口打开失败';
   const Com32ReciceError: string = '串口接收错误';
@@ -11,7 +11,7 @@ uses HDataModel;
   const NetOpenError: string = '网口打开失败';
   const NetDisconnect: string = '网口断开连接';
   const NetError: string = '网络异常';
-
+//  const LinkMap:TDic  todo:
   type
     DLinkType = (DLinkCom,DLinkNet,DLinkHDBox);//设备通信连接方式
     TErrorMsg = class;
