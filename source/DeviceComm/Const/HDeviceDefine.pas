@@ -13,6 +13,7 @@ uses HDataModel;
   const NetError: string = '网络异常';
 
   type
+    DLinkType = (DLinkCom,DLinkNet,DLinkHDBox);//设备通信连接方式
     TErrorMsg = class;
 
     TFailedCallBackEvent = procedure(error: TErrorMsg) of object;

@@ -38,7 +38,7 @@ var
 
 implementation
 
-uses superobject,HDBManager,HBedView,HCustomer,HMConst;
+uses superobject,HDBManager,HBedView,HCustomer,HDeviceDefine;
 {$R *.dfm}
 
 procedure TRoomPage.FormCreate(Sender: TObject);

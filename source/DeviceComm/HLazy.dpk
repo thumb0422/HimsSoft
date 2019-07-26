@@ -38,18 +38,17 @@ contains
   HCom32 in 'Communicate\HCom32.pas',
   HDeviceDo in 'Communicate\HDeviceDo.pas',
   HNet in 'Communicate\HNet.pas',
-  HBellco in 'DeviceInfo\HBellco.pas',
-  HBraun in 'DeviceInfo\HBraun.pas',
-  HDeviceBase in 'DeviceInfo\HDeviceBase.pas',
-  HDeviceInfo in 'DeviceInfo\HDeviceInfo.pas',
-  HFresenius in 'DeviceInfo\HFresenius.pas',
-  HGambro in 'DeviceInfo\HGambro.pas',
-  HNikkiso in 'DeviceInfo\HNikkiso.pas',
-  HToray in 'DeviceInfo\HToray.pas',
-  HMConst in 'DeviceInfo\HMConst.pas',
-  HDeviceTool in 'HDeviceTool.pas',
-  HDeviceDefine in 'HDeviceDefine.pas',
-  HDataModel in 'HDataModel.pas';
+  HDataModel in 'Const\HDataModel.pas',
+  HDeviceDefine in 'Const\HDeviceDefine.pas',
+  HDeviceTool in 'Const\HDeviceTool.pas',
+  HBellco in 'DevicePrase\HBellco.pas',
+  HBraun in 'DevicePrase\HBraun.pas',
+  HDeviceBase in 'DevicePrase\HDeviceBase.pas',
+  HDeviceInfo in 'DevicePrase\HDeviceInfo.pas',
+  HFresenius in 'DevicePrase\HFresenius.pas',
+  HGambro in 'DevicePrase\HGambro.pas',
+  HNikkiso in 'DevicePrase\HNikkiso.pas',
+  HToray in 'DevicePrase\HToray.pas';
 
 end.
 

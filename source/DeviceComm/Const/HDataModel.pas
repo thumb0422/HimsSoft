@@ -63,7 +63,7 @@ begin
   rspData.FTotalBlood := IntToStr(Random(100));
   rspData.FBloodFlow := IntToStr(Random(100));
   rspData.FBloodPressure := IntToStr(Random(100));
-  rspData.FSessionTime := IntToStr(Random(100));
+  rspData.FSessionTime := FloatToStr(Random);
   rspData.FDialysisPressure := IntToStr(Random(100));
   rspData.FVenousPressure := IntToStr(Random(100));
   rspData.FTemperature := IntToStr(Random(100));

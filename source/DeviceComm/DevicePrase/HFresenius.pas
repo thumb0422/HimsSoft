@@ -11,25 +11,23 @@ unit HFresenius;
 interface
 
 uses
-  System.Generics.Collections,HDeviceBase;
+  HDeviceBase,HDataModel;
 
 type
   TFresenius = class(TDeviceBase)
-    procedure praseData(data: array of Byte; var json: TDictionary<string, string>);override;
+    procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TFresenius }
 
-procedure TFresenius.praseData(data: array of Byte; var json: TDictionary<string, string>);
+procedure TFresenius.praseData(data: array of Byte; var rspData:TDataModel);
 begin
-  if not Assigned(json) then
-    json := TDictionary<string, string>.Create(0);
-  json.Clear;
-  json.AddOrSetValue('A1', '100');
-  json.AddOrSetValue('F1', '1');
-  json.AddOrSetValue('G1', '2000');
+  if not Assigned(rspData) then
+    rspData := TDataModel.Create;
+  rspData :=TDataModel.generateDataForTest;
+//  rspData.VenousPressure := '';
 end;
 
 end.

@@ -133,18 +133,17 @@
         <DCCReference Include="Communicate\HCom32.pas"/>
         <DCCReference Include="Communicate\HDeviceDo.pas"/>
         <DCCReference Include="Communicate\HNet.pas"/>
-        <DCCReference Include="DeviceInfo\HBellco.pas"/>
-        <DCCReference Include="DeviceInfo\HBraun.pas"/>
-        <DCCReference Include="DeviceInfo\HDeviceBase.pas"/>
-        <DCCReference Include="DeviceInfo\HDeviceInfo.pas"/>
-        <DCCReference Include="DeviceInfo\HFresenius.pas"/>
-        <DCCReference Include="DeviceInfo\HGambro.pas"/>
-        <DCCReference Include="DeviceInfo\HNikkiso.pas"/>
-        <DCCReference Include="DeviceInfo\HToray.pas"/>
-        <DCCReference Include="DeviceInfo\HMConst.pas"/>
-        <DCCReference Include="HDeviceTool.pas"/>
-        <DCCReference Include="HDeviceDefine.pas"/>
-        <DCCReference Include="HDataModel.pas"/>
+        <DCCReference Include="Const\HDataModel.pas"/>
+        <DCCReference Include="Const\HDeviceDefine.pas"/>
+        <DCCReference Include="Const\HDeviceTool.pas"/>
+        <DCCReference Include="DevicePrase\HBellco.pas"/>
+        <DCCReference Include="DevicePrase\HBraun.pas"/>
+        <DCCReference Include="DevicePrase\HDeviceBase.pas"/>
+        <DCCReference Include="DevicePrase\HDeviceInfo.pas"/>
+        <DCCReference Include="DevicePrase\HFresenius.pas"/>
+        <DCCReference Include="DevicePrase\HGambro.pas"/>
+        <DCCReference Include="DevicePrase\HNikkiso.pas"/>
+        <DCCReference Include="DevicePrase\HToray.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

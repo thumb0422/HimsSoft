@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HLog, HDeviceInfo, HCate,HDeviceDefine;
+  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HLog, HDeviceInfo, HCate,HDeviceDefine,HDataModel;
 
 type
   THComm = class(TCate)
@@ -121,7 +121,7 @@ var
   rbuf: array of byte;
   classRegistry: TClassRegistry;
   fdeviceBaseObj: TDeviceBase;
-  fDic: TDictionary<string, string>;
+  rspData:TDataModel;
   fDeviceBrand: string;
 begin
   setlength(rbuf, BufferLength);
@@ -138,9 +138,10 @@ begin
   if classRegistry.HasClass(fDeviceBrand) then
   begin
     fdeviceBaseObj := classRegistry.CreateInstance(fDeviceBrand) as TDeviceBase;
-    fDic := TDictionary<string, string>.Create(0);
-    fdeviceBaseObj.praseData(rbuf, fDic);
+    fdeviceBaseObj.praseData(rbuf, rspData);
     fdeviceBaseObj.Free;
+    if Assigned(FcallBackSuccess) then
+      FcallBackSuccess(rspData);
   end
   else
   begin
@@ -151,30 +152,26 @@ end;
 procedure THComm.onReceiveError(Sender: TObject; EventMask: Cardinal);
 var
   ss: string;
-  rspCNRs232Obj: TCnRS232;
 begin
   if Assigned(FcallBackError) then
     FcallBackError(TErrorMsg.Create('-1',Com32ReciceError));
-  rspCNRs232Obj := TCnRS232(Sender);
-  ss := rspCNRs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
+  ss := rs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
 end;
 
 procedure THComm.onRequestHangup(Sender: TObject);
 var
   ss: string;
-  rspCNRs232Obj: TCnRS232;
 begin
   if Assigned(FcallBackError) then
     FcallBackError(TErrorMsg.Create('-1',Com32HangUpError));
-  rspCNRs232Obj := TCnRS232(Sender);
-  ss := rspCNRs232Obj.CommName + ' onRequestHangup';
+  ss := rs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
 end;
 
-//initialization
-//  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
-//  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
+initialization
+  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
+  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
 
 end.
 

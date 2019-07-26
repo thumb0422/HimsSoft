@@ -11,24 +11,23 @@ unit HToray;
 interface
 
 uses
-  System.Generics.Collections,HDeviceBase;
+  System.Generics.Collections,HDeviceBase,HDataModel;
 
 type
   TToray = class(TDeviceBase)
-    procedure praseData(data: array of Byte; var json: TDictionary<string, string>);override;
+    procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TToray }
 
-procedure TToray.praseData(data: array of Byte; var json: TDictionary<string, string>);
+procedure TToray.praseData(data: array of Byte; var rspData:TDataModel);
 begin
-  if not Assigned(json) then
-    json := TDictionary<string, string>.Create(0);
-  json.Clear;
-  json.AddOrSetValue('A1', '100');
-  json.AddOrSetValue('G1', '2000');
+  if not Assigned(rspData) then
+    rspData := TDataModel.Create;
+  rspData :=TDataModel.generateDataForTest;
+//  rspData.VenousPressure := '';
 end;
 
 end.

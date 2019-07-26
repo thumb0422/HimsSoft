@@ -9,7 +9,7 @@
 unit HCustomer;
 
 interface
-uses HMConst;
+uses HDeviceDefine;
 type
   TCustomer = class
   private

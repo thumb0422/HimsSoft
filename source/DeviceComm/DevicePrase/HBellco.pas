@@ -11,28 +11,23 @@ unit HBellco;
 interface
 
 uses
-  System.Generics.Collections,HDeviceBase;
+  System.Generics.Collections,HDeviceBase,HDataModel;
 
 type
   TBellco = class(TDeviceBase)
-    procedure praseData(data: array of Byte; var json: TDictionary<string, string>);override;
+    procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TBellco }
 
-procedure TBellco.praseData(data: array of Byte; var json: TDictionary<string, string>);
+procedure TBellco.praseData(data: array of Byte; var rspData:TDataModel);
 begin
-  if not Assigned(json) then
-    json := TDictionary<string, string>.Create(0);
-  json.Clear;
-  json.AddOrSetValue('A1', '100');
-  json.AddOrSetValue('B1', '13');
-  json.AddOrSetValue('C1', '0.98');
-  json.AddOrSetValue('D1', '2');
-  json.AddOrSetValue('E1', '-0.91');
-  json.AddOrSetValue('F1', '1');
+  if not Assigned(rspData) then
+    rspData := TDataModel.Create;
+  rspData :=TDataModel.generateDataForTest;
+//  rspData.VenousPressure := '';
 end;
 
 end.

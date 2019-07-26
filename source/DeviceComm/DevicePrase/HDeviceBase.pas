@@ -10,11 +10,11 @@ unit HDeviceBase;
 
 interface
  uses
-  System.Generics.Collections;
+  HDataModel;
   type
 
   TDeviceBase =class
-     procedure praseData(data: array of Byte; var json: TDictionary<string, string>);virtual;abstract;
+     procedure praseData(data: array of Byte; var rspData: TDataModel);virtual;abstract;
   end;
 implementation
 

@@ -11,7 +11,7 @@ unit HDeviceDo;
 interface
 
 uses
-  SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo,HDeviceDefine;
+  SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo,HDeviceDefine,HDataModel;
 
 type
   TDeviceDo = class(TObject)
@@ -26,7 +26,8 @@ type
     procedure startTestData;
     procedure stopTestData;
   private
-    procedure callBackError(error: TErrorMsg);
+    procedure ErrorBlock(error: TErrorMsg);
+    procedure successBlock(rspData: TDataModel);
   end;
 
 implementation
@@ -34,11 +35,6 @@ uses HLog;
 var
   GlobalSingle: TDeviceDo;
   { TDeviceAct }
-
-procedure TDeviceDo.callBackError(error: TErrorMsg);
-begin
-  TLog.Instance.DDLogInfo('callBackError' + error.mType + error.mDesc);
-end;
 
 constructor TDeviceDo.Create;
 begin
@@ -87,7 +83,8 @@ begin
     deviceInfo.dPort := 9600;
     deviceInfo.dTag := 1 * 100 + i;
     com32 := THComm.Create(deviceInfo);
-    com32.callBackError := callBackError;
+    com32.callBackError := ErrorBlock;
+    com32.callBackSuccess := successBlock;
     com32.init;
     FComGroupList.Add(com32);
   end;
@@ -104,7 +101,8 @@ begin
     deviceInfo.dPort := 6666 + i;
     deviceInfo.dTag := 2 * 100 + i;
     net485 := TNet.Create(deviceInfo);
-    net485.callBackError := callBackError;
+    net485.callBackError := ErrorBlock;
+    net485.callBackSuccess := successBlock;
     net485.init;
     FComGroupList.Add(net485);
   end;
@@ -136,6 +134,16 @@ begin
     cat := FComGroupList.Items[i];
     cat.close;
   end;
+end;
+
+procedure TDeviceDo.successBlock(rspData: TDataModel);
+begin
+  TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
+end;
+
+procedure TDeviceDo.ErrorBlock(error: TErrorMsg);
+begin
+  TLog.Instance.DDLogInfo('callBackError' + error.mType + error.mDesc);
 end;
 
 end.
