@@ -48,7 +48,8 @@ contains
   HToray in 'DeviceInfo\HToray.pas',
   HMConst in 'DeviceInfo\HMConst.pas',
   HDeviceTool in 'HDeviceTool.pas',
-  HDeviceDefine in 'HDeviceDefine.pas';
+  HDeviceDefine in 'HDeviceDefine.pas',
+  HDataModel in 'HDataModel.pas';
 
 end.
 

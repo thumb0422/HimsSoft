@@ -28,11 +28,12 @@ type
     constructor Create(deviceInfo: TDeviceInfo); virtual; abstract; // …Ë±∏
     procedure onWriteData(Sender: TObject);virtual; abstract;
   protected
-    callBackMsg:TErrorMsg;
     FcallBackError: TFailedCallBackEvent;
+    FcallBackSuccess:TSuccessCallBackEvent;
   protected
     FDeviceInfo: TDeviceInfo;
   public
+    property callBackSuccess:TSuccessCallBackEvent read FcallBackSuccess write FcallBackSuccess;
     property callBackError: TFailedCallBackEvent read FcallBackError write FcallBackError;
   end;
 

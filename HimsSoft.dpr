@@ -8,7 +8,6 @@ uses
   HRoom1 in 'HRoom1.pas' {RoomPage},
   HBedView in 'HBedView.pas',
   HMenu in 'HMenu.pas',
-  HDataModel in 'HDataModel.pas',
   HDataDetailView in 'HDataDetailView.pas',
   HDataNotify in 'HDataNotify.pas',
   HSettingPage in 'HSettingPage.pas' {SettingPage},

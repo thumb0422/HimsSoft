@@ -122,7 +122,6 @@
         </DCCReference>
         <DCCReference Include="HBedView.pas"/>
         <DCCReference Include="HMenu.pas"/>
-        <DCCReference Include="HDataModel.pas"/>
         <DCCReference Include="HDataDetailView.pas"/>
         <DCCReference Include="HDataNotify.pas"/>
         <DCCReference Include="HSettingPage.pas">

@@ -58,10 +58,8 @@ begin
       on E: Exception do
       begin
         FisConnected := False;
-        callBackMsg.mType :='-1';
-        callBackMsg.mDesc :='connected failed';
         if Assigned(FcallBackError) then
-          FcallBackError(callBackMsg);
+          FcallBackError(TErrorMsg.Create('-1',Com32OpenError));
         TLog.Instance.DDLogError(FDeviceInfo.dName + ' connectError');
         rs232Obj.StopComm;
       end;
@@ -77,6 +75,7 @@ begin
   end
   else
   begin
+  //todo:是否需要重新init
     TLog.Instance.DDLogError(FDeviceInfo.dName + ' sendError,isConneted = False');
   end;
 end;
@@ -95,7 +94,6 @@ constructor THComm.Create(deviceInfo: TDeviceInfo);
 begin
   FDeviceInfo := deviceInfo;
   FisConnected := False;
-  callBackMsg := TErrorMsg.Create;
 end;
 
 destructor THComm.Destroy;
@@ -155,6 +153,8 @@ var
   ss: string;
   rspCNRs232Obj: TCnRS232;
 begin
+  if Assigned(FcallBackError) then
+    FcallBackError(TErrorMsg.Create('-1',Com32ReciceError));
   rspCNRs232Obj := TCnRS232(Sender);
   ss := rspCNRs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
@@ -165,14 +165,16 @@ var
   ss: string;
   rspCNRs232Obj: TCnRS232;
 begin
+  if Assigned(FcallBackError) then
+    FcallBackError(TErrorMsg.Create('-1',Com32HangUpError));
   rspCNRs232Obj := TCnRS232(Sender);
   ss := rspCNRs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
 end;
 
-initialization
-  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
-  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
+//initialization
+//  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
+//  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
 
 end.
 

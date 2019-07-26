@@ -13,7 +13,7 @@ interface
 uses
   System.SysUtils, System.Classes,
   Vcl.ExtCtrls,
-  System.Win.ScktComp, System.Typinfo,HCate, HLog, HDeviceInfo;
+  System.Win.ScktComp, System.Typinfo,HCate, HLog, HDeviceInfo,HDeviceDefine;
 
 type
   TNet = class(TCate)
@@ -65,6 +65,7 @@ begin
   end
   else
   begin
+  //todo:是否需要重新init
     TLog.Instance.DDLogError(FDeviceInfo.dName + ' sendError,isConneted = False');
   end;
 end;
@@ -92,6 +93,7 @@ begin
     netIPObj.Free;
   if Assigned(FDeviceInfo) then
     FDeviceInfo.Free;
+  inherited;
 end;
 
 procedure TNet.onWriteData;
@@ -117,6 +119,8 @@ begin
   FisConnected := False;
   if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
+    if Assigned(FcallBackError) then
+      FcallBackError(TErrorMsg.Create('-1',NetDisconnect));
     TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' Disconnect');
   end;
 end;
@@ -130,6 +134,8 @@ begin
   ErrorCode := 0;
   if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
+    if Assigned(FcallBackError) then
+      FcallBackError(TErrorMsg.Create('-1',NetError));
     TLog.Instance.DDLogError('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ',ErrorEvent =' + GetEnumName(TypeInfo(TErrorEvent), ord(ErrorEvent)) + ',errorCode = ' + IntToStr(originErrorCode));
   end;
 end;

@@ -104,6 +104,7 @@ begin
     deviceInfo.dPort := 6666 + i;
     deviceInfo.dTag := 2 * 100 + i;
     net485 := TNet.Create(deviceInfo);
+    net485.callBackError := callBackError;
     net485.init;
     FComGroupList.Add(net485);
   end;
