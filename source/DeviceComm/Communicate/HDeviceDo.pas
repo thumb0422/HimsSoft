@@ -11,7 +11,7 @@ unit HDeviceDo;
 interface
 
 uses
-  SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo;
+  SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo,HDeviceDefine;
 
 type
   TDeviceDo = class(TObject)
@@ -25,13 +25,20 @@ type
     procedure initTestData;
     procedure startTestData;
     procedure stopTestData;
+  private
+    procedure callBackError(error: TErrorMsg);
   end;
 
 implementation
-
+uses HLog;
 var
   GlobalSingle: TDeviceDo;
   { TDeviceAct }
+
+procedure TDeviceDo.callBackError(error: TErrorMsg);
+begin
+  TLog.Instance.DDLogInfo('callBackError' + error.mType + error.mDesc);
+end;
 
 constructor TDeviceDo.Create;
 begin
@@ -80,6 +87,7 @@ begin
     deviceInfo.dPort := 9600;
     deviceInfo.dTag := 1 * 100 + i;
     com32 := THComm.Create(deviceInfo);
+    com32.callBackError := callBackError;
     com32.init;
     FComGroupList.Add(com32);
   end;

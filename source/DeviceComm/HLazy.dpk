@@ -47,7 +47,8 @@ contains
   HNikkiso in 'DeviceInfo\HNikkiso.pas',
   HToray in 'DeviceInfo\HToray.pas',
   HMConst in 'DeviceInfo\HMConst.pas',
-  HDeviceTool in 'HDeviceTool.pas';
+  HDeviceTool in 'HDeviceTool.pas',
+  HDeviceDefine in 'HDeviceDefine.pas';
 
 end.
 

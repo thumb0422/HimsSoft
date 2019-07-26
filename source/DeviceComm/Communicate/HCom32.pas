@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HLog, HDeviceInfo, HCate;
+  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HLog, HDeviceInfo, HCate,HDeviceDefine;
 
 type
   THComm = class(TCate)
@@ -58,6 +58,10 @@ begin
       on E: Exception do
       begin
         FisConnected := False;
+        callBackMsg.mType :='-1';
+        callBackMsg.mDesc :='connected failed';
+        if Assigned(FcallBackError) then
+          FcallBackError(callBackMsg);
         TLog.Instance.DDLogError(FDeviceInfo.dName + ' connectError');
         rs232Obj.StopComm;
       end;
@@ -91,6 +95,7 @@ constructor THComm.Create(deviceInfo: TDeviceInfo);
 begin
   FDeviceInfo := deviceInfo;
   FisConnected := False;
+  callBackMsg := TErrorMsg.Create;
 end;
 
 destructor THComm.Destroy;

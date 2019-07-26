@@ -13,7 +13,8 @@ interface
 uses
   System.SysUtils,
   Vcl.ExtCtrls,
-  HDeviceInfo;
+  HDeviceInfo,
+  HDeviceDefine;
 
 type
   TCate = class
@@ -27,7 +28,12 @@ type
     constructor Create(deviceInfo: TDeviceInfo); virtual; abstract; // …Ë±∏
     procedure onWriteData(Sender: TObject);virtual; abstract;
   protected
+    callBackMsg:TErrorMsg;
+    FcallBackError: TFailedCallBackEvent;
+  protected
     FDeviceInfo: TDeviceInfo;
+  public
+    property callBackError: TFailedCallBackEvent read FcallBackError write FcallBackError;
   end;
 
 implementation
