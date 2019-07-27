@@ -78,7 +78,7 @@ begin
     deviceInfo.dBrand := 'Bellco';
     deviceInfo.dDesc := '±´¶û¿Ë' + IntToStr(i);
     deviceInfo.dCommond := '4B 0D 0A';
-    deviceInfo.dLink := dtlComm;
+    deviceInfo.dLink := DLinkCom;
     deviceInfo.dName := 'COM' + IntToStr(i);
     deviceInfo.dPort := 9600;
     deviceInfo.dTag := 1 * 100 + i;
@@ -96,7 +96,7 @@ begin
     deviceInfo.dBrand := 'Fresenius';
     deviceInfo.dDesc := '·ÑÉ­' + IntToStr(i);
     deviceInfo.dCommond := '0A 0B 0C ' + IntToStr(i);
-    deviceInfo.dLink := dtlNet;
+    deviceInfo.dLink := DLinkNet;
     deviceInfo.dName := '172.16.26.129';
     deviceInfo.dPort := 6666 + i;
     deviceInfo.dTag := 2 * 100 + i;

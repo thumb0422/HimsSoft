@@ -116,7 +116,6 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
-        <DCCReference Include="HConst.pas"/>
         <DCCReference Include="HLog.pas"/>
         <DCCReference Include="HTool.pas"/>
         <DCCReference Include="HDBManager.pas"/>

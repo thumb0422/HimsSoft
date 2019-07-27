@@ -40,7 +40,7 @@ implementation
 procedure TNet.init;
 begin
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
+  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkNet) then
   begin
     netIPObj := TClientSocket.Create(nil);
     netIPObj.Address := FDeviceInfo.dName;
@@ -98,7 +98,7 @@ end;
 
 procedure TNet.onWriteData;
 begin
-  if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlNet) then
+  if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkNet) then
   begin
     TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' writeData: ' + FDeviceInfo.dCommond);
     netIPObj.Socket.SendText(FDeviceInfo.dCommond);

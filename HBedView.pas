@@ -13,7 +13,8 @@ interface
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
   Vcl.Forms, Winapi.Windows,Vcl.Controls,
   HDataNotify, HDataModel,HCustomer,
-  HConst, HDataDetailView;
+  HConst, HDataDetailView,
+  HDeviceDefine,HCate,HCom32,HNet,HDeviceInfo;
 
 type
   TBedView = class(TPanel)
@@ -46,7 +47,10 @@ type
     procedure resetData;
   private
     FDId:string;//H_Data_Main.DId (由custId加随机生成码)
+    FCate :TCate;
     FRspData:TDataModel;
+    procedure ErrorBlock(error: TErrorMsg);
+    procedure successBlock(rspData: TDataModel);
   end;
 
 implementation
@@ -151,6 +155,8 @@ begin
       IDOK:
         begin
           bedStatus := EmBedUsed;
+          if Assigned(fCate) then
+            fCate.init;
         end;
       IDCANCEL:
         begin
@@ -215,6 +221,10 @@ begin
       begin
         fileStr := fileStr + 'bed.png';
       end;
+    EmBedError:
+    begin
+      fileStr := fileStr + 'bed.png';
+    end;
   end;
   TDBManager.Instance.execSql(sqls);
   if FileExists(fileStr) then
@@ -229,8 +239,37 @@ var
   sqls:TStringList;
   jsonData: ISuperObject;
   subData: ISuperObject;
+  deviceInfo: TDeviceInfo;
 begin
   Fcustomer := Value;
+  deviceInfo := TDeviceInfo.Create;
+  deviceInfo.dLink := FCustomer.MLinkType;
+
+  if (FCustomer.MLinkType = DLinkCom) then
+  begin
+    deviceInfo.dCommond := '4B 0D 0A';
+    deviceInfo.dLink := DLinkCom;
+    deviceInfo.dName := 'COM3';
+    deviceInfo.dPort := 9600;
+    deviceInfo.dTag := 100000;
+    fCate := THComm.Create(deviceInfo);
+  end
+  else if (FCustomer.MLinkType = DLinkNet) then
+  begin
+    deviceInfo.dCommond := '0A 0B 0C ';
+    deviceInfo.dLink := DLinkNet;
+    deviceInfo.dName := '172.16.26.129';
+    deviceInfo.dPort := 6666 ;
+    deviceInfo.dTag := 200000;
+    fCate := TNet.Create(deviceInfo);
+  end
+  else
+  begin
+    Exit;
+  end;
+  fCate.callBackError := ErrorBlock;
+  fCate.callBackSuccess := successBlock;
+
   bedStatus := EmBedNormal;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
   FDId := '';
@@ -256,11 +295,11 @@ begin
   FDataDetailView := FnotifyComponent as TDataDetailView;
 end;
 
-procedure TBedView.timerOnTimer(Sender: TObject);
+procedure TBedView.successBlock(rspData: TDataModel);
 var sql:string;
     sqls:TStringList;
 begin
-  FRspData := TDataModel.generateDataForTest;
+  FRspData := rspData;
   FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
   sqls := TStringList.Create;
   sql := Format('Update H_Data_Main set endTime = %s Where DId = %s And MCustId = %s And MCureDate = %s',
@@ -273,6 +312,21 @@ begin
                 QuotedStr(FRspData.BloodPressure),QuotedStr(FRspData.TotalBlood),QuotedStr(FRspData.Temperature)]);
   sqls.Add(sql);
   TDBManager.Instance.execSql(sqls);
+end;
+
+procedure TBedView.ErrorBlock(error: TErrorMsg);
+begin
+  FLabel.Caption := 'Error :' + error.mType + '--'+ error.mDesc;
+  if Assigned(FTimer) then
+  begin
+    bedStatus := EmBedError;
+  end;
+end;
+
+procedure TBedView.timerOnTimer(Sender: TObject);
+begin
+  if Assigned(fCate) then
+    fCate.send;
 end;
 
 end.

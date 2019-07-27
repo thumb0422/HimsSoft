@@ -13,7 +13,8 @@ uses HDataModel,System.Generics.Collections;
   const NetError: string = '网络异常';
 //  const LinkMap:TDic  todo:
   type
-    DLinkType = (DLinkCom,DLinkNet,DLinkHDBox);//设备通信连接方式
+    DLinkType = (DLinkCom,DLinkNet,DLinkHDBox,DLinkNone);//设备通信连接方式
+    EmBedStatus = (EmBedNormal,EmBedUsed,EmBedAlarm,EmBedError);//床位状态
     TErrorMsg = class;
 
     TFailedCallBackEvent = procedure(error: TErrorMsg) of object;

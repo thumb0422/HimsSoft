@@ -31,7 +31,6 @@ requires
   rtl;
 
 contains
-  HConst in 'HConst.pas',
   HLog in 'HLog.pas',
   HTool in 'HTool.pas',
   HDBManager in 'HDBManager.pas',

@@ -9,12 +9,8 @@
 unit HDeviceInfo;
 
 interface
-
-
-
+uses HDeviceDefine;
 type
-  EDeviceLinkType = (dltUnKnow, dtlComm, dtlNet);
-
   TDeviceInfo = class
   private
   var
@@ -22,7 +18,7 @@ type
     FdName: string; // com2、com3、192.168.1.1 之类的关键信息
     FdDesc: string; // 设备名称全称+型号
     FdCommond: string; // 设备命令
-    FdLink: EDeviceLinkType; // 设备采集数据方式
+    FdLink: DLinkType; // 设备采集数据方式
     FdTag: Integer; // 设备标志  所有中的唯一  用来区分是哪个组件  在需要区分多个组件的情况下，必填
     FdPort: Integer; // 端口号
     FdBrand: string; // 设备品牌
@@ -30,7 +26,7 @@ type
     procedure SetdName(val: string);
     procedure SetdDesc(val: string);
     procedure SetdCommond(val: string);
-    procedure SetdLink(val: EDeviceLinkType);
+    procedure SetdLink(val: DLinkType);
     procedure SetdTag(val: Integer);
     procedure SetdPort(val: Integer);
     procedure SetdBrand(const Value: string);
@@ -40,7 +36,7 @@ type
     property dName: string read FdName write SetdName;
     property dDesc: string read FdDesc write SetdDesc;
     property dCommond: string read FdCommond write SetdCommond;
-    property dLink: EDeviceLinkType read FdLink write SetdLink;
+    property dLink: DLinkType read FdLink write SetdLink;
     property dTag: Integer read FdTag write SetdTag;
     property dPort: Integer read FdPort write SetdPort;
     constructor Create;
@@ -79,7 +75,7 @@ begin
   FdCommond := val;
 end;
 
-procedure TDeviceInfo.SetdLink(val: EDeviceLinkType);
+procedure TDeviceInfo.SetdLink(val: DLinkType);
 begin
   FdLink := val;
 end;

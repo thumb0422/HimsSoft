@@ -40,7 +40,7 @@ uses
 procedure THComm.init;
 begin
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
+  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
   begin
     rs232Obj := TCnRS232.Create(nil);
     rs232Obj.CommName := FDeviceInfo.dName;
@@ -107,7 +107,7 @@ end;
 
 procedure THComm.onWriteData;
 begin
-  if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = dtlComm) then
+  if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
   begin
     TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' + FDeviceInfo.dCommond);
     rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.dCommond)), Length(FDeviceInfo.dCommond));
