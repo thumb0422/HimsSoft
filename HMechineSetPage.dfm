@@ -59,6 +59,8 @@ object MechineSetPage: TMechineSetPage
         EditButtons = <>
         FieldName = 'MLink'
         Footers = <>
+        Title.Caption = #36830#25509#26041#24335
+        Width = 80
       end>
     object RowDetailData: TRowDetailPanelControlEh
     end

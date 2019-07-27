@@ -24,7 +24,6 @@ object HCBMLinkPage: THCBMLinkPage
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 671
     object cancelBtn: TcxButton
       Left = 372
       Top = 6
@@ -140,7 +139,8 @@ object HCBMLinkPage: THCBMLinkPage
         EditButtons = <>
         FieldName = 'MLink'
         Footers = <>
-        Width = 60
+        Title.Caption = #36830#25509#26041#24335
+        Width = 80
       end>
     object RowDetailData: TRowDetailPanelControlEh
     end

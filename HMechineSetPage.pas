@@ -69,6 +69,7 @@ procedure TMechineSetPage.FormCreate(Sender: TObject);
 var
   jsonData: ISuperObject;
   subData: ISuperObject;
+  keyStrings,valuesStrings:TStrings;
 begin
   inherited;
   ClientDataSet1.CreateDataSet;
@@ -93,6 +94,14 @@ begin
   begin
     ClientDataSet1.Open;
   end;
+  keyStrings := TStringList.Create;
+  keyStrings.CommaText :='10001001,10001002,10001003,10001004';
+
+  valuesStrings := TStringList.Create;
+  valuesStrings.CommaText :='串口,网口,HD-BOX,不支持';
+  DBGridEh1.Columns[DBGridEh1.Columns.Count-1].KeyList:=keyStrings;
+  DBGridEh1.Columns[DBGridEh1.Columns.Count-1].PickList:= valuesStrings;
+
 end;
 
 procedure TMechineSetPage.saveBtnClick(Sender: TObject);

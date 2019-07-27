@@ -72,4 +72,5 @@ MId INTEGER PRIMARY KEY AUTOINCREMENT,MType varchar(4),MCode varchar(8) UNIQUE,M
 INSERT INTO H_Const (MType,MCode,MDesc) VALUES
 ('1000','10001001','串口'),
 ('1000','10001002','网口'),
-('1000','10001003','HD-BOX');
+('1000','10001003','HD-BOX'),
+('1000','10001004','不支持');

@@ -161,6 +161,7 @@ var
   jsonData: ISuperObject;
   subData: ISuperObject;
   sql :string;
+  keyStrings,valuesStrings:TStrings;
 begin
   dataCDS.Close;
   sql :=Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink ' +
@@ -188,6 +189,13 @@ begin
     end;
   end;
   delBtn.Enabled := dataCDS.RecordCount > 0 ;
+    keyStrings := TStringList.Create;
+  keyStrings.CommaText :='10001001,10001002,10001003,10001004';
+
+  valuesStrings := TStringList.Create;
+  valuesStrings.CommaText :='串口,网口,HD-BOX,不支持';
+  dataGrid.Columns[dataGrid.Columns.Count-1].KeyList:=keyStrings;
+  dataGrid.Columns[dataGrid.Columns.Count-1].PickList:= valuesStrings;
 end;
 
 end.
