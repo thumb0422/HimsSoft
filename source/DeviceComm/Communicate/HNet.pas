@@ -22,8 +22,8 @@ type
     procedure send;override; // writeNetX
     procedure close;override; // stopNetX
     constructor Create(deviceInfo: TDeviceInfo);override;
+    destructor Destroy; override;
   private
-    FDeviceInfo: TDeviceInfo;
     procedure ClientSocketConnect(Sender: TObject; Socket: TCustomWinSocket);
     procedure ClientSocketDisconnect(Sender: TObject; Socket: TCustomWinSocket);
     procedure ClientSocketError(Sender: TObject; Socket: TCustomWinSocket; ErrorEvent: TErrorEvent; var ErrorCode: Integer);
@@ -32,13 +32,13 @@ type
     procedure onWriteData;
   protected
     netIPObj: TClientSocket;
-    destructor Destroy; override;
   end;
 
 implementation
 
 procedure TNet.init;
 begin
+  inherited;
   FisConnected := False;
   if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkNet) then
   begin
@@ -59,6 +59,7 @@ end;
 
 procedure TNet.send;
 begin
+  inherited;
   if FisConnected then
   begin
     onWriteData;
@@ -72,6 +73,7 @@ end;
 
 procedure TNet.close;
 begin
+  inherited;
   FisConnected := False;
   if Assigned(netIPObj) and netIPObj.Socket.Connected then
   begin
@@ -82,6 +84,7 @@ end;
 
 constructor TNet.Create(deviceInfo: TDeviceInfo);
 begin
+  inherited;
   FDeviceInfo := deviceInfo;
   FisConnected := False;
 end;
@@ -98,6 +101,7 @@ end;
 
 procedure TNet.onWriteData;
 begin
+  inherited;
   if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkNet) then
   begin
     TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' writeData: ' + FDeviceInfo.dCommond);

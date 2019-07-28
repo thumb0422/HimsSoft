@@ -136,6 +136,9 @@ begin
       MB_OKCANCEL + MB_ICONQUESTION) of
       IDOK:
         begin
+          FTimer.Enabled := False;
+          if Assigned(fCate) then
+            fCate.close;
           bedStatus := EmBedNormal;
         end;
       IDCANCEL:
@@ -154,9 +157,14 @@ begin
       MB_OKCANCEL + MB_ICONQUESTION) of
       IDOK:
         begin
+          FTimer.Enabled := False;
+          FTimer.Enabled := True;
           bedStatus := EmBedUsed;
           if Assigned(fCate) then
+          begin
+            fCate.close;
             fCate.init;
+          end;
         end;
       IDCANCEL:
         begin
@@ -181,7 +189,6 @@ begin
   FbedStatus := Value;
   sqls := TStringList.Create;
   fileStr := ExtractFilePath(paramstr(0)) + 'res/';
-  FTimer.Enabled := False;
 
   sql := Format
     ('Select DId From H_Data_Main Where MCustId = %s And MCureDate = %s ORDER by createDate LIMIT 1',
@@ -205,7 +212,6 @@ begin
       begin
         // ¿ªÆô
         fileStr := fileStr + 'bed_2.png';
-        FTimer.Enabled := True;
         if jsonData.I['rowCount'] = 0 then
         begin
           sql := Format
@@ -236,7 +242,6 @@ end;
 procedure TBedView.Setcustomer(const Value: TCustomer);
 var
   sql: string;
-  sqls:TStringList;
   jsonData: ISuperObject;
   subData: ISuperObject;
   deviceInfo: TDeviceInfo;

@@ -217,7 +217,6 @@ var
   I: Integer;
   lTabSheet :TcxTabSheet;
   tabSheetCaption,itemCaption:string;
-  pForm:TBizBasePage;
 begin
   litem := TdxnavbarItem(Sender);
   lTabSheet := nil;

@@ -21,15 +21,14 @@ type
     procedure send; override; // writeCommX
     procedure close; override; // stopCommX
     constructor Create(deviceInfo: TDeviceInfo); override; // 设备
+    destructor Destroy; override;
   private
-    FDeviceInfo: TDeviceInfo;
     procedure onReceive(Sender: TObject; Buffer: Pointer; BufferLength: Word);
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
     procedure onWriteData;
   protected
     rs232Obj: TCnRS232;
-    destructor Destroy; override;
   end;
 
 implementation
@@ -39,6 +38,7 @@ uses
 
 procedure THComm.init;
 begin
+  inherited;
   FisConnected := False;
   if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
   begin
@@ -69,6 +69,7 @@ end;
 
 procedure THComm.send;
 begin
+  inherited;
   if FisConnected then
   begin
     onWriteData;
@@ -82,6 +83,7 @@ end;
 
 procedure THComm.close;
 begin
+  inherited;
   FisConnected := False;
   if Assigned(rs232Obj) then
   begin
@@ -103,6 +105,7 @@ begin
     rs232Obj.Free;
   if Assigned(FDeviceInfo) then
     FDeviceInfo.Free;
+  inherited;
 end;
 
 procedure THComm.onWriteData;

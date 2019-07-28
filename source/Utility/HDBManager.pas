@@ -21,7 +21,6 @@ uses System.Classes,System.SysUtils, SQLiteTable3,superobject;
     procedure execSql(sqls:TStringList);
     function getDataBySql(sql:string):ISuperObject;
     procedure execSqlByFromLocalFile(filePath:string = '');
-  protected
     constructor Create;
     destructor Destroy; override;
   private

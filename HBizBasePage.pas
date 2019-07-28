@@ -21,7 +21,6 @@ type
   public
     { Public declarations }
     class procedure loadSelf(parentForm: TWinControl; AlignParent: TAlign);
-  private
     destructor Destroy; override;
   end;
 
