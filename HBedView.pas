@@ -49,8 +49,8 @@ type
     FDId:string;//H_Data_Main.DId (由custId加随机生成码)
     FCate :TCate;
     FRspData:TDataModel;
-    procedure ErrorBlock(error: TErrorMsg);
-    procedure successBlock(rspData: TDataModel);
+    procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
+    procedure successBlock(Sender: TObject;rspData: TDataModel);
   end;
 
 implementation
@@ -300,7 +300,7 @@ begin
   FDataDetailView := FnotifyComponent as TDataDetailView;
 end;
 
-procedure TBedView.successBlock(rspData: TDataModel);
+procedure TBedView.successBlock(Sender: TObject;rspData: TDataModel);
 var sql:string;
     sqls:TStringList;
 begin
@@ -319,7 +319,7 @@ begin
   TDBManager.Instance.execSql(sqls);
 end;
 
-procedure TBedView.ErrorBlock(error: TErrorMsg);
+procedure TBedView.ErrorBlock(Sender: TObject;error: TErrorMsg);
 begin
   FLabel.Caption := 'Error :' + error.mType + '--'+ error.mDesc;
   if Assigned(FTimer) then

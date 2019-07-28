@@ -17,8 +17,8 @@ uses HDataModel,System.Generics.Collections;
     EmBedStatus = (EmBedNormal,EmBedUsed,EmBedAlarm,EmBedError);//´²Î»×´Ì¬
     TErrorMsg = class;
 
-    TFailedCallBackEvent = procedure(error: TErrorMsg) of object;
-    TSuccessCallBackEvent = procedure(rspData: TDataModel) of object;
+    TFailedCallBackEvent = procedure(Sender: TObject;error: TErrorMsg) of object;
+    TSuccessCallBackEvent = procedure(Sender: TObject;rspData: TDataModel) of object;
 
     TErrorMsg = class
     private

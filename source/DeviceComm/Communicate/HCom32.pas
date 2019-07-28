@@ -59,7 +59,7 @@ begin
       begin
         FisConnected := False;
         if Assigned(FcallBackError) then
-          FcallBackError(TErrorMsg.Create('-1',Com32OpenError));
+          FcallBackError(self,TErrorMsg.Create('-1',Com32OpenError));
         TLog.Instance.DDLogError(FDeviceInfo.dName + ' connectError');
         rs232Obj.StopComm;
       end;
@@ -144,7 +144,7 @@ begin
     fdeviceBaseObj.praseData(rbuf, rspData);
     fdeviceBaseObj.Free;
     if Assigned(FcallBackSuccess) then
-      FcallBackSuccess(rspData);
+      FcallBackSuccess(Self,rspData);
   end
   else
   begin
@@ -157,7 +157,7 @@ var
   ss: string;
 begin
   if Assigned(FcallBackError) then
-    FcallBackError(TErrorMsg.Create('-1',Com32ReciceError));
+    FcallBackError(Self,TErrorMsg.Create('-1',Com32ReciceError));
   ss := rs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
 end;
@@ -167,7 +167,7 @@ var
   ss: string;
 begin
   if Assigned(FcallBackError) then
-    FcallBackError(TErrorMsg.Create('-1',Com32HangUpError));
+    FcallBackError(Self,TErrorMsg.Create('-1',Com32HangUpError));
   ss := rs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
 end;

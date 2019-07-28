@@ -26,8 +26,8 @@ type
     procedure startTestData;
     procedure stopTestData;
   private
-    procedure ErrorBlock(error: TErrorMsg);
-    procedure successBlock(rspData: TDataModel);
+    procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
+    procedure successBlock(Sender: TObject;rspData: TDataModel);
   end;
 
 implementation
@@ -136,12 +136,12 @@ begin
   end;
 end;
 
-procedure TDeviceDo.successBlock(rspData: TDataModel);
+procedure TDeviceDo.successBlock(Sender: TObject;rspData: TDataModel);
 begin
   TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
 end;
 
-procedure TDeviceDo.ErrorBlock(error: TErrorMsg);
+procedure TDeviceDo.ErrorBlock(Sender: TObject;error: TErrorMsg);
 begin
   TLog.Instance.DDLogInfo('callBackError' + error.mType + error.mDesc);
 end;
