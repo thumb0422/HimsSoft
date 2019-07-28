@@ -105,6 +105,11 @@ end;
 
 destructor TBedView.Destroy;
 begin
+  if Assigned(FCate) then
+  begin
+    FCate.close;
+    FCate.Free;
+  end;
   if Assigned(FTimer) then
     FTimer.Free;
   if Assigned(FImage) then
@@ -116,16 +121,13 @@ end;
 
 procedure TBedView.onClick(Sender: TObject);
 var
-  lData: TDataModel;
   lDataNotify: IDataNotify;
 begin
   if Assigned(FDataDetailView) and (FbedStatus = EmBedUsed) then
   begin
-    lData := TDataModel.generateDataForTest;
     lDataNotify := FDataDetailView;
-    lDataNotify.sendSingleData(lData);
+    lDataNotify.sendSingleData(FRspData);
   end;
-
 end;
 
 procedure TBedView.onDblClick(Sender: TObject);
