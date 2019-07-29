@@ -19,3 +19,6 @@ bin/*.xml
 bin/*.db
 bin/*.db-journal
 bin/*.log
+*.exe
+*.res
+*.dproj

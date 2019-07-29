@@ -12,8 +12,7 @@ interface
 
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
   Vcl.Forms, Winapi.Windows,Vcl.Controls,
-  HDataNotify, HDataModel,HCustomer,
-  HConst, HDataDetailView,
+  HDataNotify, HDataModel,HCustomer, HDataDetailView,
   HDeviceDefine,HCate,HCom32,HNet,HDeviceInfo;
 
 type
