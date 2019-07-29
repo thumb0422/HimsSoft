@@ -100,7 +100,7 @@ var
   tmpCount :Integer;
 begin
   customers := TList.Create;
-  sql := Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink,M.MAddress,M.MPort '+
+  sql := Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink,M.MAddress,M.MPort,M.MBrand '+
          'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M '+
          'where 1=1 AND D.MCureDate = %s AND D.isValid = 1 AND D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId ',
          [QuotedStr(cureDate)]);
@@ -118,6 +118,7 @@ begin
       customer.MLinkType := TDeviceTool.getLinkType(subData.S['MLink']);
       customer.MAddress := subData.S['MAddress'];
       customer.MPort := subData.S['MPort'];
+      customer.MBrand := subData.S['MBrand'];
       customers.Add(customer);
     end;
   end;

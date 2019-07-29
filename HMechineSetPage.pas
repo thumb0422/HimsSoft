@@ -46,6 +46,7 @@ type
     ClientDataSet1MLink: TStringField;
     ClientDataSet1MAddress: TStringField;
     ClientDataSet1MPort: TStringField;
+    ClientDataSet1MBrand: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure saveBtnClick(Sender: TObject);
     procedure cancelBtnClick(Sender: TObject);
@@ -71,7 +72,8 @@ procedure TMechineSetPage.FormCreate(Sender: TObject);
 var
   jsonData: ISuperObject;
   subData: ISuperObject;
-  keyStrings,valuesStrings:TStrings;
+  linkKeyStrings,linkValuesStrings:TStrings;
+  brandKeyStrings,brandValuesStrings:TStrings;
 begin
   inherited;
   ClientDataSet1.CreateDataSet;
@@ -85,6 +87,7 @@ begin
         Append;
         ClientDataSet1.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
         ClientDataSet1.FieldByName('MMechineDesc').AsString := subData['MMechineDesc'].AsString;
+        ClientDataSet1.FieldByName('MBrand').AsString := subData['MBrand'].AsString;
         ClientDataSet1.FieldByName('MLink').AsString := subData['MLink'].AsString;
         ClientDataSet1.FieldByName('MAddress').AsString := subData['MAddress'].AsString;
         ClientDataSet1.FieldByName('MPort').AsString := subData['MPort'].AsString;
@@ -98,13 +101,21 @@ begin
   begin
     ClientDataSet1.Open;
   end;
-  keyStrings := TStringList.Create;
-  keyStrings.CommaText :='10001001,10001002,10001003,10001004';
+  linkKeyStrings := TStringList.Create;
+  linkKeyStrings.CommaText :='10001001,10001002,10001003,10001004';
 
-  valuesStrings := TStringList.Create;
-  valuesStrings.CommaText :='串口,网口,HD-BOX,不支持';
-  DBGridEh1.Columns[2].KeyList:=keyStrings;
-  DBGridEh1.Columns[2].PickList:= valuesStrings;
+  linkValuesStrings := TStringList.Create;
+  linkValuesStrings.CommaText :='串口,网口,HD-BOX,不支持';
+  DBGridEh1.Columns[3].KeyList:=linkKeyStrings;
+  DBGridEh1.Columns[3].PickList:= linkValuesStrings;
+
+  brandKeyStrings := TStringList.Create;
+  brandKeyStrings.CommaText :='20001001,20001002,20001003,20001004,20001005,20001006,20001007';
+
+  brandValuesStrings := TStringList.Create;
+  brandValuesStrings.CommaText :='Bellco,Braun,Fresenius,Gambro,Nikkiso,Toray,其他';
+  DBGridEh1.Columns[2].KeyList:=brandKeyStrings;
+  DBGridEh1.Columns[2].PickList:= brandValuesStrings;
 
 end;
 
@@ -122,9 +133,10 @@ begin
     while not Eof do
     begin
       sql := Format
-        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MLink,MAddress,MPort,isValid) Values (%s,%s,%s,%s,%s,%d)',
+        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MBrand,MLink,MAddress,MPort,isValid) Values (%s,%s,%s,%s,%s,%s,%d)',
         [QuotedStr(FieldByName('MMechineId').AsString),
         QuotedStr(FieldByName('MMechineDesc').AsString),
+        QuotedStr(FieldByName('MBrand').AsString),
         QuotedStr(FieldByName('MLink').AsString),
         QuotedStr(FieldByName('MAddress').AsString),
         QuotedStr(FieldByName('MPort').AsString),

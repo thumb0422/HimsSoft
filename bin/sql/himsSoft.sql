@@ -17,6 +17,7 @@ MMechineDesc varchar(50),
 MLink varchar(8),
 MAddress varchar(30),
 MPort varchar(10),
+MBrand varchar(8),
 isValid Integer );
 
 CREATE TABLE IF NOT EXISTS H_Mechine_States (
@@ -76,3 +77,12 @@ INSERT INTO H_Const (MType,MCode,MDesc) VALUES
 ('1000','10001002','网口'),
 ('1000','10001003','HD-BOX'),
 ('1000','10001004','不支持');
+
+INSERT INTO H_Const (MType,MCode,MDesc) VALUES
+('2000','20001001','Bellco'),
+('2000','20001002','Braun'),
+('2000','20001003','Fresenius'),
+('2000','20001004','Gambro'),
+('2000','20001005','Nikkiso'),
+('2000','20001006','Toray'),
+('2000','20001007','其他');

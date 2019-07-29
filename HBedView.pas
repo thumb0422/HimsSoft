@@ -251,7 +251,7 @@ begin
   deviceInfo := TDeviceInfo.Create;
   deviceInfo.dLink := FCustomer.MLinkType;
 
-  deviceInfo.dBrand := 'Bellco';//这个涉及到后面对应的类解析数据，目前是必填项
+  deviceInfo.dBrand := Fcustomer.MBrand;//这个涉及到后面对应的类解析数据，目前是必填项
   deviceInfo.dCommond := '4B 0D 0A';
   deviceInfo.dLink := Fcustomer.MLinkType;
   deviceInfo.dName := Fcustomer.MAddress;

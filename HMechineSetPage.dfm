@@ -4,7 +4,7 @@ object MechineSetPage: TMechineSetPage
   BorderIcons = [biSystemMenu]
   Caption = #35774#22791#31867#22411#35774#32622
   ClientHeight = 450
-  ClientWidth = 499
+  ClientWidth = 557
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object MechineSetPage: TMechineSetPage
   object DBGridEh1: TDBGridEh
     Left = 0
     Top = 0
-    Width = 499
+    Width = 557
     Height = 409
     Align = alClient
     DataSource = DataSource1
@@ -43,6 +43,15 @@ object MechineSetPage: TMechineSetPage
         Footers = <>
         Title.Caption = #21517#31216
         Width = 150
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'MBrand'
+        Footers = <>
+        Title.Caption = #21697#29260
+        Width = 60
       end
       item
         CellButtons = <>
@@ -86,14 +95,14 @@ object MechineSetPage: TMechineSetPage
   object Panel1: TPanel
     Left = 0
     Top = 409
-    Width = 499
+    Width = 557
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 386
+    ExplicitWidth = 499
     object saveBtn: TcxButton
-      Left = 152
+      Left = 176
       Top = 6
       Width = 75
       Height = 25
@@ -103,7 +112,7 @@ object MechineSetPage: TMechineSetPage
       OnClick = saveBtnClick
     end
     object cancelBtn: TcxButton
-      Left = 264
+      Left = 288
       Top = 6
       Width = 75
       Height = 25
@@ -142,6 +151,10 @@ object MechineSetPage: TMechineSetPage
     object ClientDataSet1MPort: TStringField
       FieldName = 'MPort'
       Size = 10
+    end
+    object ClientDataSet1MBrand: TStringField
+      FieldName = 'MBrand'
+      Size = 8
     end
     object ClientDataSet1isValid: TBooleanField
       FieldName = 'isValid'
