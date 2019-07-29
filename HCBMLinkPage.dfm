@@ -4,7 +4,7 @@ object HCBMLinkPage: THCBMLinkPage
   BorderIcons = [biSystemMenu]
   Caption = #25968#25454#20851#32852
   ClientHeight = 493
-  ClientWidth = 611
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,13 +19,14 @@ object HCBMLinkPage: THCBMLinkPage
   object Panel1: TPanel
     Left = 0
     Top = 452
-    Width = 611
+    Width = 784
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 611
     object cancelBtn: TcxButton
-      Left = 372
+      Left = 468
       Top = 6
       Width = 75
       Height = 25
@@ -35,7 +36,7 @@ object HCBMLinkPage: THCBMLinkPage
       OnClick = cancelBtnClick
     end
     object addBtn: TcxButton
-      Left = 144
+      Left = 240
       Top = 6
       Width = 75
       Height = 25
@@ -44,7 +45,7 @@ object HCBMLinkPage: THCBMLinkPage
       OnClick = addBtnClick
     end
     object delBtn: TcxButton
-      Left = 258
+      Left = 354
       Top = 6
       Width = 75
       Height = 25
@@ -56,7 +57,7 @@ object HCBMLinkPage: THCBMLinkPage
   object dataGrid: TDBGridEh
     Left = 0
     Top = 0
-    Width = 611
+    Width = 784
     Height = 452
     Align = alClient
     DataSource = dataDS
@@ -139,8 +140,29 @@ object HCBMLinkPage: THCBMLinkPage
         EditButtons = <>
         FieldName = 'MLink'
         Footers = <>
-        Title.Caption = #36830#25509#26041#24335
+        ReadOnly = True
+        Title.Caption = #38142#25509#26041#24335
         Width = 80
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'MAddress'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #38142#25509#22320#22336
+        Width = 100
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'MPort'
+        Footers = <>
+        ReadOnly = True
+        Title.Caption = #31471#21475#21495
+        Width = 50
       end>
     object RowDetailData: TRowDetailPanelControlEh
     end
@@ -177,6 +199,14 @@ object HCBMLinkPage: THCBMLinkPage
     object dataCDSMLink: TStringField
       FieldName = 'MLink'
       Size = 8
+    end
+    object dataCDSMAddress: TStringField
+      FieldName = 'MAddress'
+      Size = 30
+    end
+    object dataCDSMPort: TStringField
+      FieldName = 'MPort'
+      Size = 10
     end
   end
   object dataDS: TDataSource

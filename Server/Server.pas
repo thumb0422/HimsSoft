@@ -89,6 +89,7 @@ end;
 
 procedure THServer.Button1Click(Sender: TObject);
 begin
+  Self.Memo1.Lines.Clear;
   Self.CnRS2321.CommName := Self.ComboBox1.Text;
   try
     Self.CnRS2321.StopComm;
@@ -104,7 +105,7 @@ end;
 
 procedure THServer.Button2Click(Sender: TObject);
 begin
-//
+    Self.Memo1.Lines.Clear;
 end;
 
 procedure THServer.CnRS2321ReceiveData(Sender: TObject; Buffer: Pointer;

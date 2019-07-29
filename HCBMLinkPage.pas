@@ -48,6 +48,8 @@ type
     dataCDSMMechineId: TStringField;
     dataCDSMMechineDesc: TStringField;
     dataCDSMLink: TStringField;
+    dataCDSMAddress: TStringField;
+    dataCDSMPort: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure custGridCellClick(Column: TColumnEh);
     procedure addBtnClick(Sender: TObject);
@@ -164,7 +166,7 @@ var
   keyStrings,valuesStrings:TStrings;
 begin
   dataCDS.Close;
-  sql :=Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink ' +
+  sql :=Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink,M.MAddress,M.MPort ' +
                'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M ' +
                'where D.MCureDate = %s And D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId',[QuotedStr(curDate)]);
   jsonData := TDBManager.Instance.getDataBySql(sql);
@@ -184,6 +186,8 @@ begin
         dataCDS.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
         dataCDS.FieldByName('MMechineDesc').AsString := subData.S['MMechineDesc'];
         dataCDS.FieldByName('MLink').AsString := subData.S['MLink'];
+        dataCDS.FieldByName('MAddress').AsString := subData.S['MAddress'];
+        dataCDS.FieldByName('MPort').AsString := subData.S['MPort'];
         Post;
       end;
     end;
@@ -194,8 +198,8 @@ begin
 
   valuesStrings := TStringList.Create;
   valuesStrings.CommaText :='串口,网口,HD-BOX,不支持';
-  dataGrid.Columns[dataGrid.Columns.Count-1].KeyList:=keyStrings;
-  dataGrid.Columns[dataGrid.Columns.Count-1].PickList:= valuesStrings;
+  dataGrid.Columns[6].KeyList:=keyStrings;
+  dataGrid.Columns[6].PickList:= valuesStrings;
 end;
 
 end.

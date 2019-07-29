@@ -44,6 +44,8 @@ type
     ClientDataSet1MMechineDesc: TStringField;
     ClientDataSet1isValid: TBooleanField;
     ClientDataSet1MLink: TStringField;
+    ClientDataSet1MAddress: TStringField;
+    ClientDataSet1MPort: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure saveBtnClick(Sender: TObject);
     procedure cancelBtnClick(Sender: TObject);
@@ -84,6 +86,8 @@ begin
         ClientDataSet1.FieldByName('MMechineId').AsString := subData.S['MMechineId'];
         ClientDataSet1.FieldByName('MMechineDesc').AsString := subData['MMechineDesc'].AsString;
         ClientDataSet1.FieldByName('MLink').AsString := subData['MLink'].AsString;
+        ClientDataSet1.FieldByName('MAddress').AsString := subData['MAddress'].AsString;
+        ClientDataSet1.FieldByName('MPort').AsString := subData['MPort'].AsString;
         ClientDataSet1.FieldByName('isValid').AsBoolean := not (subData['isValid'].AsInteger = 0);
         Post;
       end;
@@ -99,8 +103,8 @@ begin
 
   valuesStrings := TStringList.Create;
   valuesStrings.CommaText :='串口,网口,HD-BOX,不支持';
-  DBGridEh1.Columns[DBGridEh1.Columns.Count-1].KeyList:=keyStrings;
-  DBGridEh1.Columns[DBGridEh1.Columns.Count-1].PickList:= valuesStrings;
+  DBGridEh1.Columns[2].KeyList:=keyStrings;
+  DBGridEh1.Columns[2].PickList:= valuesStrings;
 
 end;
 
@@ -118,10 +122,12 @@ begin
     while not Eof do
     begin
       sql := Format
-        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MLink,isValid) Values (%s,%s,%s,%d)',
+        ('Insert Into H_MechineInfo (MMechineId,MMechineDesc,MLink,MAddress,MPort,isValid) Values (%s,%s,%s,%s,%s,%d)',
         [QuotedStr(FieldByName('MMechineId').AsString),
         QuotedStr(FieldByName('MMechineDesc').AsString),
         QuotedStr(FieldByName('MLink').AsString),
+        QuotedStr(FieldByName('MAddress').AsString),
+        QuotedStr(FieldByName('MPort').AsString),
         ord(FieldByName('isValid').AsBoolean)]);
       sqlList.Add(sql);
       Next;

@@ -4,7 +4,7 @@ object MechineSetPage: TMechineSetPage
   BorderIcons = [biSystemMenu]
   Caption = #35774#22791#31867#22411#35774#32622
   ClientHeight = 450
-  ClientWidth = 386
+  ClientWidth = 499
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object MechineSetPage: TMechineSetPage
   object DBGridEh1: TDBGridEh
     Left = 0
     Top = 0
-    Width = 386
+    Width = 499
     Height = 409
     Align = alClient
     DataSource = DataSource1
@@ -48,19 +48,37 @@ object MechineSetPage: TMechineSetPage
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'isValid'
+        FieldName = 'MLink'
         Footers = <>
-        Title.Caption = #26377#25928
-        Width = 40
+        Title.Caption = #36830#25509#26041#24335
+        Width = 80
       end
       item
         CellButtons = <>
         DynProps = <>
         EditButtons = <>
-        FieldName = 'MLink'
+        FieldName = 'MAddress'
         Footers = <>
-        Title.Caption = #36830#25509#26041#24335
-        Width = 80
+        Title.Caption = #38142#25509#22320#22336
+        Width = 100
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'MPort'
+        Footers = <>
+        Title.Caption = #31471#21475
+        Width = 50
+      end
+      item
+        CellButtons = <>
+        DynProps = <>
+        EditButtons = <>
+        FieldName = 'isValid'
+        Footers = <>
+        Title.Caption = #26377#25928
+        Width = 40
       end>
     object RowDetailData: TRowDetailPanelControlEh
     end
@@ -68,13 +86,14 @@ object MechineSetPage: TMechineSetPage
   object Panel1: TPanel
     Left = 0
     Top = 409
-    Width = 386
+    Width = 499
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitWidth = 386
     object saveBtn: TcxButton
-      Left = 104
+      Left = 152
       Top = 6
       Width = 75
       Height = 25
@@ -84,7 +103,7 @@ object MechineSetPage: TMechineSetPage
       OnClick = saveBtnClick
     end
     object cancelBtn: TcxButton
-      Left = 216
+      Left = 264
       Top = 6
       Width = 75
       Height = 25
@@ -115,6 +134,14 @@ object MechineSetPage: TMechineSetPage
     object ClientDataSet1MLink: TStringField
       FieldName = 'MLink'
       Size = 8
+    end
+    object ClientDataSet1MAddress: TStringField
+      FieldName = 'MAddress'
+      Size = 30
+    end
+    object ClientDataSet1MPort: TStringField
+      FieldName = 'MPort'
+      Size = 10
     end
     object ClientDataSet1isValid: TBooleanField
       FieldName = 'isValid'
