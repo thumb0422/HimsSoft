@@ -100,9 +100,10 @@ var
   tmpCount :Integer;
 begin
   customers := TList.Create;
-  sql := Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink,M.MAddress,M.MPort,M.MBrand '+
-         'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M '+
-         'where 1=1 AND D.MCureDate = %s AND D.isValid = 1 AND D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId ',
+  sql := Format('SELECT C.MCustId,C.MCustName,B.MRoomId,B.MBedId,M.MMechineId,M.MMechineDesc,M.MLink,M.MAddress,M.MPort,CN.MDesc as MBrand  '+
+         'from H_CBMData D LEFT JOIN H_CustomerInfo C LEFT JOIN H_BedInfo B LEFT JOIN H_MechineInfo M LEFT JOIN H_Const CN '+
+         'where 1=1 AND D.MCureDate = %s AND D.isValid = 1 AND D.MCustId = C.MCustId AND D.MBedId = B.MBedId AND D.MMechineId = M.MMechineId '+
+         'AND CN.MType = ''2000'' AND M.MBrand = CN.MCode',
          [QuotedStr(cureDate)]);
   jsonData := TDBManager.Instance.getDataBySql(sql);
   dataCount := jsonData.I['rowCount'];
