@@ -51,7 +51,10 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private
+    FComConnected: Boolean;
+    procedure SetComConnected(const Value: Boolean);
     { Private declarations }
+    property ComConnected:Boolean read FComConnected write SetComConnected;
     function getAllCommPorts: TStringList; // 获取所有的串口
   public
     { Public declarations }
@@ -91,21 +94,43 @@ procedure THServer.Button1Click(Sender: TObject);
 begin
   Self.Memo1.Lines.Clear;
   Self.CnRS2321.CommName := Self.ComboBox1.Text;
-  try
+  Self.ComConnected := not Self.FComConnected;
+  if not Self.FComConnected then
+  begin
     Self.CnRS2321.StopComm;
-    Self.CnRS2321.StartComm;
-  except
-    on E: Exception do
-    begin
-      Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-OpenError');
+  end
+  else
+  begin
+    try
       Self.CnRS2321.StopComm;
+      Self.CnRS2321.StartComm;
+    except
+      on E: Exception do
+      begin
+        Self.ComConnected := False;
+        Self.Memo1.Lines.Add(Self.CnRS2321.CommName + '-OpenError');
+        Self.CnRS2321.StopComm;
+      end;
     end;
   end;
 end;
 
 procedure THServer.Button2Click(Sender: TObject);
 begin
-    Self.Memo1.Lines.Clear;
+  Self.Memo1.Lines.Clear;
+end;
+
+procedure THServer.SetComConnected(const Value: Boolean);
+begin
+  FComConnected := Value;
+  if FComConnected then
+  begin
+    Self.Button1.Caption := '服务开启';
+  end
+  else
+  begin
+    Self.Button1.Caption := '服务关闭';
+  end;
 end;
 
 procedure THServer.CnRS2321ReceiveData(Sender: TObject; Buffer: Pointer;
@@ -132,6 +157,7 @@ end;
 
 procedure THServer.CnRS2321ReceiveError(Sender: TObject; EventMask: Cardinal);
 begin
+  Self.ComConnected := False;
   Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-ReceiveError-'+ IntToStr(EventMask));
 end;
 
@@ -147,6 +173,7 @@ end;
 
 procedure THServer.FormShow(Sender: TObject);
 begin
+  Self.ComConnected := False;
   Self.Memo1.Lines.Clear;
   Self.ComboBox1.Items.AddStrings(Self.getAllCommPorts);
 end;
