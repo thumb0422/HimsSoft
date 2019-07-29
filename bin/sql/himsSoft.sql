@@ -15,6 +15,8 @@ MId INTEGER PRIMARY KEY AUTOINCREMENT,
 MMechineId varchar(10) UNIQUE,
 MMechineDesc varchar(50),
 MLink varchar(8),
+MAddress varchar(30),
+MPort varchar(10),
 isValid Integer );
 
 CREATE TABLE IF NOT EXISTS H_Mechine_States (
