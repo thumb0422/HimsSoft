@@ -34,7 +34,7 @@ type
 implementation
 
 uses
-  HDeviceBase, HBellco, HToray;
+  HDeviceBase, HBellco, HToray,HBraun,HNikkiso,HGambro,HFresenius;
 
 procedure THComm.init;
 begin
@@ -175,6 +175,10 @@ end;
 initialization
   TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
   TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
+  TClassRegistry.GetClassRegistry.RegisterClass(TBraun.ClassName, TBraun);
+  TClassRegistry.GetClassRegistry.RegisterClass(TNikkiso.ClassName, TNikkiso);
+  TClassRegistry.GetClassRegistry.RegisterClass(TGambro.ClassName, TGambro);
+  TClassRegistry.GetClassRegistry.RegisterClass(TFresenius.ClassName, TFresenius);
 
 end.
 

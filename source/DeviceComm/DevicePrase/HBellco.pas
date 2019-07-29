@@ -27,7 +27,6 @@ begin
   if not Assigned(rspData) then
     rspData := TDataModel.Create;
   rspData :=TDataModel.generateDataForTest;
-//  rspData.VenousPressure := '';
 end;
 
 end.
