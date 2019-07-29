@@ -18,22 +18,33 @@ type
     FMLinkType: DLinkType;
     FMCustId: string;
     FMBedId: string;
+    FMPort: string;
+    FMAddress: string;
     procedure SetMBedId(const Value: string);
     procedure SetMCustId(const Value: string);
     procedure SetMCustName(const Value: string);
     procedure SetMLinkType(const Value: DLinkType);
     procedure SetMMechineId(const Value: string);
+    procedure SetMAddress(const Value: string);
+    procedure SetMPort(const Value: string);
   public
     property MCustId :string read FMCustId write SetMCustId;
     property MCustName :string read FMCustName write SetMCustName;
     property MBedId :string read FMBedId write SetMBedId;
     property MMechineId :string read FMMechineId write SetMMechineId;
     property MLinkType:DLinkType read FMLinkType write SetMLinkType;
+    property MAddress:string read FMAddress write SetMAddress;
+    property MPort :string read FMPort write SetMPort;
   end;
 
 implementation
 
 { TCustomer }
+
+procedure TCustomer.SetMAddress(const Value: string);
+begin
+  FMAddress := Value;
+end;
 
 procedure TCustomer.SetMBedId(const Value: string);
 begin
@@ -58,6 +69,11 @@ end;
 procedure TCustomer.SetMMechineId(const Value: string);
 begin
   FMMechineId := Value;
+end;
+
+procedure TCustomer.SetMPort(const Value: string);
+begin
+  FMPort := Value;
 end;
 
 end.

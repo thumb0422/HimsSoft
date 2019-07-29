@@ -62,7 +62,7 @@ begin
   Color := clWhite;
 
   FTimer := TTimer.Create(Self);
-  FTimer.Interval := 5000;
+  FTimer.Interval := 10000;
   FTimer.OnTimer := timerOnTimer;
   FTimer.Enabled := False;
 
@@ -251,22 +251,19 @@ begin
   deviceInfo := TDeviceInfo.Create;
   deviceInfo.dLink := FCustomer.MLinkType;
 
+  deviceInfo.dBrand := 'Bellco';//这个涉及到后面对应的类解析数据，目前是必填项
+  deviceInfo.dCommond := '4B 0D 0A';
+  deviceInfo.dLink := Fcustomer.MLinkType;
+  deviceInfo.dName := Fcustomer.MAddress;
+  deviceInfo.dPort := StrToInt(Fcustomer.MPort);
+//  deviceInfo.dTag := 100000;
+
   if (FCustomer.MLinkType = DLinkCom) then
   begin
-    deviceInfo.dCommond := '4B 0D 0A';
-    deviceInfo.dLink := DLinkCom;
-    deviceInfo.dName := 'COM3';
-    deviceInfo.dPort := 9600;
-    deviceInfo.dTag := 100000;
     fCate := THComm.Create(deviceInfo);
   end
   else if (FCustomer.MLinkType = DLinkNet) then
   begin
-    deviceInfo.dCommond := '0A 0B 0C ';
-    deviceInfo.dLink := DLinkNet;
-    deviceInfo.dName := '172.16.26.129';
-    deviceInfo.dPort := 6666 ;
-    deviceInfo.dTag := 200000;
     fCate := TNet.Create(deviceInfo);
   end
   else
