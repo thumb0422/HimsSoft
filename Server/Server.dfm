@@ -4,7 +4,7 @@ object HServer: THServer
   BorderIcons = [biSystemMenu]
   Caption = 'Server'
   ClientHeight = 521
-  ClientWidth = 479
+  ClientWidth = 487
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -62,7 +62,7 @@ object HServer: THServer
     Text = '6667'
   end
   object Button1: TButton
-    Left = 328
+    Left = 344
     Top = 35
     Width = 75
     Height = 25
@@ -71,7 +71,7 @@ object HServer: THServer
     OnClick = Button1Click
   end
   object Button2: TButton
-    Left = 328
+    Left = 344
     Top = 91
     Width = 75
     Height = 25
@@ -82,7 +82,7 @@ object HServer: THServer
   object Memo1: TMemo
     Left = 80
     Top = 136
-    Width = 323
+    Width = 339
     Height = 353
     Lines.Strings = (
       'Memo1')

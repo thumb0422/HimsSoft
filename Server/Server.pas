@@ -89,7 +89,17 @@ end;
 
 procedure THServer.Button1Click(Sender: TObject);
 begin
-//
+  Self.CnRS2321.CommName := Self.ComboBox1.Text;
+  try
+    Self.CnRS2321.StopComm;
+    Self.CnRS2321.StartComm;
+  except
+    on E: Exception do
+    begin
+      Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-OpenError');
+      Self.CnRS2321.StopComm;
+    end;
+  end;
 end;
 
 procedure THServer.Button2Click(Sender: TObject);
@@ -99,23 +109,39 @@ end;
 
 procedure THServer.CnRS2321ReceiveData(Sender: TObject; Buffer: Pointer;
   BufferLength: Word);
+var
+  i: Integer;
+  ss: string;
+  rbuf: array of byte;
+  procedure sendData(str:string);
+  begin
+    Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-SendingData :'+ str);
+    Self.CnRS2321.WriteCommData(PAnsiChar(AnsiString(str)), Length(str));
+  end;
 begin
-//
+  setlength(rbuf, BufferLength);
+  move(Buffer^, pchar(rbuf)^, BufferLength);
+  for i := 0 to BufferLength - 1 do
+  begin
+    ss := ss + IntToHex(rbuf[i], 2) + ' ';
+  end;
+  Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-ReceiveData :'+ ss);
+  sendData(ss+ IntToStr(Random(100)));
 end;
 
 procedure THServer.CnRS2321ReceiveError(Sender: TObject; EventMask: Cardinal);
 begin
-//
+  Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-ReceiveError-'+ IntToStr(EventMask));
 end;
 
 procedure THServer.CnRS2321RequestHangup(Sender: TObject);
 begin
-//
+  Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-RequestHangup');
 end;
 
 procedure THServer.CnRS2321SendDataEmpty(Sender: TObject);
 begin
-//
+//  Self.Memo1.Lines.Add(Self.CnRS2321.CommName +'-SendDataEmpty');
 end;
 
 procedure THServer.FormShow(Sender: TObject);
