@@ -49,7 +49,7 @@ type
     FCate :TCate;
     FRspData:TDataModel;
     procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
-    procedure successBlock(Sender: TObject;rspData: TDataModel);
+    procedure successBlock(Sender: TObject;data :array of Byte);
   end;
 
 implementation
@@ -270,8 +270,8 @@ begin
   begin
     Exit;
   end;
-  fCate.callBackError := ErrorBlock;
-  fCate.callBackSuccess := successBlock;
+  fCate.dataFailCallBack := ErrorBlock;
+  fCate.dataSuccessCallBack := successBlock;
 
   bedStatus := EmBedNormal;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
@@ -298,23 +298,23 @@ begin
   FDataDetailView := FnotifyComponent as TDataDetailView;
 end;
 
-procedure TBedView.successBlock(Sender: TObject;rspData: TDataModel);
+procedure TBedView.successBlock(Sender: TObject;data:array of Byte);
 var sql:string;
     sqls:TStringList;
 begin
-  FRspData := rspData;
-  FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
-  sqls := TStringList.Create;
-  sql := Format('Update H_Data_Main set endTime = %s Where DId = %s And MCustId = %s And MCureDate = %s',
-                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyymmdd',Now))]);
-  sqls.Add(sql);
-  sql := Format('Insert Into H_Data_Detail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
-                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-                [QuotedStr(FDId),QuotedStr(FRspData.VenousPressure),QuotedStr(FRspData.DialysisPressure),
-                QuotedStr(FRspData.TMP),QuotedStr(FRspData.BloodFlow),QuotedStr(FRspData.UFFlow),
-                QuotedStr(FRspData.BloodPressure),QuotedStr(FRspData.TotalBlood),QuotedStr(FRspData.Temperature)]);
-  sqls.Add(sql);
-  TDBManager.Instance.execSql(sqls);
+//  FRspData := rspData;
+//  FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
+//  sqls := TStringList.Create;
+//  sql := Format('Update H_Data_Main set endTime = %s Where DId = %s And MCustId = %s And MCureDate = %s',
+//                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyymmdd',Now))]);
+//  sqls.Add(sql);
+//  sql := Format('Insert Into H_Data_Detail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
+//                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+//                [QuotedStr(FDId),QuotedStr(FRspData.VenousPressure),QuotedStr(FRspData.DialysisPressure),
+//                QuotedStr(FRspData.TMP),QuotedStr(FRspData.BloodFlow),QuotedStr(FRspData.UFFlow),
+//                QuotedStr(FRspData.BloodPressure),QuotedStr(FRspData.TotalBlood),QuotedStr(FRspData.Temperature)]);
+//  sqls.Add(sql);
+//  TDBManager.Instance.execSql(sqls);
 end;
 
 procedure TBedView.ErrorBlock(Sender: TObject;error: TErrorMsg);

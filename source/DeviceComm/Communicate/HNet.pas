@@ -123,8 +123,8 @@ begin
   FisConnected := False;
   if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
-    if Assigned(FcallBackError) then
-      FcallBackError(Self,TErrorMsg.Create('-1',NetDisconnect));
+    if Assigned(FdataFailCallBack) then
+      FdataFailCallBack(Self,TErrorMsg.Create('-1',NetDisconnect));
     TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' Disconnect');
   end;
 end;
@@ -138,8 +138,8 @@ begin
   ErrorCode := 0;
   if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
-    if Assigned(FcallBackError) then
-      FcallBackError(Self,TErrorMsg.Create('-1',NetError));
+    if Assigned(FdataFailCallBack) then
+      FdataFailCallBack(Self,TErrorMsg.Create('-1',NetError));
     TLog.Instance.DDLogError('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ',ErrorEvent =' + GetEnumName(TypeInfo(TErrorEvent), ord(ErrorEvent)) + ',errorCode = ' + IntToStr(originErrorCode));
   end;
 end;

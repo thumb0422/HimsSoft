@@ -11,14 +11,16 @@ uses HDataModel,System.Generics.Collections;
   const NetOpenError: string = '网口打开失败';
   const NetDisconnect: string = '网口断开连接';
   const NetError: string = '网络异常';
-//  const LinkMap:TDic  todo:
+
   type
     DLinkType = (DLinkCom,DLinkNet,DLinkHDBox,DLinkNone);//设备通信连接方式
     EmBedStatus = (EmBedNormal,EmBedUsed,EmBedAlarm,EmBedError);//床位状态
     TErrorMsg = class;
 
-    TFailedCallBackEvent = procedure(Sender: TObject;error: TErrorMsg) of object;
-    TSuccessCallBackEvent = procedure(Sender: TObject;rspData: TDataModel) of object;
+    TDataFailCallBack    = procedure(Sender: TObject;error: TErrorMsg) of object;
+    TDataSuccessCallBack = procedure(Sender: TObject;data:array of Byte) of object;//rs232 ->TJason
+
+    TSuccessCallBack = procedure(Sender: TObject;rspData: TDataModel) of object;//TJason ->UI
 
     TErrorMsg = class
     private

@@ -24,13 +24,20 @@ type
   protected
     fDeviceInfo: TDeviceInfo;
     fCate: TCate;
+    fRspData:TDataModel; //解析后成对象
 //    fCommond: array of Byte;   //TODO:暂时用TdeviceInfo.dCommond 来替代。
     procedure SendRequest;
     procedure praseData(data: array of Byte; var rspData: TDataModel);
       virtual; abstract;
   private
-    procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
-    procedure successBlock(Sender: TObject;rspData: TDataModel);
+    FfailCallBack: TDataFailCallBack;
+    FsuccessCallBack: TSuccessCallBack;
+
+    procedure dataFailBlock(Sender: TObject;error: TErrorMsg);
+    procedure dataSuccessBlock(Sender: TObject;data:array of Byte);
+  public
+    property successCallBack:TSuccessCallBack read FsuccessCallBack write FsuccessCallBack; //---->UI
+    property failCallBack:TDataFailCallBack read FfailCallBack write FfailCallBack;  //---->UI
   end;
 
 implementation
@@ -60,16 +67,16 @@ begin
   begin
 
   end;
-  fCate.callBackError := ErrorBlock;
-  fCate.callBackSuccess := successBlock;
+  fCate.dataFailCallBack := dataFailBlock;
+  fCate.dataSuccessCallBack := dataSuccessBlock;
 end;
 
-procedure TJason.successBlock(Sender: TObject; rspData: TDataModel);
+procedure TJason.dataSuccessBlock(Sender: TObject; data : array of Byte);
 begin
-
+   Self.praseData(data,fRspData);
 end;
 
-procedure TJason.ErrorBlock(Sender: TObject; error: TErrorMsg);
+procedure TJason.dataFailBlock(Sender: TObject; error: TErrorMsg);
 begin
 
 end;

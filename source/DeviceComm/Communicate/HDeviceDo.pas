@@ -27,7 +27,7 @@ type
     procedure stopTestData;
   private
     procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
-    procedure successBlock(Sender: TObject;rspData: TDataModel);
+    procedure successBlock(Sender: TObject;data:array of Byte);
   end;
 
 implementation
@@ -83,8 +83,8 @@ begin
     deviceInfo.dPort := 9600;
     deviceInfo.dTag := 1 * 100 + i;
     com32 := THComm.Create(deviceInfo);
-    com32.callBackError := ErrorBlock;
-    com32.callBackSuccess := successBlock;
+    com32.dataFailCallBack := ErrorBlock;
+    com32.dataSuccessCallBack := successBlock;
     com32.init;
     FComGroupList.Add(com32);
   end;
@@ -101,8 +101,8 @@ begin
     deviceInfo.dPort := 6666 + i;
     deviceInfo.dTag := 2 * 100 + i;
     net485 := TNet.Create(deviceInfo);
-    net485.callBackError := ErrorBlock;
-    net485.callBackSuccess := successBlock;
+    net485.dataFailCallBack := ErrorBlock;
+    net485.dataSuccessCallBack := successBlock;
     net485.init;
     FComGroupList.Add(net485);
   end;
@@ -136,9 +136,9 @@ begin
   end;
 end;
 
-procedure TDeviceDo.successBlock(Sender: TObject;rspData: TDataModel);
+procedure TDeviceDo.successBlock(Sender: TObject;data:array of Byte);
 begin
-  TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
+//  TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
 end;
 
 procedure TDeviceDo.ErrorBlock(Sender: TObject;error: TErrorMsg);
