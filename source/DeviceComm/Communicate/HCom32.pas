@@ -27,7 +27,7 @@ type
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
     procedure onWriteData;
-  protected
+  private
     rs232Obj: TCnRS232;
   end;
 
@@ -40,15 +40,8 @@ procedure THComm.init;
 begin
   inherited;
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
+  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) and Assigned(rs232Obj) then
   begin
-    rs232Obj := TCnRS232.Create(nil);
-    rs232Obj.CommName := FDeviceInfo.dName;
-    rs232Obj.tag := FDeviceInfo.dTag;
-    rs232Obj.CommConfig.BaudRate := FDeviceInfo.dPort;
-    rs232Obj.OnReceiveData := onReceive;
-    rs232Obj.onReceiveError := onReceiveError;
-    rs232Obj.onRequestHangup := onRequestHangup;
     try
       TLog.Instance.DDLogInfo(FDeviceInfo.dName + ' connect');
       FisConnected := True;
@@ -94,8 +87,19 @@ end;
 
 constructor THComm.Create(deviceInfo: TDeviceInfo);
 begin
+  inherited;
   FDeviceInfo := deviceInfo;
   FisConnected := False;
+  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
+  begin
+    rs232Obj := TCnRS232.Create(nil);
+    rs232Obj.CommName := FDeviceInfo.dName;
+    rs232Obj.tag := FDeviceInfo.dTag;
+    rs232Obj.CommConfig.BaudRate := 9600;//FDeviceInfo.dPort;
+    rs232Obj.OnReceiveData := onReceive;
+    rs232Obj.onReceiveError := onReceiveError;
+    rs232Obj.onRequestHangup := onRequestHangup;
+  end;
 end;
 
 destructor THComm.Destroy;

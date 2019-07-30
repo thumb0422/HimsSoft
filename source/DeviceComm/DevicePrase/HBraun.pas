@@ -11,13 +11,12 @@ unit HBraun;
 interface
 
 uses
-  HJason,HDataModel,HDeviceInfo;
+  HJason,HDataModel;
 
 type
   TBraun = class(TJason)
-  public
-    constructor Create(deviceInfo: TDeviceInfo);override;
   protected
+    procedure initCommond;override;
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
@@ -25,10 +24,9 @@ implementation
 
 { TBellco }
 
-constructor TBraun.Create(deviceInfo: TDeviceInfo);
+procedure TBraun.initCommond;
 begin
   inherited;
-  fDeviceInfo := deviceInfo;
   fDeviceInfo.dCommond := 'XXXXXXXX';
 end;
 

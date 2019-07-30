@@ -11,13 +11,12 @@ unit HBellco;
 interface
 
 uses
-  HJason,HDataModel,HDeviceInfo;
+  HJason,HDataModel;
 
 type
   TBellco = class(TJason)
-  public
-    constructor Create(deviceInfo: TDeviceInfo);override;
   protected
+    procedure initCommond;override;
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
@@ -25,10 +24,9 @@ implementation
 
 { TBellco }
 
-constructor TBellco.Create(deviceInfo: TDeviceInfo);
+procedure TBellco.initCommond;
 begin
   inherited;
-  fDeviceInfo := deviceInfo;
   fDeviceInfo.dCommond := '4B 0D 0A';
 //  Setlength(fCommond,3);
 //  fCommond[0]:=byte($4B);

@@ -13,7 +13,8 @@ interface
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
   Vcl.Forms, Winapi.Windows,Vcl.Controls,
   HDataNotify, HDataModel,HCustomer, HDataDetailView,
-  HDeviceDefine,HCate,HCom32,HNet,HDeviceInfo;
+  HDeviceDefine,HDeviceInfo,
+  HJason,HBellco;
 
 type
   TBedView = class(TPanel)
@@ -46,10 +47,10 @@ type
     procedure resetData;
   private
     FDId:string;//H_Data_Main.DId (由custId加随机生成码)
-    FCate :TCate;
+    fJason :TJason;
     FRspData:TDataModel;
     procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
-    procedure successBlock(Sender: TObject;data :array of Byte);
+    procedure successBlock(Sender: TObject;rspData:TDataModel);
   end;
 
 implementation
@@ -104,10 +105,10 @@ end;
 
 destructor TBedView.Destroy;
 begin
-  if Assigned(FCate) then
+  if Assigned(FJason) then
   begin
-    FCate.close;
-    FCate.Free;
+    FJason.close;
+    FJason.Free;
   end;
   if Assigned(FTimer) then
     FTimer.Free;
@@ -122,6 +123,8 @@ procedure TBedView.onClick(Sender: TObject);
 var
   lDataNotify: IDataNotify;
 begin
+  //todo
+  Exit;
   if Assigned(FDataDetailView) and (FbedStatus = EmBedUsed) then
   begin
     lDataNotify := FDataDetailView;
@@ -138,8 +141,8 @@ begin
       IDOK:
         begin
           FTimer.Enabled := False;
-          if Assigned(fCate) then
-            fCate.close;
+          if Assigned(fJason) then
+            fJason.close;
           bedStatus := EmBedNormal;
         end;
       IDCANCEL:
@@ -161,10 +164,10 @@ begin
           FTimer.Enabled := False;
           FTimer.Enabled := True;
           bedStatus := EmBedUsed;
-          if Assigned(fCate) then
+          if Assigned(fJason) then
           begin
-            fCate.close;
-            fCate.init;
+            fJason.close;
+            fJason.init;
           end;
         end;
       IDCANCEL:
@@ -252,7 +255,7 @@ begin
   deviceInfo.dLink := FCustomer.MLinkType;
 
   deviceInfo.dBrand := Fcustomer.MBrand;//这个涉及到后面对应的类解析数据，目前是必填项
-  deviceInfo.dCommond := '4B 0D 0A';
+//  deviceInfo.dCommond := '4B 0D 0A';
   deviceInfo.dLink := Fcustomer.MLinkType;
   deviceInfo.dName := Fcustomer.MAddress;
   deviceInfo.dPort := StrToInt(Fcustomer.MPort);
@@ -260,18 +263,18 @@ begin
 
   if (FCustomer.MLinkType = DLinkCom) then
   begin
-    fCate := THComm.Create(deviceInfo);
+    fJason := TBellco.Create(deviceInfo);
   end
   else if (FCustomer.MLinkType = DLinkNet) then
   begin
-    fCate := TNet.Create(deviceInfo);
+//    fCate := TNet.Create(deviceInfo);
   end
   else
   begin
     Exit;
   end;
-  fCate.dataFailCallBack := ErrorBlock;
-  fCate.dataSuccessCallBack := successBlock;
+  fJason.failCallBack := ErrorBlock;
+  fJason.successCallBack := successBlock;
 
   bedStatus := EmBedNormal;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
@@ -298,23 +301,23 @@ begin
   FDataDetailView := FnotifyComponent as TDataDetailView;
 end;
 
-procedure TBedView.successBlock(Sender: TObject;data:array of Byte);
+procedure TBedView.successBlock(Sender: TObject;rspData:TDataModel);
 var sql:string;
     sqls:TStringList;
 begin
-//  FRspData := rspData;
-//  FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
-//  sqls := TStringList.Create;
-//  sql := Format('Update H_Data_Main set endTime = %s Where DId = %s And MCustId = %s And MCureDate = %s',
-//                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyymmdd',Now))]);
-//  sqls.Add(sql);
-//  sql := Format('Insert Into H_Data_Detail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
-//                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-//                [QuotedStr(FDId),QuotedStr(FRspData.VenousPressure),QuotedStr(FRspData.DialysisPressure),
-//                QuotedStr(FRspData.TMP),QuotedStr(FRspData.BloodFlow),QuotedStr(FRspData.UFFlow),
-//                QuotedStr(FRspData.BloodPressure),QuotedStr(FRspData.TotalBlood),QuotedStr(FRspData.Temperature)]);
-//  sqls.Add(sql);
-//  TDBManager.Instance.execSql(sqls);
+  FRspData := rspData;
+  FLabel.Caption := 'UMP :' + IntToStr(Random(100)) + '%';
+  sqls := TStringList.Create;
+  sql := Format('Update H_Data_Main set endTime = %s Where DId = %s And MCustId = %s And MCureDate = %s',
+                [QuotedStr(FormatDateTime('yyyy-mm-dd hh:mm:ss',Now)),QuotedStr(FDId),QuotedStr(FCustomer.MCustId),QuotedStr(FormatDateTime('yyyymmdd',Now))]);
+  sqls.Add(sql);
+  sql := Format('Insert Into H_Data_Detail (DId,VenousPressure,DialysisPressure,TMP,BloodFlow,UFFlow,BloodPressure,TotalBlood,Temperature)' +
+                'Values (%s,%s,%s,%s,%s,%s,%s,%s,%s)',
+                [QuotedStr(FDId),QuotedStr(FRspData.VenousPressure),QuotedStr(FRspData.DialysisPressure),
+                QuotedStr(FRspData.TMP),QuotedStr(FRspData.BloodFlow),QuotedStr(FRspData.UFFlow),
+                QuotedStr(FRspData.BloodPressure),QuotedStr(FRspData.TotalBlood),QuotedStr(FRspData.Temperature)]);
+  sqls.Add(sql);
+  TDBManager.Instance.execSql(sqls);
 end;
 
 procedure TBedView.ErrorBlock(Sender: TObject;error: TErrorMsg);
@@ -328,8 +331,8 @@ end;
 
 procedure TBedView.timerOnTimer(Sender: TObject);
 begin
-  if Assigned(fCate) then
-    fCate.send;
+  if Assigned(fJason) then
+    fJason.send;
 end;
 
 end.

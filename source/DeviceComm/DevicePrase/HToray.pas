@@ -11,13 +11,12 @@ unit HToray;
 interface
 
 uses
-  HJason,HDataModel,HDeviceInfo;
+  HJason,HDataModel;
 
 type
   TToray = class(TJason)
-  public
-    constructor Create(deviceInfo: TDeviceInfo);override;
   protected
+    procedure initCommond;override;
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
@@ -25,11 +24,10 @@ implementation
 
 { TToray }
 
-constructor TToray.Create(deviceInfo: TDeviceInfo);
+procedure TToray.initCommond;
 begin
   inherited;
-  fDeviceInfo := deviceInfo;
-  fDeviceInfo.dCommond := 'XXXXXXX';
+  fDeviceInfo.dCommond := 'XXXXXXXX';
 end;
 
 procedure TToray.praseData(data: array of Byte; var rspData:TDataModel);

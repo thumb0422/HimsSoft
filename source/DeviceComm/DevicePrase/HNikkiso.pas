@@ -11,13 +11,12 @@ unit HNikkiso;
 interface
 
 uses
-  HJason,HDataModel,HDeviceInfo;
+  HJason,HDataModel;
 
 type
   TNikkiso = class(TJason)
-  public
-    constructor Create(deviceInfo: TDeviceInfo);override;
   protected
+    procedure initCommond;override;
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
@@ -25,11 +24,10 @@ implementation
 
 { TBellco }
 
-constructor TNikkiso.Create(deviceInfo: TDeviceInfo);
+procedure TNikkiso.initCommond;
 begin
   inherited;
-  fDeviceInfo := deviceInfo;
-  fDeviceInfo.dCommond := 'XXXXXXX';
+  fDeviceInfo.dCommond := 'XXXXXXXX';
 end;
 
 procedure TNikkiso.praseData(data: array of Byte; var rspData:TDataModel);
