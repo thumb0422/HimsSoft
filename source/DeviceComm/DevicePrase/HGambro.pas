@@ -11,16 +11,26 @@ unit HGambro;
 interface
 
 uses
-  HDeviceBase,HDataModel;
+  HJason,HDataModel,HDeviceInfo;
 
 type
-  TGambro = class(TDeviceBase)
+  TGambro = class(TJason)
+  public
+    constructor Create(deviceInfo: TDeviceInfo);override;
+  protected
     procedure praseData(data: array of Byte;  var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TGambro }
+
+constructor TGambro.Create(deviceInfo: TDeviceInfo);
+begin
+  inherited;
+  fDeviceInfo := deviceInfo;
+  fDeviceInfo.dCommond := 'XXXXXXXX';
+end;
 
 procedure TGambro.praseData(data: array of Byte; var rspData:TDataModel);
 begin

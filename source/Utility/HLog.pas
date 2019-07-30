@@ -23,9 +23,9 @@ type
     procedure DDLogError(str: string);
     class property Instance: TLog read GetInstance;
     class procedure ReleaseInstance;
-  protected
     constructor Create;
     destructor Destroy; override;
+  protected
     procedure writeToFile(str: string);
   end;
 

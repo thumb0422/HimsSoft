@@ -11,16 +11,26 @@ unit HFresenius;
 interface
 
 uses
-  HDeviceBase,HDataModel;
+  HJason,HDataModel,HDeviceInfo;
 
 type
-  TFresenius = class(TDeviceBase)
+  TFresenius = class(TJason)
+  public
+    constructor Create(deviceInfo: TDeviceInfo);override;
+  protected
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TFresenius }
+
+constructor TFresenius.Create(deviceInfo: TDeviceInfo);
+begin
+  inherited;
+  fDeviceInfo := deviceInfo;
+  fDeviceInfo.dCommond := 'XXXXXXXX';
+end;
 
 procedure TFresenius.praseData(data: array of Byte; var rspData:TDataModel);
 begin

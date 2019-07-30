@@ -9,16 +9,28 @@
 unit HNikkiso;
 
 interface
+
 uses
-  System.Generics.Collections,HDeviceBase,HDataModel;
+  HJason,HDataModel,HDeviceInfo;
+
 type
-  TNikkiso = class(TDeviceBase)
+  TNikkiso = class(TJason)
+  public
+    constructor Create(deviceInfo: TDeviceInfo);override;
+  protected
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TBellco }
+
+constructor TNikkiso.Create(deviceInfo: TDeviceInfo);
+begin
+  inherited;
+  fDeviceInfo := deviceInfo;
+  fDeviceInfo.dCommond := 'XXXXXXX';
+end;
 
 procedure TNikkiso.praseData(data: array of Byte; var rspData:TDataModel);
 begin

@@ -11,16 +11,30 @@ unit HBellco;
 interface
 
 uses
-  System.Generics.Collections,HDeviceBase,HDataModel;
+  HJason,HDataModel,HDeviceInfo;
 
 type
-  TBellco = class(TDeviceBase)
+  TBellco = class(TJason)
+  public
+    constructor Create(deviceInfo: TDeviceInfo);override;
+  protected
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TBellco }
+
+constructor TBellco.Create(deviceInfo: TDeviceInfo);
+begin
+  inherited;
+  fDeviceInfo := deviceInfo;
+  fDeviceInfo.dCommond := '4B 0D 0A';
+//  Setlength(fCommond,3);
+//  fCommond[0]:=byte($4B);
+//  fCommond[1]:=byte($0D);
+//  fCommond[2]:=byte($0A);
+end;
 
 procedure TBellco.praseData(data: array of Byte; var rspData:TDataModel);
 begin

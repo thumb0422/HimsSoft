@@ -43,12 +43,12 @@ contains
   HDeviceTool in 'Const\HDeviceTool.pas',
   HBellco in 'DevicePrase\HBellco.pas',
   HBraun in 'DevicePrase\HBraun.pas',
-  HDeviceBase in 'DevicePrase\HDeviceBase.pas',
   HDeviceInfo in 'DevicePrase\HDeviceInfo.pas',
   HFresenius in 'DevicePrase\HFresenius.pas',
   HGambro in 'DevicePrase\HGambro.pas',
   HNikkiso in 'DevicePrase\HNikkiso.pas',
-  HToray in 'DevicePrase\HToray.pas';
+  HToray in 'DevicePrase\HToray.pas',
+  HJason in 'DevicePrase\HJason.pas';
 
 end.
 

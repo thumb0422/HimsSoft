@@ -26,7 +26,7 @@ type
     procedure close; virtual; abstract;
     property isConnected: Boolean read FisConnected;
     constructor Create(deviceInfo: TDeviceInfo); virtual; abstract; // …Ë±∏
-    procedure onWriteData(Sender: TObject);virtual; abstract;
+//    procedure onWriteData(Sender: TObject);virtual; abstract;
   protected
     FcallBackError: TFailedCallBackEvent;
     FcallBackSuccess:TSuccessCallBackEvent;

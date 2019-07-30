@@ -138,12 +138,12 @@
         <DCCReference Include="Const\HDeviceTool.pas"/>
         <DCCReference Include="DevicePrase\HBellco.pas"/>
         <DCCReference Include="DevicePrase\HBraun.pas"/>
-        <DCCReference Include="DevicePrase\HDeviceBase.pas"/>
         <DCCReference Include="DevicePrase\HDeviceInfo.pas"/>
         <DCCReference Include="DevicePrase\HFresenius.pas"/>
         <DCCReference Include="DevicePrase\HGambro.pas"/>
         <DCCReference Include="DevicePrase\HNikkiso.pas"/>
         <DCCReference Include="DevicePrase\HToray.pas"/>
+        <DCCReference Include="DevicePrase\HJason.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

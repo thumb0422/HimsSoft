@@ -11,16 +11,26 @@ unit HToray;
 interface
 
 uses
-  System.Generics.Collections,HDeviceBase,HDataModel;
+  HJason,HDataModel,HDeviceInfo;
 
 type
-  TToray = class(TDeviceBase)
+  TToray = class(TJason)
+  public
+    constructor Create(deviceInfo: TDeviceInfo);override;
+  protected
     procedure praseData(data: array of Byte; var rspData:TDataModel);override;
   end;
 
 implementation
 
 { TToray }
+
+constructor TToray.Create(deviceInfo: TDeviceInfo);
+begin
+  inherited;
+  fDeviceInfo := deviceInfo;
+  fDeviceInfo.dCommond := 'XXXXXXX';
+end;
 
 procedure TToray.praseData(data: array of Byte; var rspData:TDataModel);
 begin
