@@ -69,6 +69,8 @@ destructor TJason.Destroy;
 begin
   if Assigned(fCate) then
   begin
+    if fCate.isConnected then
+      fCate.close;
     fCate.Free;
   end;
   inherited;
@@ -95,7 +97,6 @@ begin
   if Assigned(fCate) then
   begin
     fCate.close;
-    fCate.Free;
   end;
 end;
 
