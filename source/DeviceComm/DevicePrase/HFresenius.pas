@@ -27,7 +27,7 @@ implementation
 procedure TFresenius.initCommond;
 begin
   inherited;
-  fDeviceInfo.dCommond := 'XXXXXXXX';
+  fDeviceInfo.MCommond := 'XXXXXXXX';
 end;
 
 procedure TFresenius.praseData(data: array of Byte; var rspData:TDataModel);

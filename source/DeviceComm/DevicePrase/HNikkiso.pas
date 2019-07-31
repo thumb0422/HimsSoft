@@ -27,7 +27,7 @@ implementation
 procedure TNikkiso.initCommond;
 begin
   inherited;
-  fDeviceInfo.dCommond := 'XXXXXXXX';
+  fDeviceInfo.MCommond := 'XXXXXXXX';
 end;
 
 procedure TNikkiso.praseData(data: array of Byte; var rspData:TDataModel);

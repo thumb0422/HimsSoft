@@ -27,7 +27,7 @@ type
     procedure onReceiveError(Sender: TObject; EventMask: Cardinal);
     procedure onRequestHangup(Sender: TObject);
     procedure onWriteData;
-  private
+  protected
     rs232Obj: TCnRS232;
   end;
 
@@ -40,10 +40,10 @@ procedure THComm.init;
 begin
   inherited;
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) and Assigned(rs232Obj) then
+  if Assigned(FDeviceInfo) and Assigned(rs232Obj) then
   begin
     try
-      TLog.Instance.DDLogInfo(FDeviceInfo.dName + ' connect');
+      TLog.Instance.DDLogInfo(FDeviceInfo.MName + ' connect');
       FisConnected := True;
       rs232Obj.StopComm;
       rs232Obj.StartComm;
@@ -53,7 +53,7 @@ begin
         FisConnected := False;
         if Assigned(FdataFailCallBack) then
           FdataFailCallBack(self,TErrorMsg.Create('-1',Com32OpenError));
-        TLog.Instance.DDLogError(FDeviceInfo.dName + ' connectError');
+        TLog.Instance.DDLogError(FDeviceInfo.MName + ' connectError');
         rs232Obj.StopComm;
       end;
     end;
@@ -70,7 +70,7 @@ begin
   else
   begin
   //todo:是否需要重新init
-    TLog.Instance.DDLogError(FDeviceInfo.dName + ' sendError,isConneted = False');
+    TLog.Instance.DDLogError(FDeviceInfo.MName + ' sendError,isConneted = False');
   end;
 end;
 
@@ -90,11 +90,12 @@ begin
   inherited;
   FDeviceInfo := deviceInfo;
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
+  if Assigned(FDeviceInfo) then
   begin
     rs232Obj := TCnRS232.Create(nil);
-    rs232Obj.CommName := FDeviceInfo.dName;
-    rs232Obj.tag := FDeviceInfo.dTag;
+    rs232Obj.Name := 'rs232Obj';
+    rs232Obj.CommName := FDeviceInfo.MName;
+    rs232Obj.tag := FDeviceInfo.MTag;
     rs232Obj.CommConfig.BaudRate := 9600;//FDeviceInfo.dPort;
     rs232Obj.OnReceiveData := onReceive;
     rs232Obj.onReceiveError := onReceiveError;
@@ -114,10 +115,10 @@ end;
 
 procedure THComm.onWriteData;
 begin
-  if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkCom) then
+  if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) then
   begin
-    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' + FDeviceInfo.dCommond);
-    rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.dCommond)), Length(FDeviceInfo.dCommond));
+    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' + FDeviceInfo.MCommond);
+    rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.MCommond)), Length(FDeviceInfo.MCommond));
   end;
 end;
 
@@ -133,7 +134,7 @@ var
 begin
   setlength(rbuf, BufferLength);
   move(Buffer^, pchar(rbuf)^, BufferLength);
-  fDeviceBrand := FDeviceInfo.dBrand;
+  fDeviceBrand := FDeviceInfo.MBrand;
   fDeviceBrand := 'T' + fDeviceBrand;
   for i := 0 to BufferLength - 1 do
   begin

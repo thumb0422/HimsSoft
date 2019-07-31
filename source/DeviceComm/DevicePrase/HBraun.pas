@@ -27,7 +27,7 @@ implementation
 procedure TBraun.initCommond;
 begin
   inherited;
-  fDeviceInfo.dCommond := 'XXXXXXXX';
+  fDeviceInfo.MCommond := 'XXXXXXXX';
 end;
 
 procedure TBraun.praseData(data: array of Byte; var rspData:TDataModel);

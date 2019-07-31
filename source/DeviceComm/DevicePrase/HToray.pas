@@ -27,7 +27,7 @@ implementation
 procedure TToray.initCommond;
 begin
   inherited;
-  fDeviceInfo.dCommond := 'XXXXXXXX';
+  fDeviceInfo.MCommond := 'XXXXXXXX';
 end;
 
 procedure TToray.praseData(data: array of Byte; var rspData:TDataModel);

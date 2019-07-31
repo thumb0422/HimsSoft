@@ -252,13 +252,13 @@ var
 begin
   Fcustomer := Value;
   deviceInfo := TDeviceInfo.Create;
-  deviceInfo.dLink := FCustomer.MLinkType;
+  deviceInfo.MLink := FCustomer.MLinkType;
 
-  deviceInfo.dBrand := Fcustomer.MBrand;//这个涉及到后面对应的类解析数据，目前是必填项
+  deviceInfo.MBrand := Fcustomer.MBrand;//这个涉及到后面对应的类解析数据，目前是必填项
 //  deviceInfo.dCommond := '4B 0D 0A';
-  deviceInfo.dLink := Fcustomer.MLinkType;
-  deviceInfo.dName := Fcustomer.MAddress;
-  deviceInfo.dPort := StrToInt(Fcustomer.MPort);
+  deviceInfo.MLink := Fcustomer.MLinkType;
+  deviceInfo.MName := Fcustomer.MAddress;
+  deviceInfo.MPort := StrToInt(Fcustomer.MPort);
 //  deviceInfo.dTag := 100000;
 
   if (FCustomer.MLinkType = DLinkCom) then

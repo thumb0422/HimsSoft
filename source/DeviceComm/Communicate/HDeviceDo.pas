@@ -74,14 +74,14 @@ begin
   for i := 2 to 5 do
   begin
     deviceInfo := TDeviceInfo.Create;
-    deviceInfo.dType := 'B';
-    deviceInfo.dBrand := 'Bellco';
-    deviceInfo.dDesc := '贝尔克' + IntToStr(i);
-    deviceInfo.dCommond := '4B 0D 0A';
-    deviceInfo.dLink := DLinkCom;
-    deviceInfo.dName := 'COM' + IntToStr(i);
-    deviceInfo.dPort := 9600;
-    deviceInfo.dTag := 1 * 100 + i;
+    deviceInfo.MType := 'B';
+    deviceInfo.MBrand := 'Bellco';
+    deviceInfo.MDesc := '贝尔克' + IntToStr(i);
+    deviceInfo.MCommond := '4B 0D 0A';
+    deviceInfo.MLink := DLinkCom;
+    deviceInfo.MName := 'COM' + IntToStr(i);
+    deviceInfo.MPort := 9600;
+    deviceInfo.MTag := 1 * 100 + i;
     com32 := THComm.Create(deviceInfo);
     com32.dataFailCallBack := ErrorBlock;
     com32.dataSuccessCallBack := successBlock;
@@ -92,14 +92,14 @@ begin
   for i := 0 to 5 do
   begin
     deviceInfo := TDeviceInfo.Create;
-    deviceInfo.dType := 'F';
-    deviceInfo.dBrand := 'Fresenius';
-    deviceInfo.dDesc := '费森' + IntToStr(i);
-    deviceInfo.dCommond := '0A 0B 0C ' + IntToStr(i);
-    deviceInfo.dLink := DLinkNet;
-    deviceInfo.dName := '172.16.26.129';
-    deviceInfo.dPort := 6666 + i;
-    deviceInfo.dTag := 2 * 100 + i;
+    deviceInfo.MType := 'F';
+    deviceInfo.MBrand := 'Fresenius';
+    deviceInfo.MDesc := '费森' + IntToStr(i);
+    deviceInfo.MCommond := '0A 0B 0C ' + IntToStr(i);
+    deviceInfo.MLink := DLinkNet;
+    deviceInfo.MName := '172.16.26.129';
+    deviceInfo.MPort := 6666 + i;
+    deviceInfo.MTag := 2 * 100 + i;
     net485 := TNet.Create(deviceInfo);
     net485.dataFailCallBack := ErrorBlock;
     net485.dataSuccessCallBack := successBlock;

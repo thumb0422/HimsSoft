@@ -13,90 +13,75 @@ uses HDeviceDefine;
 type
   TDeviceInfo = class
   private
-  var
-    FdType: string; // 设备类型简称 A  B  C  D 之类
-    FdName: string; // com2、com3、192.168.1.1 之类的关键信息
-    FdDesc: string; // 设备名称全称+型号
-    FdCommond: string; // 设备命令
-    FdLink: DLinkType; // 设备采集数据方式
-    FdTag: Integer; // 设备标志  所有中的唯一  用来区分是哪个组件  在需要区分多个组件的情况下，必填
-    FdPort: Integer; // 端口号
-    FdBrand: string; // 设备品牌
-    procedure SetdType(val: string);
-    procedure SetdName(val: string);
-    procedure SetdDesc(val: string);
-    procedure SetdCommond(val: string);
-    procedure SetdLink(val: DLinkType);
-    procedure SetdTag(val: Integer);
-    procedure SetdPort(val: Integer);
-    procedure SetdBrand(const Value: string);
+    FMDesc: string;// 设备名称全称+型号
+    FMName: string;// com2、com3、192.168.1.1 之类的关键信息
+    FMLink: DLinkType;// 设备采集数据方式
+    FMCommond: string;// 设备命令
+    FMPort: Integer;// 端口号
+    FMTag: Integer;// 设备标志  所有中的唯一  用来区分是哪个组件  在需要区分多个组件的情况下，必填
+    FMType: string;// 设备类型简称 A  B  C  D 之类
+    FMBrand: string;// 设备类
+    procedure SetMBrand(const Value: string);
+    procedure SetMCommond(const Value: string);
+    procedure SetMDesc(const Value: string);
+    procedure SetMLink(const Value: DLinkType);
+    procedure SetMName(const Value: string);
+    procedure SetMPort(const Value: Integer);
+    procedure SetMTag(const Value: Integer);
+    procedure SetMType(const Value: string); // 设备品牌
   public
-    property dType: string read FdType write SetdType;
-    property dBrand: string read FdBrand write SetdBrand;
-    property dName: string read FdName write SetdName;
-    property dDesc: string read FdDesc write SetdDesc;
-    property dCommond: string read FdCommond write SetdCommond;
-    property dLink: DLinkType read FdLink write SetdLink;
-    property dTag: Integer read FdTag write SetdTag;
-    property dPort: Integer read FdPort write SetdPort;
-    constructor Create;
-  protected
-    destructor Destroy; override;
+    property MType: string read FMType write SetMType;
+    property MBrand: string read FMBrand write SetMBrand;
+    property MName: string read FMName write SetMName;
+    property MDesc: string read FMDesc write SetMDesc;
+    property MCommond: string read FMCommond write SetMCommond;
+    property MLink: DLinkType read FMLink write SetMLink;
+    property MTag: Integer read FMTag write SetMTag;
+    property MPort: Integer read FMPort write SetMPort;
   end;
 
 implementation
 
-procedure TDeviceInfo.SetdType(val: string);
+{ TDeviceInfo }
+
+procedure TDeviceInfo.SetMBrand(const Value: string);
 begin
-  FdType := val;
-  if val ='F' then
-  begin
-    FdCommond := '';
-  end;
+  FMBrand := Value;
 end;
 
-procedure TDeviceInfo.SetdName(val: string);
+procedure TDeviceInfo.SetMCommond(const Value: string);
 begin
-  FdName := val;
+  FMCommond := Value;
 end;
 
-procedure TDeviceInfo.SetdDesc(val: string);
+procedure TDeviceInfo.SetMDesc(const Value: string);
 begin
-  FdDesc := val;
+  FMDesc := Value;
 end;
 
-procedure TDeviceInfo.SetdBrand(const Value: string);
+procedure TDeviceInfo.SetMLink(const Value: DLinkType);
 begin
-  FdBrand := Value;
+  FMLink := Value;
 end;
 
-procedure TDeviceInfo.SetdCommond(val: string);
+procedure TDeviceInfo.SetMName(const Value: string);
 begin
-  FdCommond := val;
+  FMName := Value;
 end;
 
-procedure TDeviceInfo.SetdLink(val: DLinkType);
+procedure TDeviceInfo.SetMPort(const Value: Integer);
 begin
-  FdLink := val;
+  FMPort := Value;
 end;
 
-procedure TDeviceInfo.SetdTag(val: Integer);
+procedure TDeviceInfo.SetMTag(const Value: Integer);
 begin
-  FdTag := val;
+  FMTag := Value;
 end;
 
-procedure TDeviceInfo.SetdPort(val: Integer);
+procedure TDeviceInfo.SetMType(const Value: string);
 begin
-  FdPort := val;
-end;
-
-constructor TDeviceInfo.Create;
-begin
-
-end;
-
-destructor TDeviceInfo.Destroy;
-begin
+  FMType := Value;
 end;
 
 end.

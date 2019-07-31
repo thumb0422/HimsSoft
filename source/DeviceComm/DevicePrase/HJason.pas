@@ -48,11 +48,11 @@ implementation
 constructor TJason.Create(deviceInfo: TDeviceInfo);
 begin
   fDeviceInfo := deviceInfo;
-  if fDeviceInfo.dLink = DlinkCom then
+  if fDeviceInfo.MLink = DlinkCom then
   begin
     fCate := THComm.Create(fDeviceInfo);
   end
-  else if fDeviceInfo.dLink = DLinkNet then
+  else if fDeviceInfo.MLink = DLinkNet then
   begin
     fCate := TNet.Create(fDeviceInfo);
   end

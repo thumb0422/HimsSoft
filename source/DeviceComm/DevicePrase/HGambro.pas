@@ -27,7 +27,7 @@ implementation
 procedure TGambro.initCommond;
 begin
   inherited;
-  fDeviceInfo.dCommond := 'XXXXXXXX';
+  fDeviceInfo.MCommond := 'XXXXXXXX';
 end;
 
 procedure TGambro.praseData(data: array of Byte; var rspData:TDataModel);

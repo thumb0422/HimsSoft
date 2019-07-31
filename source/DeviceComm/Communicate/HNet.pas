@@ -40,18 +40,18 @@ procedure TNet.init;
 begin
   inherited;
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkNet) then
+  if Assigned(FDeviceInfo) and (FDeviceInfo.MLink = DLinkNet) then
   begin
     netIPObj := TClientSocket.Create(nil);
-    netIPObj.Address := FDeviceInfo.dName;
-    netIPObj.Port := FDeviceInfo.dPort;
-    netIPObj.tag := FDeviceInfo.dTag;
+    netIPObj.Address := FDeviceInfo.MName;
+    netIPObj.Port := FDeviceInfo.MPort;
+    netIPObj.tag := FDeviceInfo.MTag;
     netIPObj.OnConnect := ClientSocketConnect;
     netIPObj.OnDisconnect := ClientSocketDisconnect;
     netIPObj.OnError := ClientSocketError;
     netIPObj.OnRead := ClientSocketRead;
 //    netIPObj.OnWrite := ClientSocketWrite;
-    TLog.Instance.DDLogInfo('NET ' + FDeviceInfo.dName + ':' + IntToStr(FDeviceInfo.dPort) + ' connecting');
+    TLog.Instance.DDLogInfo('NET ' + FDeviceInfo.MName + ':' + IntToStr(FDeviceInfo.MPort) + ' connecting');
     netIPObj.Active := False;
     netIPObj.Active := True;
   end;
@@ -67,7 +67,7 @@ begin
   else
   begin
   //todo:是否需要重新init
-    TLog.Instance.DDLogError(FDeviceInfo.dName + ' sendError,isConneted = False');
+    TLog.Instance.DDLogError(FDeviceInfo.MName + ' sendError,isConneted = False');
   end;
 end;
 
@@ -102,10 +102,10 @@ end;
 procedure TNet.onWriteData;
 begin
   inherited;
-  if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo) and (FDeviceInfo.dLink = DLinkNet) then
+  if Assigned(netIPObj) and FisConnected and Assigned(FDeviceInfo)then
   begin
-    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' writeData: ' + FDeviceInfo.dCommond);
-    netIPObj.Socket.SendText(FDeviceInfo.dCommond);
+    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' writeData: ' + FDeviceInfo.MCommond);
+    netIPObj.Socket.SendText(FDeviceInfo.MCommond);
   end;
 end;
 

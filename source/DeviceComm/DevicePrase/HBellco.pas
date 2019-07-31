@@ -27,7 +27,7 @@ implementation
 procedure TBellco.initCommond;
 begin
   inherited;
-  fDeviceInfo.dCommond := '4B 0D 0A';
+  fDeviceInfo.MCommond := '4B 0D 0A';
 //  Setlength(fCommond,3);
 //  fCommond[0]:=byte($4B);
 //  fCommond[1]:=byte($0D);
