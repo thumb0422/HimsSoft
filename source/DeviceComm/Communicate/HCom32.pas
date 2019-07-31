@@ -34,7 +34,7 @@ type
 implementation
 
 uses
-  HDeviceBase, HBellco, HToray,HBraun,HNikkiso,HGambro,HFresenius;
+  HBellco, HToray,HBraun,HNikkiso,HGambro,HFresenius;
 
 procedure THComm.init;
 begin
@@ -128,7 +128,7 @@ var
   ss: string;
   rbuf: array of byte;
   classRegistry: TClassRegistry;
-  fdeviceBaseObj: TDeviceBase;
+//  fdeviceBaseObj: TDeviceBase;
   rspData:TDataModel;
   fDeviceBrand: string;
 begin
