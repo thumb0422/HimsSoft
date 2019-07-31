@@ -34,7 +34,7 @@ type
 implementation
 
 uses
-  HBellco, HToray,HBraun,HNikkiso,HGambro,HFresenius;
+  HBellco,HToray,HBraun,HNikkiso,HGambro,HFresenius;
 
 procedure THComm.init;
 begin
@@ -52,7 +52,7 @@ begin
       begin
         FisConnected := False;
         if Assigned(FdataFailCallBack) then
-          FdataFailCallBack(self,TErrorMsg.Create('-1',Com32OpenError));
+          FdataFailCallBack(self,TErrorMsg.Create('-1',FDeviceInfo.MName + Com32OpenError));
         TLog.Instance.DDLogError(FDeviceInfo.MName + ' connectError');
         rs232Obj.StopComm;
       end;
@@ -127,35 +127,17 @@ var
   i: Integer;
   ss: string;
   rbuf: array of byte;
-  classRegistry: TClassRegistry;
-//  fdeviceBaseObj: TDeviceBase;
-  rspData:TDataModel;
-  fDeviceBrand: string;
 begin
   setlength(rbuf, BufferLength);
   move(Buffer^, pchar(rbuf)^, BufferLength);
-  fDeviceBrand := FDeviceInfo.MBrand;
-  fDeviceBrand := 'T' + fDeviceBrand;
   for i := 0 to BufferLength - 1 do
   begin
     ss := ss + IntToHex(rbuf[i], 2) + ' ';
   end;
   ss := rs232Obj.CommName + ' onReceive: ' + ss;
   TLog.Instance.DDLogInfo(ss);
-//  classRegistry := TClassRegistry.GetClassRegistry;
-//  if classRegistry.HasClass(fDeviceBrand) then
-//  begin
-//    fdeviceBaseObj := classRegistry.CreateInstance(fDeviceBrand) as TDeviceBase;
-//    fdeviceBaseObj.praseData(rbuf, rspData);
-//    fdeviceBaseObj.Free;
-    if Assigned(FdataSuccessCallBack) then
-//      FcallBackSuccess(Self,rspData);
-      FdataSuccessCallback(Self,rbuf);
-//  end
-//  else
-//  begin
-//    TLog.Instance.DDLogError('Can not found ' + fDeviceBrand + ' class');
-//  end;
+  if Assigned(FdataSuccessCallBack) then
+    FdataSuccessCallback(Self,rbuf);
 end;
 
 procedure THComm.onReceiveError(Sender: TObject; EventMask: Cardinal);
@@ -163,7 +145,7 @@ var
   ss: string;
 begin
   if Assigned(FdataFailCallBack) then
-    FdataFailCallBack(Self,TErrorMsg.Create('-1',Com32ReciceError));
+    FdataFailCallBack(Self,TErrorMsg.Create('-1',FDeviceInfo.MName + Com32ReciceError));
   ss := rs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
   TLog.Instance.DDLogError(ss);
 end;
@@ -173,18 +155,10 @@ var
   ss: string;
 begin
   if Assigned(FdataFailCallBack) then
-    FdataFailCallBack(Self,TErrorMsg.Create('-1',Com32HangUpError));
+    FdataFailCallBack(Self,TErrorMsg.Create('-1',FDeviceInfo.MName + Com32HangUpError));
   ss := rs232Obj.CommName + ' onRequestHangup';
   TLog.Instance.DDLogError(ss);
 end;
-
-//initialization
-//  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
-//  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
-//  TClassRegistry.GetClassRegistry.RegisterClass(TBraun.ClassName, TBraun);
-//  TClassRegistry.GetClassRegistry.RegisterClass(TNikkiso.ClassName, TNikkiso);
-//  TClassRegistry.GetClassRegistry.RegisterClass(TGambro.ClassName, TGambro);
-//  TClassRegistry.GetClassRegistry.RegisterClass(TFresenius.ClassName, TFresenius);
 
 end.
 

@@ -11,10 +11,10 @@ unit HBedView;
 interface
 
 uses Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Graphics, System.Classes, System.SysUtils,
-  Vcl.Forms, Winapi.Windows,Vcl.Controls,
+  Vcl.Forms, Winapi.Windows,Vcl.Controls, Data.DBXClassRegistry,
   HDataNotify, HDataModel,HCustomer, HDataDetailView,
   HDeviceDefine,HDeviceInfo,
-  HJason,HBellco;
+  HJason;
 
 type
   TBedView = class(TPanel)
@@ -54,7 +54,8 @@ type
   end;
 
 implementation
-uses HDBManager,superobject;
+uses HDBManager,superobject,HLog,
+     HBellco,HToray,HBraun,HNikkiso,HGambro,HFresenius;
 { TBedView }
 
 constructor TBedView.Create(AOwner: TComponent);
@@ -153,7 +154,12 @@ begin
   end
   else if FbedStatus = EmBedAlarm then
   begin
+    //TODO:
     bedStatus := EmBedNormal;
+  end
+  else if FbedStatus = EmBedError then
+  begin
+    //TODO:
   end
   else
   begin
@@ -249,34 +255,34 @@ var
   jsonData: ISuperObject;
   subData: ISuperObject;
   deviceInfo: TDeviceInfo;
+  classRegistry: TClassRegistry;
+  fDeviceClass: string;
 begin
   Fcustomer := Value;
   deviceInfo := TDeviceInfo.Create;
   deviceInfo.MLink := FCustomer.MLinkType;
 
   deviceInfo.MBrand := Fcustomer.MBrand;//这个涉及到后面对应的类解析数据，目前是必填项
-//  deviceInfo.dCommond := '4B 0D 0A';
   deviceInfo.MLink := Fcustomer.MLinkType;
   deviceInfo.MName := Fcustomer.MAddress;
   deviceInfo.MPort := StrToInt(Fcustomer.MPort);
-//  deviceInfo.dTag := 100000;
 
-  if (FCustomer.MLinkType = DLinkCom) then
+  fJason := nil;
+  fDeviceClass := 'T' + deviceInfo.MBrand;
+  classRegistry := TClassRegistry.GetClassRegistry;
+  if classRegistry.HasClass(fDeviceClass) then
   begin
-    fJason := TBellco.Create(deviceInfo);
-  end
-  else if (FCustomer.MLinkType = DLinkNet) then
-  begin
-//    fCate := TNet.Create(deviceInfo);
+    fJason := (classRegistry.CreateInstance(fDeviceClass) as TJason).Create(deviceInfo);
+    fJason.failCallBack := ErrorBlock;
+    fJason.successCallBack := successBlock;
+    bedStatus := EmBedNormal;
   end
   else
   begin
-    Exit;
+    TLog.Instance.DDLogError('Can not found ' + fDeviceClass + ' class');
+    bedStatus := EmBedError;
   end;
-  fJason.failCallBack := ErrorBlock;
-  fJason.successCallBack := successBlock;
 
-  bedStatus := EmBedNormal;
   FBedIdLabel.Caption := 'Bed - '+ Fcustomer.MBedId + ':' + Fcustomer.MCustName;
   FDId := '';
   sql := Format('Select DId From H_Data_Main Where MCustId = %s And MCureDate = %s ORDER by createDate LIMIT 1',
@@ -334,5 +340,13 @@ begin
   if Assigned(fJason) then
     fJason.send;
 end;
+
+initialization
+  TClassRegistry.GetClassRegistry.RegisterClass(TBellco.ClassName, TBellco);
+  TClassRegistry.GetClassRegistry.RegisterClass(TToray.ClassName, TToray);
+  TClassRegistry.GetClassRegistry.RegisterClass(TBraun.ClassName, TBraun);
+  TClassRegistry.GetClassRegistry.RegisterClass(TNikkiso.ClassName, TNikkiso);
+  TClassRegistry.GetClassRegistry.RegisterClass(TGambro.ClassName, TGambro);
+  TClassRegistry.GetClassRegistry.RegisterClass(TFresenius.ClassName, TFresenius);
 
 end.

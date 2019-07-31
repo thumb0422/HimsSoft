@@ -11,7 +11,7 @@ unit HDeviceDo;
 interface
 
 uses
-  SysUtils, Classes, HCate, HCom32, HNet, HDeviceInfo,HDeviceDefine,HDataModel;
+  SysUtils, Classes, HDeviceInfo,HDeviceDefine,HDataModel;
 
 type
   TDeviceDo = class(TObject)
@@ -27,11 +27,12 @@ type
     procedure stopTestData;
   private
     procedure ErrorBlock(Sender: TObject;error: TErrorMsg);
-    procedure successBlock(Sender: TObject;data:array of Byte);
+    procedure successBlock(Sender: TObject;rspData:TDataModel);
   end;
 
 implementation
-uses HLog;
+uses HLog,HJason,
+     HBellco,HToray,HBraun,HNikkiso,HGambro,HFresenius;
 var
   GlobalSingle: TDeviceDo;
   { TDeviceAct }
@@ -65,53 +66,52 @@ end;
 
 procedure TDeviceDo.initTestData;
 var
-  i: Integer;
   deviceInfo: TDeviceInfo;
-  com32: THComm;
-  net485: TNet;
+  lJason:TJason;
 begin
   FComGroupList.Clear;
-  for i := 2 to 5 do
-  begin
-    deviceInfo := TDeviceInfo.Create;
-    deviceInfo.MType := 'B';
-    deviceInfo.MBrand := 'Bellco';
-    deviceInfo.MDesc := '±´¶û¿Ë' + IntToStr(i);
-    deviceInfo.MCommond := '4B 0D 0A';
-    deviceInfo.MLink := DLinkCom;
-    deviceInfo.MName := 'COM' + IntToStr(i);
-    deviceInfo.MPort := 9600;
-    deviceInfo.MTag := 1 * 100 + i;
-    com32 := THComm.Create(deviceInfo);
-    com32.dataFailCallBack := ErrorBlock;
-    com32.dataSuccessCallBack := successBlock;
-    com32.init;
-    FComGroupList.Add(com32);
-  end;
 
-  for i := 0 to 5 do
-  begin
-    deviceInfo := TDeviceInfo.Create;
-    deviceInfo.MType := 'F';
-    deviceInfo.MBrand := 'Fresenius';
-    deviceInfo.MDesc := '·ÑÉ­' + IntToStr(i);
-    deviceInfo.MCommond := '0A 0B 0C ' + IntToStr(i);
-    deviceInfo.MLink := DLinkNet;
-    deviceInfo.MName := '172.16.26.129';
-    deviceInfo.MPort := 6666 + i;
-    deviceInfo.MTag := 2 * 100 + i;
-    net485 := TNet.Create(deviceInfo);
-    net485.dataFailCallBack := ErrorBlock;
-    net485.dataSuccessCallBack := successBlock;
-    net485.init;
-    FComGroupList.Add(net485);
-  end;
+  deviceInfo := TDeviceInfo.Create;
+  deviceInfo.MType := 'B';
+  deviceInfo.MBrand := 'Bellco';
+  deviceInfo.MLink := DLinkCom;
+  deviceInfo.MName := 'COM3';
+  deviceInfo.MPort := 9600;
+  lJason := TBellco.Create(deviceInfo);
+  lJason.failCallBack := ErrorBlock;
+  lJason.successCallBack := successBlock;
+  lJason.init;
+  FComGroupList.Add(lJason);
+
+  deviceInfo := TDeviceInfo.Create;
+  deviceInfo.MType := 'B';
+  deviceInfo.MBrand := 'Nikkiso';
+  deviceInfo.MLink := DLinkCom;
+  deviceInfo.MName := 'COM4';
+  deviceInfo.MPort := 9600;
+  lJason := TNikkiso.Create(deviceInfo);
+  lJason.failCallBack := ErrorBlock;
+  lJason.successCallBack := successBlock;
+  lJason.init;
+  FComGroupList.Add(lJason);
+
+  deviceInfo := TDeviceInfo.Create;
+  deviceInfo.MType := 'B';
+  deviceInfo.MBrand := 'Bellco';
+  deviceInfo.MLink := DLinkNet;
+  deviceInfo.MName := '192.168.1.1';
+  deviceInfo.MPort := 6667;
+  lJason := TBellco.Create(deviceInfo);
+  lJason.failCallBack := ErrorBlock;
+  lJason.successCallBack := successBlock;
+  lJason.init;
+  FComGroupList.Add(lJason);
 end;
 
 procedure TDeviceDo.startTestData;
 var
   i: Integer;
-  cat:TCate;
+  lJason:TJason;
 begin
   if FComGroupList.Count < 1 then
   begin
@@ -119,26 +119,26 @@ begin
   end;
   for i := 0 to FComGroupList.count - 1 do
   begin
-    cat := FComGroupList.Items[i];
-    cat.send;
+    lJason := FComGroupList.Items[i];
+    lJason.send;
   end;
 end;
 
 procedure TDeviceDo.stopTestData;
 var
   i: Integer;
-  cat:TCate;
+  lJason:TJason;
 begin
   for i := 0 to FComGroupList.count - 1 do
   begin
-    cat := FComGroupList.Items[i];
-    cat.close;
+    lJason := FComGroupList.Items[i];
+    lJason.close;
   end;
 end;
 
-procedure TDeviceDo.successBlock(Sender: TObject;data:array of Byte);
+procedure TDeviceDo.successBlock(Sender: TObject;rspData:TDataModel);
 begin
-//  TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
+  TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
 end;
 
 procedure TDeviceDo.ErrorBlock(Sender: TObject;error: TErrorMsg);

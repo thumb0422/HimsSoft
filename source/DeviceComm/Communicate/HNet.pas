@@ -40,17 +40,8 @@ procedure TNet.init;
 begin
   inherited;
   FisConnected := False;
-  if Assigned(FDeviceInfo) and (FDeviceInfo.MLink = DLinkNet) then
+  if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
-    netIPObj := TClientSocket.Create(nil);
-    netIPObj.Address := FDeviceInfo.MName;
-    netIPObj.Port := FDeviceInfo.MPort;
-    netIPObj.tag := FDeviceInfo.MTag;
-    netIPObj.OnConnect := ClientSocketConnect;
-    netIPObj.OnDisconnect := ClientSocketDisconnect;
-    netIPObj.OnError := ClientSocketError;
-    netIPObj.OnRead := ClientSocketRead;
-//    netIPObj.OnWrite := ClientSocketWrite;
     TLog.Instance.DDLogInfo('NET ' + FDeviceInfo.MName + ':' + IntToStr(FDeviceInfo.MPort) + ' connecting');
     netIPObj.Active := False;
     netIPObj.Active := True;
@@ -87,6 +78,18 @@ begin
   inherited;
   FDeviceInfo := deviceInfo;
   FisConnected := False;
+  if Assigned(FDeviceInfo) then
+  begin
+    netIPObj := TClientSocket.Create(nil);
+    netIPObj.Address := FDeviceInfo.MName;
+    netIPObj.Port := FDeviceInfo.MPort;
+    netIPObj.tag := FDeviceInfo.MTag;
+    netIPObj.OnConnect := ClientSocketConnect;
+    netIPObj.OnDisconnect := ClientSocketDisconnect;
+    netIPObj.OnError := ClientSocketError;
+    netIPObj.OnRead := ClientSocketRead;
+//    netIPObj.OnWrite := ClientSocketWrite;
+  end;
 end;
 
 destructor TNet.Destroy;
@@ -124,8 +127,10 @@ begin
   if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
     if Assigned(FdataFailCallBack) then
-      FdataFailCallBack(Self,TErrorMsg.Create('-1',NetDisconnect));
-    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ' Disconnect');
+      FdataFailCallBack(Self, TErrorMsg.Create('-1', netIPObj.Address + ':' +
+        IntToStr(netIPObj.Port) + NetDisconnect));
+    TLog.Instance.DDLogInfo('Net ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ' Disconnect');
   end;
 end;
 
@@ -139,8 +144,12 @@ begin
   if Assigned(FDeviceInfo) and Assigned(netIPObj) then
   begin
     if Assigned(FdataFailCallBack) then
-      FdataFailCallBack(Self,TErrorMsg.Create('-1',NetError));
-    TLog.Instance.DDLogError('Net ' + netIPObj.Address + ':' + IntToStr(netIPObj.Port) + ',ErrorEvent =' + GetEnumName(TypeInfo(TErrorEvent), ord(ErrorEvent)) + ',errorCode = ' + IntToStr(originErrorCode));
+      FdataFailCallBack(Self, TErrorMsg.Create('-1', netIPObj.Address + ':' +
+        IntToStr(netIPObj.Port) + NetError));
+    TLog.Instance.DDLogError('Net ' + netIPObj.Address + ':' +
+      IntToStr(netIPObj.Port) + ',ErrorEvent =' +
+      GetEnumName(TypeInfo(TErrorEvent), ord(ErrorEvent)) + ',errorCode = ' +
+      IntToStr(originErrorCode));
   end;
 end;
 
@@ -156,4 +165,3 @@ end;
 //end;
 
 end.
-

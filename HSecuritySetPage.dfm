@@ -12,6 +12,7 @@ object SecuritySetPage: TSecuritySetPage
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton

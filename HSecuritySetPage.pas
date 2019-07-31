@@ -17,6 +17,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -52,6 +53,12 @@ procedure TSecuritySetPage.FormCreate(Sender: TObject);
 begin
   inherited;
   Timer1.Enabled :=False;
+end;
+
+procedure TSecuritySetPage.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  TDeviceDo.GetInstance.stopTestData;
 end;
 
 procedure TSecuritySetPage.Timer1Timer(Sender: TObject);
