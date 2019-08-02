@@ -1,2 +1,2 @@
 # HimsSoft
-Hims soft for windows
+PC softWare
