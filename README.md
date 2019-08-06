@@ -1,5 +1,7 @@
 # HimsSoft
 PC softWare
+
+
 1,隔三行取数据
 
   SELECT D.* FROM H_Data_Detail D
