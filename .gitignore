@@ -22,3 +22,8 @@ bin/*.log
 *.exe
 *.res
 *.dproj
+*.res
+*.stat
+*.stat
+*.skincfg
+HimsSoft.stat

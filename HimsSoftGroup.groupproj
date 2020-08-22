@@ -12,13 +12,13 @@
         <Projects Include="source\Utility\HUtility.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="source\System\HSystem.dproj">
+        <Projects Include="source\DB\HDB.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="source\BaseForm\HBaseFrame.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="source\DB\HDB.dproj">
+        <Projects Include="source\System\HSystem.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -56,14 +56,14 @@
     <Target Name="HUtility:Make">
         <MSBuild Projects="source\Utility\HUtility.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HSystem">
-        <MSBuild Projects="source\System\HSystem.dproj"/>
+    <Target Name="HDB">
+        <MSBuild Projects="source\DB\HDB.dproj"/>
     </Target>
-    <Target Name="HSystem:Clean">
-        <MSBuild Projects="source\System\HSystem.dproj" Targets="Clean"/>
+    <Target Name="HDB:Clean">
+        <MSBuild Projects="source\DB\HDB.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HSystem:Make">
-        <MSBuild Projects="source\System\HSystem.dproj" Targets="Make"/>
+    <Target Name="HDB:Make">
+        <MSBuild Projects="source\DB\HDB.dproj" Targets="Make"/>
     </Target>
     <Target Name="HBaseFrame">
         <MSBuild Projects="source\BaseForm\HBaseFrame.dproj"/>
@@ -74,23 +74,23 @@
     <Target Name="HBaseFrame:Make">
         <MSBuild Projects="source\BaseForm\HBaseFrame.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HDB">
-        <MSBuild Projects="source\DB\HDB.dproj"/>
+    <Target Name="HSystem">
+        <MSBuild Projects="source\System\HSystem.dproj"/>
     </Target>
-    <Target Name="HDB:Clean">
-        <MSBuild Projects="source\DB\HDB.dproj" Targets="Clean"/>
+    <Target Name="HSystem:Clean">
+        <MSBuild Projects="source\System\HSystem.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HDB:Make">
-        <MSBuild Projects="source\DB\HDB.dproj" Targets="Make"/>
+    <Target Name="HSystem:Make">
+        <MSBuild Projects="source\System\HSystem.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="HimsSoft;HLazy;HUtility;HSystem;HBaseFrame;HDB"/>
+        <CallTarget Targets="HimsSoft;HLazy;HUtility;HDB;HBaseFrame;HSystem"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HUtility:Clean;HSystem:Clean;HBaseFrame:Clean;HDB:Clean"/>
+        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HUtility:Clean;HDB:Clean;HBaseFrame:Clean;HSystem:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HUtility:Make;HSystem:Make;HBaseFrame:Make;HDB:Make"/>
+        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HUtility:Make;HDB:Make;HBaseFrame:Make;HSystem:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
