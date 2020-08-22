@@ -21,6 +21,9 @@
         <Projects Include="source\System\HSystem.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="source\Report\HReport.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -83,14 +86,23 @@
     <Target Name="HSystem:Make">
         <MSBuild Projects="source\System\HSystem.dproj" Targets="Make"/>
     </Target>
+    <Target Name="HReport">
+        <MSBuild Projects="source\Report\HReport.dproj"/>
+    </Target>
+    <Target Name="HReport:Clean">
+        <MSBuild Projects="source\Report\HReport.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HReport:Make">
+        <MSBuild Projects="source\Report\HReport.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HimsSoft;HLazy;HUtility;HDB;HBaseFrame;HSystem"/>
+        <CallTarget Targets="HimsSoft;HLazy;HUtility;HDB;HBaseFrame;HSystem;HReport"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HUtility:Clean;HDB:Clean;HBaseFrame:Clean;HSystem:Clean"/>
+        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HUtility:Clean;HDB:Clean;HBaseFrame:Clean;HSystem:Clean;HReport:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HUtility:Make;HDB:Make;HBaseFrame:Make;HSystem:Make"/>
+        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HUtility:Make;HDB:Make;HBaseFrame:Make;HSystem:Make;HReport:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
