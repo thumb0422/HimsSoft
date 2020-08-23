@@ -113,9 +113,6 @@
             <Form>FMainPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="HBizBasePage.pas">
-            <Form>BizBasePage</Form>
-        </DCCReference>
         <DCCReference Include="HRoom1.pas">
             <Form>RoomPage</Form>
             <FormType>dfm</FormType>
@@ -146,10 +143,6 @@
         </DCCReference>
         <DCCReference Include="HSecuritySetPage.pas">
             <Form>SecuritySetPage</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="HHistoryDataPage.pas">
-            <Form>HistoryDataPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

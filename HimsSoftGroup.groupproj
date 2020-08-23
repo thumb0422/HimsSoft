@@ -4,24 +4,24 @@
     </PropertyGroup>
     <ItemGroup>
         <Projects Include="HimsSoft.dproj">
-            <Dependencies>source\Utility\HUtility.dproj;source\DeviceComm\HLazy.dproj</Dependencies>
+            <Dependencies>source\Report\HReport.dproj;source\DeviceComm\HLazy.dproj;source\BaseForm\HBaseFrame.dproj;source\Utility\HUtility.dproj</Dependencies>
         </Projects>
         <Projects Include="source\DeviceComm\HLazy.dproj">
             <Dependencies>source\Utility\HUtility.dproj</Dependencies>
         </Projects>
+        <Projects Include="source\Report\HReport.dproj">
+            <Dependencies>source\BaseForm\HBaseFrame.dproj;source\Utility\HUtility.dproj</Dependencies>
+        </Projects>
         <Projects Include="source\Utility\HUtility.dproj">
-            <Dependencies/>
+            <Dependencies>source\System\HSystem.dproj</Dependencies>
         </Projects>
         <Projects Include="source\DB\HDB.dproj">
-            <Dependencies/>
+            <Dependencies>source\Utility\HUtility.dproj</Dependencies>
         </Projects>
         <Projects Include="source\BaseForm\HBaseFrame.dproj">
             <Dependencies/>
         </Projects>
         <Projects Include="source\System\HSystem.dproj">
-            <Dependencies/>
-        </Projects>
-        <Projects Include="source\Report\HReport.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -32,13 +32,13 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="HimsSoft" DependsOnTargets="HUtility;HLazy">
+    <Target Name="HimsSoft" DependsOnTargets="HReport;HLazy;HBaseFrame;HUtility">
         <MSBuild Projects="HimsSoft.dproj"/>
     </Target>
-    <Target Name="HimsSoft:Clean" DependsOnTargets="HUtility:Clean;HLazy:Clean">
+    <Target Name="HimsSoft:Clean" DependsOnTargets="HReport:Clean;HLazy:Clean;HBaseFrame:Clean;HUtility:Clean">
         <MSBuild Projects="HimsSoft.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HimsSoft:Make" DependsOnTargets="HUtility:Make;HLazy:Make">
+    <Target Name="HimsSoft:Make" DependsOnTargets="HReport:Make;HLazy:Make;HBaseFrame:Make;HUtility:Make">
         <MSBuild Projects="HimsSoft.dproj" Targets="Make"/>
     </Target>
     <Target Name="HLazy" DependsOnTargets="HUtility">
@@ -50,22 +50,31 @@
     <Target Name="HLazy:Make" DependsOnTargets="HUtility:Make">
         <MSBuild Projects="source\DeviceComm\HLazy.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HUtility">
+    <Target Name="HReport" DependsOnTargets="HBaseFrame;HUtility">
+        <MSBuild Projects="source\Report\HReport.dproj"/>
+    </Target>
+    <Target Name="HReport:Clean" DependsOnTargets="HBaseFrame:Clean;HUtility:Clean">
+        <MSBuild Projects="source\Report\HReport.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HReport:Make" DependsOnTargets="HBaseFrame:Make;HUtility:Make">
+        <MSBuild Projects="source\Report\HReport.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="HUtility" DependsOnTargets="HSystem">
         <MSBuild Projects="source\Utility\HUtility.dproj"/>
     </Target>
-    <Target Name="HUtility:Clean">
+    <Target Name="HUtility:Clean" DependsOnTargets="HSystem:Clean">
         <MSBuild Projects="source\Utility\HUtility.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HUtility:Make">
+    <Target Name="HUtility:Make" DependsOnTargets="HSystem:Make">
         <MSBuild Projects="source\Utility\HUtility.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HDB">
+    <Target Name="HDB" DependsOnTargets="HUtility">
         <MSBuild Projects="source\DB\HDB.dproj"/>
     </Target>
-    <Target Name="HDB:Clean">
+    <Target Name="HDB:Clean" DependsOnTargets="HUtility:Clean">
         <MSBuild Projects="source\DB\HDB.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="HDB:Make">
+    <Target Name="HDB:Make" DependsOnTargets="HUtility:Make">
         <MSBuild Projects="source\DB\HDB.dproj" Targets="Make"/>
     </Target>
     <Target Name="HBaseFrame">
@@ -86,23 +95,14 @@
     <Target Name="HSystem:Make">
         <MSBuild Projects="source\System\HSystem.dproj" Targets="Make"/>
     </Target>
-    <Target Name="HReport">
-        <MSBuild Projects="source\Report\HReport.dproj"/>
-    </Target>
-    <Target Name="HReport:Clean">
-        <MSBuild Projects="source\Report\HReport.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="HReport:Make">
-        <MSBuild Projects="source\Report\HReport.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HimsSoft;HLazy;HUtility;HDB;HBaseFrame;HSystem;HReport"/>
+        <CallTarget Targets="HimsSoft;HLazy;HReport;HUtility;HDB;HBaseFrame;HSystem"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HUtility:Clean;HDB:Clean;HBaseFrame:Clean;HSystem:Clean;HReport:Clean"/>
+        <CallTarget Targets="HimsSoft:Clean;HLazy:Clean;HReport:Clean;HUtility:Clean;HDB:Clean;HBaseFrame:Clean;HSystem:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HUtility:Make;HDB:Make;HBaseFrame:Make;HSystem:Make;HReport:Make"/>
+        <CallTarget Targets="HimsSoft:Make;HLazy:Make;HReport:Make;HUtility:Make;HDB:Make;HBaseFrame:Make;HSystem:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

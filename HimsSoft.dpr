@@ -4,7 +4,6 @@ uses
   Vcl.Forms,
   HCustomer in 'HCustomer.pas',
   MainPage in 'MainPage.pas' {FMainPage},
-  HBizBasePage in 'HBizBasePage.pas' {BizBasePage},
   HRoom1 in 'HRoom1.pas' {RoomPage},
   HBedView in 'HBedView.pas',
   HMenu in 'HMenu.pas',
@@ -16,8 +15,7 @@ uses
   HCustomerSetPage in 'HCustomerSetPage.pas' {CustomerSetPage},
   HCBMLinkPage in 'HCBMLinkPage.pas' {HCBMLinkPage},
   HCBMLinkAddPage in 'HCBMLinkAddPage.pas' {CBMLinkAddPage},
-  HSecuritySetPage in 'HSecuritySetPage.pas' {SecuritySetPage},
-  HHistoryDataPage in 'HHistoryDataPage.pas' {HistoryDataPage};
+  HSecuritySetPage in 'HSecuritySetPage.pas' {SecuritySetPage};
 
 {$R *.res}
 

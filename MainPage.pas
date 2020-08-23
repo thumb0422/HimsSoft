@@ -30,7 +30,7 @@ uses
   dxSkinSummer2008, dxSkinTheAsphaltWorld, dxSkinTheBezier,
   dxSkinsDefaultPainters, dxSkinValentine, dxSkinVisualStudio2013Blue,
   dxSkinVisualStudio2013Dark, dxSkinVisualStudio2013Light, dxSkinVS2010,
-  dxSkinWhiteprint, dxSkinXmas2008Blue, dxBarBuiltInMenu;
+  dxSkinWhiteprint, dxSkinXmas2008Blue, dxBarBuiltInMenu,HHistoryDataPage;
 
 type
   TFMainPage = class(TForm)
@@ -57,7 +57,7 @@ var
 
 implementation
 
-uses HMenu,HBizBasePage, HRoom1,HSettingPage,HSecuritySetPage,superobject,HHistoryDataPage;
+uses HMenu,HBizBasePage, HRoom1,HSettingPage,HSecuritySetPage,superobject;
 {$R *.dfm}
 
 procedure TFMainPage.cxPageControl1CanClose(Sender: TObject;

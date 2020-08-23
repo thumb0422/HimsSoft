@@ -30,4 +30,7 @@ package HReport;
 requires
   rtl;
 
+contains
+  HHistoryDataPage in 'HHistoryDataPage.pas' {HistoryDataPage};
+
 end.

@@ -32,7 +32,7 @@ object HistoryDataPage: THistoryDataPage
     object Label2: TLabel
       Left = 150
       Top = 16
-      Width = 35
+      Width = 12
       Height = 19
       Alignment = taCenter
       Caption = '~'
