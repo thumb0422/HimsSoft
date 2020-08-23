@@ -28,7 +28,8 @@ package HReport;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  HBaseFrame;
 
 contains
   HHistoryDataPage in 'HHistoryDataPage.pas' {HistoryDataPage};

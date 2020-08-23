@@ -29,8 +29,6 @@ var
 
 implementation
 
-{$R *.dfm}
-
 { TBizBasePage }
 
 destructor TBizBasePage.Destroy;
