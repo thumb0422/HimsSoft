@@ -12,12 +12,12 @@ interface
 
 uses
   System.SysUtils, System.Classes,Vcl.Dialogs,
-  Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, HBizBasePage,
+  Vcl.Graphics, System.Math, Vcl.Controls, Vcl.Forms, HBasePage,
   Vcl.ExtCtrls,cxScrollBox,
   HDataDetailView;
 
 type
-  TRoomPage = class(TBizBasePage)
+  TRoomPage = class(TBasePage)
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private

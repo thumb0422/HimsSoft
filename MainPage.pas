@@ -57,7 +57,7 @@ var
 
 implementation
 
-uses HMenu,HBizBasePage, HRoom1,HSettingPage,HSecuritySetPage,superobject;
+uses HMenu, HRoom1,HSettingPage,HSecuritySetPage,superobject;
 {$R *.dfm}
 
 procedure TFMainPage.cxPageControl1CanClose(Sender: TObject;

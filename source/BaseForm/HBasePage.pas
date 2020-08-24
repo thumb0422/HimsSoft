@@ -2,11 +2,11 @@
 {                                                       }
 {       HimsSoft                                        }
 {                                                       }
-{       版权所有 (C) 2019 thumb0422@163.com             }
+{       版权所有 (C) 2020 thumb0422@163.com             }
 {                                                       }
 {*******************************************************}
 
-unit HBizBasePage;
+unit HBasePage;
 
 interface
 
@@ -14,31 +14,28 @@ uses
   System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms;
 
-type
-  TBizBasePage = class(TForm)
-  private
-    { Private declarations }
+Type
+  TBasePage = class(TForm)
   public
     { Public declarations }
     class procedure loadSelf(parentForm: TWinControl; AlignParent: TAlign);
     destructor Destroy; override;
   end;
 
-var
-  BizBasePage: TBizBasePage;
-
 implementation
 
-{ TBizBasePage }
+{ TBasePage }
 
-destructor TBizBasePage.Destroy;
+destructor TBasePage.Destroy;
 begin
 
   inherited;
 end;
 
-class procedure TBizBasePage.loadSelf(parentForm: TWinControl; AlignParent: TAlign);
-var pForm:TBizBasePage;
+class procedure TBasePage.loadSelf(parentForm: TWinControl;
+  AlignParent: TAlign);
+var
+  pForm: TBasePage;
 begin
   pForm := Create(parentForm);
   with pForm as Self do

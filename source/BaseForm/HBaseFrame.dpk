@@ -32,6 +32,6 @@ requires
   vcl;
 
 contains
-  HBizBasePage in 'HBizBasePage.pas';
+  HBasePage in 'HBasePage.pas';
 
 end.

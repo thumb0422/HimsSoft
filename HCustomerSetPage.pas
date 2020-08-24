@@ -13,7 +13,7 @@ interface
 uses
   System.SysUtils,
   System.Classes,
-  Vcl.Controls, Vcl.Forms, HBizBasePage, Data.DB,
+  Vcl.Controls, Vcl.Forms, HBasePage, Data.DB,
   Datasnap.DBClient,
   cxButtons, Vcl.ExtCtrls,
   DBGridEh, cxGraphics, cxLookAndFeels, cxLookAndFeelPainters, Vcl.Menus,
@@ -35,7 +35,7 @@ uses
   DBGridEhToolCtrls, DynVarsEh, EhLibVCL, GridsEh, DBAxisGridsEh, Vcl.StdCtrls;
 
 type
-  TCustomerSetPage = class(TBizBasePage)
+  TCustomerSetPage = class(TBasePage)
     Panel1: TPanel;
     saveBtn: TcxButton;
     cancelBtn: TcxButton;

@@ -12,10 +12,10 @@ interface
 
 uses
   Winapi.Windows,System.Types, Winapi.Messages, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls,HBizBasePage;
+  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls,HBasePage;
 
 type
-  TSettingPage = class(TBizBasePage)
+  TSettingPage = class(TBasePage)
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
   private
