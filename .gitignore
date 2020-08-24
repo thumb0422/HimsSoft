@@ -27,3 +27,4 @@ bin/*.log
 *.stat
 *.skincfg
 HimsSoft.stat
+*.tvsconfig
