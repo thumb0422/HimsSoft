@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>HimsSoft.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -108,43 +108,77 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="HCustomer.pas"/>
         <DCCReference Include="MainPage.pas">
             <Form>FMainPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="HRoom1.pas">
-            <Form>RoomPage</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="HBedView.pas"/>
-        <DCCReference Include="HMenu.pas"/>
-        <DCCReference Include="HDataDetailView.pas"/>
-        <DCCReference Include="HDataNotify.pas"/>
-        <DCCReference Include="HSettingPage.pas">
-            <Form>SettingPage</Form>
-        </DCCReference>
-        <DCCReference Include="HBedSetPage.pas">
+        <DCCReference Include="source\BaseForm\HBasePage.pas"/>
+        <DCCReference Include="source\Biz\HBedSetPage.pas">
             <Form>BedSetPage</Form>
-        </DCCReference>
-        <DCCReference Include="HMechineSetPage.pas">
-            <Form>MechineSetPage</Form>
-        </DCCReference>
-        <DCCReference Include="HCustomerSetPage.pas">
-            <Form>CustomerSetPage</Form>
-        </DCCReference>
-        <DCCReference Include="HCBMLinkPage.pas">
-            <Form>HCBMLinkPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="HCBMLinkAddPage.pas">
+        <DCCReference Include="source\Biz\HBedView.pas"/>
+        <DCCReference Include="source\Biz\HCBMLinkAddPage.pas">
             <Form>CBMLinkAddPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="HSecuritySetPage.pas">
+        <DCCReference Include="source\Biz\HCBMLinkPage.pas">
+            <Form>HCBMLinkPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="source\Biz\HCustomer.pas"/>
+        <DCCReference Include="source\Biz\HCustomerSetPage.pas">
+            <Form>CustomerSetPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="source\Biz\HDataDetailView.pas"/>
+        <DCCReference Include="source\Biz\HMechineSetPage.pas">
+            <Form>MechineSetPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="source\Biz\HMenu.pas"/>
+        <DCCReference Include="source\Biz\HRoom1.pas">
+            <Form>RoomPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="source\Biz\HSecuritySetPage.pas">
             <Form>SecuritySetPage</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="source\Biz\HSettingPage.pas">
+            <Form>SettingPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="source\DeviceComm\Communicate\HCate.pas"/>
+        <DCCReference Include="source\DeviceComm\Communicate\HCom32.pas"/>
+        <DCCReference Include="source\DeviceComm\Communicate\HDeviceDo.pas"/>
+        <DCCReference Include="source\DeviceComm\Communicate\HNet.pas"/>
+        <DCCReference Include="source\DeviceComm\Const\HDeviceDefine.pas"/>
+        <DCCReference Include="source\DeviceComm\Const\HDeviceTool.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HBellco.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HBraun.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HDeviceInfo.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HFresenius.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HGambro.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HJason.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HNikkiso.pas"/>
+        <DCCReference Include="source\DeviceComm\DevicePrase\HToray.pas"/>
+        <DCCReference Include="source\Report\HHistoryDataPage.pas">
+            <Form>HistoryDataPage</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="source\Utility\plugin\SQLite3.pas"/>
+        <DCCReference Include="source\Utility\plugin\SQLiteTable3.pas"/>
+        <DCCReference Include="source\Utility\plugin\superdate.pas"/>
+        <DCCReference Include="source\Utility\plugin\superobject.pas"/>
+        <DCCReference Include="source\Utility\plugin\supertimezone.pas"/>
+        <DCCReference Include="source\Utility\plugin\supertypes.pas"/>
+        <DCCReference Include="source\Utility\plugin\superxmlparser.pas"/>
+        <DCCReference Include="source\Utility\HDBManager.pas"/>
+        <DCCReference Include="source\Utility\HLog.pas"/>
+        <DCCReference Include="source\Utility\HTool.pas"/>
+        <DCCReference Include="source\DeviceComm\DeviceInfo\HDataModel.pas"/>
+        <DCCReference Include="source\DeviceComm\DeviceInfo\HDataNotify.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -173,6 +207,12 @@
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="bin\HimsSoft.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>HimsSoft.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="bin\HimsSoft.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>HimsSoft.exe</RemoteName>
                         <Overwrite>true</Overwrite>
