@@ -18,16 +18,16 @@ object frm_About: Tfrm_About
   object lbl1: TLabel
     Left = 56
     Top = 24
-    Width = 126
+    Width = 132
     Height = 12
-    Caption = #31995#32479#26381#21153#31243#24207#65292#20851#20110'...'
+    Caption = #31995#32479#26381#21153#31243#24207#65292'continue'
   end
   object lbl2: TLabel
     Left = 296
     Top = 48
     Width = 60
     Height = 12
-    Caption = '2009-12-12'
+    Caption = '2020-09-01'
   end
   object img1: TImage
     Left = 16

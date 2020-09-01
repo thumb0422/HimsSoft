@@ -14,16 +14,12 @@ LibrarySupport
 ModelSupport_HLazy
 ModelSupport_HimsSoft
 *.stat
-*.stat
 bin/*.xml
 bin/*.db
 bin/*.db-journal
 bin/*.log
 *.exe
-*.res
 *.dproj
-*.res
-*.stat
 *.stat
 *.skincfg
 HimsSoft.stat
@@ -31,3 +27,4 @@ HimsSoft.stat
 *.ddp
 *.dof
 *.cfg
+*.res

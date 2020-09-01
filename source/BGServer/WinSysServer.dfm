@@ -4,8 +4,8 @@ object frm_SysServer: Tfrm_SysServer
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'HimsServer'#27979#35797
-  ClientHeight = 183
-  ClientWidth = 325
+  ClientHeight = 205
+  ClientWidth = 338
   Color = clBtnFace
   Font.Charset = ANSI_CHARSET
   Font.Color = clWindowText
@@ -181,15 +181,13 @@ object frm_SysServer: Tfrm_SysServer
   end
   object stat1: TStatusBar
     Left = 0
-    Top = 164
-    Width = 325
-    Height = 19
+    Top = 176
+    Width = 338
+    Height = 29
     Panels = <
       item
         Width = 50
       end>
-    ExplicitTop = 149
-    ExplicitWidth = 329
   end
   object chk_SysAutoRun: TCheckBox
     Left = 8
@@ -284,7 +282,7 @@ object frm_SysServer: Tfrm_SysServer
     Left = 288
     Top = 16
     Bitmap = {
-      494C010104000900100010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000900140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
