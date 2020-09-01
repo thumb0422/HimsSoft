@@ -28,3 +28,6 @@ bin/*.log
 *.skincfg
 HimsSoft.stat
 *.tvsconfig
+*.ddp
+*.dof
+*.cfg
