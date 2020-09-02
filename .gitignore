@@ -8,12 +8,10 @@ bin/*.bpl
 bin/*.rar
 dcu
 dcp
-*.stat
 __recovery
 LibrarySupport
 ModelSupport_HLazy
 ModelSupport_HimsSoft
-*.stat
 bin/*.xml
 bin/*.db
 bin/*.db-journal
@@ -24,7 +22,7 @@ bin/*.log
 *.skincfg
 HimsSoft.stat
 *.tvsconfig
+
 *.ddp
+
 *.dof
-*.cfg
-*.res
