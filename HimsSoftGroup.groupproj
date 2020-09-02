@@ -6,6 +6,9 @@
         <Projects Include="HimsSoft.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="source\BGServer\HimsSysServer.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="HimsSoft:Make">
         <MSBuild Projects="HimsSoft.dproj" Targets="Make"/>
     </Target>
+    <Target Name="HimsSysServer">
+        <MSBuild Projects="source\BGServer\HimsSysServer.dproj"/>
+    </Target>
+    <Target Name="HimsSysServer:Clean">
+        <MSBuild Projects="source\BGServer\HimsSysServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="HimsSysServer:Make">
+        <MSBuild Projects="source\BGServer\HimsSysServer.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="HimsSoft"/>
+        <CallTarget Targets="HimsSoft;HimsSysServer"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="HimsSoft:Clean"/>
+        <CallTarget Targets="HimsSoft:Clean;HimsSysServer:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="HimsSoft:Make"/>
+        <CallTarget Targets="HimsSoft:Make;HimsSysServer:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
