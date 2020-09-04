@@ -42,7 +42,8 @@ uses
   HLog in 'source\Utility\HLog.pas',
   HTool in 'source\Utility\HTool.pas',
   HDataModel in 'source\DeviceComm\DeviceInfo\HDataModel.pas',
-  HDataNotify in 'source\DeviceComm\DeviceInfo\HDataNotify.pas';
+  HDataNotify in 'source\DeviceComm\DeviceInfo\HDataNotify.pas',
+  HClientLog in 'source\Utility\HClientLog.pas';
 
 {$R *.res}
 

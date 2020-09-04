@@ -31,7 +31,7 @@ type
   end;
 
 implementation
-uses HLog,HJason,
+uses HClientLog,HJason,
      HBellco,HToray,HBraun,HNikkiso,HGambro,HFresenius;
 var
   GlobalSingle: TDeviceDo;
@@ -138,12 +138,12 @@ end;
 
 procedure TDeviceDo.successBlock(Sender: TObject;rspData:TDataModel);
 begin
-  TLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
+  TClientLog.Instance.DDLogInfo('success:' + rspData.SessionTime + '--' + rspData.VenousPressure);
 end;
 
 procedure TDeviceDo.ErrorBlock(Sender: TObject;error: TErrorMsg);
 begin
-  TLog.Instance.DDLogInfo('callBackError' + error.mType + error.mDesc);
+  TClientLog.Instance.DDLogInfo('callBackError' + error.mType + error.mDesc);
 end;
 
 end.

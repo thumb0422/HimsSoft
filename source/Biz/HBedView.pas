@@ -54,7 +54,7 @@ type
   end;
 
 implementation
-uses HDBManager,superobject,HLog,
+uses HDBManager,superobject,HClientLog,
      HBellco,HToray,HBraun,HNikkiso,HGambro,HFresenius;
 { TBedView }
 
@@ -279,7 +279,7 @@ begin
   end
   else
   begin
-    TLog.Instance.DDLogError('Can not found ' + fDeviceClass + ' class');
+    TClientLog.Instance.DDLogError('Can not found ' + fDeviceClass + ' class');
     bedStatus := EmBedError;
   end;
 

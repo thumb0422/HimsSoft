@@ -12,7 +12,7 @@ interface
 
 uses
   System.SysUtils, Winapi.Windows, System.Classes, System.Generics.Collections,
-  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HLog, HDeviceInfo, HCate,HDeviceDefine,HDataModel;
+  Vcl.ExtCtrls, Data.DBXClassRegistry, CnRS232, HClientLog, HDeviceInfo, HCate,HDeviceDefine,HDataModel;
 
 type
   THComm = class(TCate)
@@ -43,7 +43,7 @@ begin
   if Assigned(FDeviceInfo) and Assigned(rs232Obj) then
   begin
     try
-      TLog.Instance.DDLogInfo(FDeviceInfo.MName + ' connect');
+      TClientLog.Instance.DDLogInfo(FDeviceInfo.MName + ' connect');
       FisConnected := True;
       rs232Obj.StopComm;
       rs232Obj.StartComm;
@@ -53,7 +53,7 @@ begin
         FisConnected := False;
         if Assigned(FdataFailCallBack) then
           FdataFailCallBack(self,TErrorMsg.Create('-1',FDeviceInfo.MName + Com32OpenError));
-        TLog.Instance.DDLogError(FDeviceInfo.MName + ' connectError');
+        TClientLog.Instance.DDLogError(FDeviceInfo.MName + ' connectError');
         rs232Obj.StopComm;
       end;
     end;
@@ -70,7 +70,7 @@ begin
   else
   begin
   //todo:是否需要重新init
-    TLog.Instance.DDLogError(FDeviceInfo.MName + ' sendError,isConneted = False');
+    TClientLog.Instance.DDLogError(FDeviceInfo.MName + ' sendError,isConneted = False');
   end;
 end;
 
@@ -80,7 +80,7 @@ begin
   FisConnected := False;
   if Assigned(rs232Obj) then
   begin
-    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' stopComm');
+    TClientLog.Instance.DDLogInfo(rs232Obj.CommName + ' stopComm');
     rs232Obj.StopComm;
   end;
 end;
@@ -117,7 +117,7 @@ procedure THComm.onWriteData;
 begin
   if Assigned(rs232Obj) and FisConnected and Assigned(FDeviceInfo) then
   begin
-    TLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' + FDeviceInfo.MCommond);
+    TClientLog.Instance.DDLogInfo(rs232Obj.CommName + ' writeData: ' + FDeviceInfo.MCommond);
     rs232Obj.WriteCommData(PAnsiChar(AnsiString(FDeviceInfo.MCommond)), Length(FDeviceInfo.MCommond));
   end;
 end;
@@ -135,7 +135,7 @@ begin
     ss := ss + IntToHex(rbuf[i], 2) + ' ';
   end;
   ss := rs232Obj.CommName + ' onReceive: ' + ss;
-  TLog.Instance.DDLogInfo(ss);
+  TClientLog.Instance.DDLogInfo(ss);
   if Assigned(FdataSuccessCallBack) then
     FdataSuccessCallback(Self,rbuf);
 end;
@@ -147,7 +147,7 @@ begin
   if Assigned(FdataFailCallBack) then
     FdataFailCallBack(Self,TErrorMsg.Create('-1',FDeviceInfo.MName + Com32ReciceError));
   ss := rs232Obj.CommName + ' onReceiveError,EventMask = ' + IntToStr(EventMask);
-  TLog.Instance.DDLogError(ss);
+  TClientLog.Instance.DDLogError(ss);
 end;
 
 procedure THComm.onRequestHangup(Sender: TObject);
@@ -157,7 +157,7 @@ begin
   if Assigned(FdataFailCallBack) then
     FdataFailCallBack(Self,TErrorMsg.Create('-1',FDeviceInfo.MName + Com32HangUpError));
   ss := rs232Obj.CommName + ' onRequestHangup';
-  TLog.Instance.DDLogError(ss);
+  TClientLog.Instance.DDLogError(ss);
 end;
 
 end.

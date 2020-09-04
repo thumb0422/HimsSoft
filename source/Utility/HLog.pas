@@ -26,6 +26,7 @@ type
     constructor Create;
     destructor Destroy; override;
   protected
+    fileName:string;
     procedure writeToFile(str: string);
   end;
 
@@ -76,7 +77,7 @@ begin
   CriticalSection.Acquire;
   try
     DateTime := now;
-    strTxtName := ExtractFilePath(paramstr(0)) + FormatdateTime('yyyy-mm-dd',
+    strTxtName := ExtractFilePath(paramstr(0)) + 'log\' + FormatdateTime('yyyy-mm-dd',
       DateTime) + '.log';
     AssignFile(wLogFile, strTxtName);
     if FileExists(strTxtName) then
